@@ -2,40 +2,49 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
+    <main className="min-h-screen bg-white text-slate-900">
       <section className="mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center px-6 text-center">
-
         <Image
           src="/asker-kommune.png"
           alt="Asker kommune"
-          width={120}
-          height={120}
+          width={130}
+          height={130}
           priority
         />
 
-        <h1 className="mt-6 text-4xl font-bold md:text-5xl">
+        <h1 className="mt-8 text-4xl font-bold tracking-tight md:text-5xl">
           Flertallspartiene i Asker
         </h1>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-8">
+        <p className="mt-3 text-slate-500">
+          Høyre · Fremskrittspartiet · Venstre · Kristelig Folkeparti
+        </p>
+
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-8">
           <Image src="/hoyre.png" alt="Høyre" width={90} height={90} />
           <Image src="/frp.png" alt="FrP" width={90} height={90} />
           <Image src="/venstre.png" alt="Venstre" width={90} height={90} />
           <Image src="/krf.png" alt="KrF" width={90} height={90} />
         </div>
 
-        <p className="mt-10 max-w-xl text-slate-300">
-          Lukket koordineringsportal for flertallspartiene i Asker.
+        <div className="mt-12 rounded-3xl border border-slate-200 bg-slate-50 px-8 py-8 shadow-sm">
+          <p className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            Lukket koordineringsportal
+          </p>
+
+          <p className="mt-4 max-w-xl text-slate-600">
+            Tilgang er kun for forhåndsgodkjente deltakere med registrert
+            mobilnummer.
+          </p>
+
+          <button className="mt-8 rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white shadow-lg hover:bg-slate-800">
+            Logg inn med mobil
+          </button>
+        </div>
+
+        <p className="mt-8 max-w-lg text-xs text-slate-400">
+          Ikke del lenke, skjermbilder eller innhold fra portalen uten avtale.
         </p>
-
-        <button className="mt-10 rounded-xl bg-white px-8 py-4 font-semibold text-slate-950 shadow-lg">
-          Logg inn med mobil
-        </button>
-
-        <p className="mt-6 text-xs text-slate-500">
-          Tilgang gis kun til forhåndsgodkjente telefonnumre.
-        </p>
-
       </section>
     </main>
   );
