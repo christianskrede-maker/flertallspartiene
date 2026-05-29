@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -15,7 +17,7 @@ async function leggTilBruker(formData: FormData) {
   "use server";
 
   const navn = String(formData.get("navn"));
-  const telefon = String(formData.get("telefon"));
+  const telefon = String(formData.get("telefon")).replace(/\s/g, "");
   const parti_id = Number(formData.get("parti_id"));
   const rolle = String(formData.get("rolle"));
 
@@ -31,6 +33,27 @@ async function leggTilBruker(formData: FormData) {
 }
 
 export default async function AdminPage() {
+  const cookieStore = await cookies();
+  const telefonCookie = cookieStore.get("telefon");
+
+  if (!telefonCookie) {
+    redirect("/login");
+  }
+
+  const { data: innloggetBruker } = await supabase
+    .from("brukere")
+    .select("rolle, aktiv")
+    .eq("telefon", telefonCookie.value)
+    .single();
+
+  if (
+    !innloggetBruker ||
+    !innloggetBruker.aktiv ||
+    innloggetBruker.rolle !== "admin"
+  ) {
+    redirect("/dashboard");
+  }
+
   const { data: brukere } = await supabase
     .from("brukere")
     .select("id, navn, telefon, rolle, aktiv, partier(navn)")
@@ -65,7 +88,7 @@ export default async function AdminPage() {
       <div className="mx-auto max-w-7xl px-6 py-10">
         <h2 className="text-3xl font-bold">Administrasjon</h2>
         <p className="mt-2 text-slate-600">
-          Brukere hentes nå fra Supabase-databasen.
+          Kun administratorer har tilgang til denne siden.
         </p>
 
         <section className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-6">
