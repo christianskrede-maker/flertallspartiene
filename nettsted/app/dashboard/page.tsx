@@ -1,6 +1,15 @@
 import Image from "next/image";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon");
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
   const saker = [
     {
       saksnr: "25/1234",
@@ -21,10 +30,19 @@ export default function Dashboard() {
       <div className="mx-auto max-w-6xl px-6 py-10">
         <header className="flex items-center justify-between border-b pb-6">
           <div className="flex items-center gap-4">
-            <Image src="/asker-kommune.png" alt="Asker kommune" width={54} height={54} />
+            <Image
+              src="/asker-kommune.png"
+              alt="Asker kommune"
+              width={54}
+              height={54}
+            />
             <div>
-              <h1 className="text-2xl font-bold">Flertallsportalen Asker</h1>
-              <p className="text-sm text-slate-500">Kronologisk koordineringsoversikt</p>
+              <h1 className="text-2xl font-bold">
+                Flertallsportalen Asker
+              </h1>
+              <p className="text-sm text-slate-500">
+                Kronologisk koordineringsoversikt
+              </p>
             </div>
           </div>
 
@@ -38,6 +56,7 @@ export default function Dashboard() {
 
         <section className="mt-10">
           <h2 className="text-3xl font-bold">Aktive saker</h2>
+
           <p className="mt-2 text-slate-600">
             Saker legges inn fortløpende og behandles kronologisk.
           </p>
@@ -71,9 +90,17 @@ export default function Dashboard() {
               >
                 <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                   <div>
-                    <p className="text-sm font-medium text-slate-500">{sak.saksnr}</p>
-                    <h3 className="mt-1 text-xl font-bold">{sak.tittel}</h3>
-                    <p className="mt-1 text-sm text-slate-600">{sak.utvalg}</p>
+                    <p className="text-sm font-medium text-slate-500">
+                      {sak.saksnr}
+                    </p>
+
+                    <h3 className="mt-1 text-xl font-bold">
+                      {sak.tittel}
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-600">
+                      {sak.utvalg}
+                    </p>
                   </div>
 
                   <span className="w-fit rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
