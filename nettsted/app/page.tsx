@@ -15,7 +15,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-6xl px-6 py-16">
         <p className="mb-4 text-sm font-semibold uppercase tracking-wide text-blue-300">
-          Lukket koordineringsportal
+          Lukket koordineringsportal - test
         </p>
 
         <h2 className="max-w-3xl text-4xl font-bold tracking-tight md:text-6xl">
