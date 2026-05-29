@@ -4,12 +4,18 @@ export default function RetningslinjerPage() {
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto max-w-4xl px-6 py-10">
-        <header className="flex items-center justify-between border-b pb-6">
-          <div className="flex items-center gap-4">
-            <Image src="/asker-kommune.png" alt="Asker kommune" width={54} height={54} />
-            <div>
-              <h1 className="text-2xl font-bold">Retningslinjer</h1>
-              <p className="text-sm text-slate-500">Flertallsportalen Asker</p>
+        <header className="border-b pb-6">
+          <div className="flex flex-col items-center text-center">
+            <Image src="/asker-kommune.png" alt="Asker kommune" width={90} height={90} />
+
+            <h1 className="mt-4 text-3xl font-bold">Retningslinjer</h1>
+            <p className="mt-1 text-sm text-slate-500">Flertallsportalen Asker</p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
+              <Image src="/hoyre.png" alt="Høyre" width={56} height={56} />
+              <Image src="/frp.png" alt="FrP" width={56} height={56} />
+              <Image src="/venstre.png" alt="Venstre" width={56} height={56} />
+              <Image src="/krf.png" alt="KrF" width={56} height={56} />
             </div>
           </div>
         </header>
@@ -49,12 +55,14 @@ export default function RetningslinjerPage() {
           </ul>
         </section>
 
-        <a
-          href="/dashboard"
-          className="mt-10 inline-flex rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white hover:bg-slate-800"
-        >
-          Jeg har lest og forstått
-        </a>
+        <div className="mt-10 text-center">
+          <a
+            href="/dashboard"
+            className="inline-flex rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white hover:bg-slate-800"
+          >
+            Jeg har lest og forstått
+          </a>
+        </div>
       </div>
     </main>
   );
