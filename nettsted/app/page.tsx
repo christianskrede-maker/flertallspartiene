@@ -13,7 +13,7 @@ export default function Home() {
         />
 
         <h1 className="mt-8 text-4xl font-bold tracking-tight md:text-5xl">
-          Flertallspartiene i Asker
+          Flertallsportalen i Asker
         </h1>
 
         <p className="mt-3 text-slate-500">
@@ -37,14 +37,12 @@ export default function Home() {
             mobilnummer.
           </p>
 
-          <button className="mt-8 rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white shadow-lg hover:bg-slate-800">
-            Logg inn med mobil
           <a
-  href="/login"
-  className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-950"
->
-  Logg inn med mobil
-</a>
+            href="/login"
+            className="mt-8 inline-flex rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white shadow-lg hover:bg-slate-800"
+          >
+            Logg inn med mobil
+          </a>
         </div>
 
         <p className="mt-8 max-w-lg text-xs text-slate-400">
