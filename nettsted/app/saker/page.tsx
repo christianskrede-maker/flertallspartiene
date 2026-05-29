@@ -1,6 +1,15 @@
 import Image from "next/image";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function SakerPage() {
+export default async function SakerPage() {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon");
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
   const saker = [
     {
       dato: "16.06.2026",
