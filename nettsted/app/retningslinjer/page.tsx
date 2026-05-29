@@ -1,6 +1,15 @@
 import Image from "next/image";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function RetningslinjerPage() {
+export default async function RetningslinjerPage() {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon");
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto max-w-4xl px-6 py-10">
