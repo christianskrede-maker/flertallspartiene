@@ -24,12 +24,14 @@ async function loggInn(formData: FormData) {
     redirect("/login?feil=1");
   }
 
-  cookies().set("telefon", telefon, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "lax",
-    path: "/",
-  });
+const cookieStore = await cookies();
+
+cookieStore.set("telefon", telefon, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "lax",
+  path: "/",
+});
 
   redirect("/retningslinjer");
 }
