@@ -1,36 +1,21 @@
 import Image from "next/image";
+import { createClient } from "@supabase/supabase-js";
 
-export default function AdminPage() {
-  const brukere = [
-    {
-      navn: "Christian Skrede",
-      telefon: "+47 ********",
-      parti: "Venstre",
-      rolle: "Admin",
-      status: "Aktiv",
-    },
-    {
-      navn: "Eksempelbruker Høyre",
-      telefon: "+47 ********",
-      parti: "Høyre",
-      rolle: "Bruker",
-      status: "Ikke invitert",
-    },
-    {
-      navn: "Eksempelbruker FrP",
-      telefon: "+47 ********",
-      parti: "FrP",
-      rolle: "Bruker",
-      status: "Ikke invitert",
-    },
-    {
-      navn: "Eksempelbruker KrF",
-      telefon: "+47 ********",
-      parti: "KrF",
-      rolle: "Bruker",
-      status: "Ikke invitert",
-    },
-  ];
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+);
+
+function skjulTelefon(telefon: string) {
+  if (!telefon) return "";
+  return telefon.slice(0, 3) + " *****" + telefon.slice(-2);
+}
+
+export default async function AdminPage() {
+  const { data: brukere, error } = await supabase
+    .from("brukere")
+    .select("id, navn, telefon, rolle, aktiv, partier(navn)")
+    .order("id", { ascending: true });
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
@@ -40,9 +25,7 @@ export default function AdminPage() {
             <Image src="/asker-kommune.png" alt="Asker kommune" width={48} height={48} />
             <div>
               <h1 className="text-xl font-bold">Admin</h1>
-              <p className="text-sm text-slate-500">
-                Flertallspartiene i Asker
-              </p>
+              <p className="text-sm text-slate-500">Flertallsportalen Asker</p>
             </div>
           </div>
 
@@ -56,28 +39,17 @@ export default function AdminPage() {
       </header>
 
       <div className="mx-auto max-w-7xl px-6 py-10">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+        <div className="flex justify-between">
           <div>
             <h2 className="text-3xl font-bold">Administrasjon</h2>
             <p className="mt-2 text-slate-600">
-              Her administreres brukere, partier, roller og tilgang.
+              Brukere hentes nå fra Supabase-databasen.
             </p>
           </div>
 
-          <button className="rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white hover:bg-slate-800">
+          <button className="rounded-xl bg-slate-900 px-5 py-3 font-semibold text-white">
             Legg til bruker
           </button>
-        </div>
-
-        <div className="mt-8 grid gap-4 md:grid-cols-4">
-          {["Brukere", "Partier", "Saker", "System"].map((tab) => (
-            <button
-              key={tab}
-              className="rounded-2xl border border-slate-200 bg-slate-50 p-5 text-left font-semibold hover:bg-slate-100"
-            >
-              {tab}
-            </button>
-          ))}
         </div>
 
         <section className="mt-10 rounded-2xl border border-slate-200 bg-white shadow-sm">
@@ -88,31 +60,37 @@ export default function AdminPage() {
             </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-100">
-                <tr>
-                  <th className="p-4">Navn</th>
-                  <th className="p-4">Telefon</th>
-                  <th className="p-4">Parti</th>
-                  <th className="p-4">Rolle</th>
-                  <th className="p-4">Status</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {brukere.map((bruker) => (
-                  <tr key={bruker.navn} className="border-t hover:bg-slate-50">
-                    <td className="p-4 font-semibold">{bruker.navn}</td>
-                    <td className="p-4">{bruker.telefon}</td>
-                    <td className="p-4">{bruker.parti}</td>
-                    <td className="p-4">{bruker.rolle}</td>
-                    <td className="p-4">{bruker.status}</td>
+          {error ? (
+            <p className="p-6 text-red-600">
+              Kunne ikke hente brukere fra databasen.
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead className="bg-slate-100">
+                  <tr>
+                    <th className="p-4">Navn</th>
+                    <th className="p-4">Telefon</th>
+                    <th className="p-4">Parti</th>
+                    <th className="p-4">Rolle</th>
+                    <th className="p-4">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+
+                <tbody>
+                  {brukere?.map((bruker: any) => (
+                    <tr key={bruker.id} className="border-t hover:bg-slate-50">
+                      <td className="p-4 font-semibold">{bruker.navn}</td>
+                      <td className="p-4">{skjulTelefon(bruker.telefon)}</td>
+                      <td className="p-4">{bruker.partier?.navn}</td>
+                      <td className="p-4 capitalize">{bruker.rolle}</td>
+                      <td className="p-4">{bruker.aktiv ? "Aktiv" : "Inaktiv"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
       </div>
     </main>
