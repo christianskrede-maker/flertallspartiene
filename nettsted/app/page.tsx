@@ -39,7 +39,12 @@ export default function Home() {
 
           <button className="mt-8 rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white shadow-lg hover:bg-slate-800">
             Logg inn med mobil
-          </button>
+          <a
+  href="/login"
+  className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-950"
+>
+  Logg inn med mobil
+</a>
         </div>
 
         <p className="mt-8 max-w-lg text-xs text-slate-400">
