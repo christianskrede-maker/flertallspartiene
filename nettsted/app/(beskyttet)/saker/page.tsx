@@ -1,6 +1,9 @@
+import Link from "next/link";
+
 export default function SakerPage() {
   const saker = [
     {
+      id: "kpa",
       dato: "16.06.2026",
       saksnummer: "2026/1001",
       navn: "Rullering av kommuneplanen",
@@ -9,6 +12,7 @@ export default function SakerPage() {
       frist: "Ikke satt",
     },
     {
+      id: "handlingsprogram",
       dato: "16.06.2026",
       saksnummer: "2026/1002",
       navn: "Handlingsprogram 2027-2030",
@@ -20,9 +24,7 @@ export default function SakerPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
-      <h2 className="text-2xl font-bold sm:text-3xl">
-        Saksoversikt
-      </h2>
+      <h2 className="text-2xl font-bold sm:text-3xl">Saksoversikt</h2>
 
       <p className="mt-2 text-sm text-slate-600 sm:text-base">
         Kronologisk arbeidsflate for flertallspartiene.
@@ -50,7 +52,7 @@ export default function SakerPage() {
       </div>
 
       <div className="mt-8 overflow-x-auto rounded-xl border">
-        <table className="min-w-[900px] w-full text-left">
+        <table className="w-full min-w-[900px] text-left">
           <thead className="bg-slate-100">
             <tr>
               <th className="p-4">Dato</th>
@@ -64,31 +66,25 @@ export default function SakerPage() {
 
           <tbody>
             {saker.map((sak) => (
-              <tr
-                key={sak.saksnummer}
-                className="border-t hover:bg-slate-50"
-              >
+              <tr key={sak.saksnummer} className="border-t hover:bg-slate-50">
                 <td className="p-4">{sak.dato}</td>
 
-                <td className="p-4 font-medium">
-                  {sak.saksnummer}
-                </td>
+                <td className="p-4 font-medium">{sak.saksnummer}</td>
 
                 <td className="p-4 font-semibold">
-                  {sak.navn}
+                  <Link
+                    href={`/saker/${sak.id}`}
+                    className="text-slate-900 hover:underline"
+                  >
+                    {sak.navn}
+                  </Link>
                 </td>
 
-                <td className="p-4">
-                  {sak.kategori}
-                </td>
+                <td className="p-4">{sak.kategori}</td>
 
-                <td className="p-4">
-                  {sak.status}
-                </td>
+                <td className="p-4">{sak.status}</td>
 
-                <td className="p-4">
-                  {sak.frist}
-                </td>
+                <td className="p-4">{sak.frist}</td>
               </tr>
             ))}
           </tbody>
