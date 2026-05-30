@@ -57,6 +57,48 @@ Bestemmelsen i 1.2 sikrer at vedtatte reguleringsplaner som Asker kommune ønske
         `,
       },
     ],
-    gjeldendeBestemmelse: "",
+
+    gjeldendeBestemmelse: `
+1. Forholdet til vedtatte arealplaner
+
+1.1 Forholdet til vedtatte kommunedelplaner (pbl. § 1-5)
+
+Følgende kommunedelplaner gjelder i Asker:
+
+• Kommunedelplan for Båtstø, vedtatt 14.09.2017
+• Kommunedelplan for E18, vedtatt 08.11.2016
+• Kommunedelplan for E134 strekningen Dagslett - E18 Lier, vedtatt 18.10.2022
+• Kommunedelplan for Holmen-Slependen, vedtatt 29.01.2013
+• Kommunedelplan for ny Røykenvei, vedtatt 03.01.1998
+
+Bestemmelser til kommunedelplan skal ved motstrid gjelde foran kommuneplan, dette gjelder ikke kommunedelplan for ny Røykenvei, strekningen Gjellum – Kloppedalen (atkomstveien til Heggedal).
+
+Arealformål i kommuneplan skal ved motstrid gjelde foran kommunedelplan, dette gjelder ikke avsatt veiformål i kommunedelplan for E18 og E134.
+
+1.2 Forholdet til vedtatte reguleringsplaner (pbl. § 1-5)
+
+Reguleringsplaner som er vedtatt før kommuneplanens arealdel, gjelder såfremt det ikke er motstrid med kommuneplanbestemmelser som i sin ordlyd overstyrer reguleringsplan.
+
+Det fremgår av den enkelte bestemmelse om den overstyrer reguleringsplan.
+
+Der reguleringsplan ikke har bestemmelse om forhold som fremgår i kommuneplan, er kommuneplanens bestemmelser utfyllende.
+
+Arealformål grønnstruktur og Landbruks-, natur og friluftsområder (LNFR) i kommuneplanens arealplankart overstyrer byggeformål i reguleringsplaners arealplankart.
+
+Ved motstrid mellom andre arealformål gjelder reguleringsplanens arealformål.
+
+Kommuneplanens bestemmelser i kapittel 20–23 for hensynssoner og båndleggingssoner overstyrer gjeldende reguleringsplaner.
+
+Avsatt veiformål med tilhørende bestemmelser i reguleringsplan for E134 går foran kommuneplan ved motstrid.
+
+Følgende planer gjelder uansett i sin helhet:
+
+a. Reguleringsplan for Vardåsen alpinanlegg, plan 23C, vedtatt 22.06.1989
+
+b. Reguleringsplaner for Hogstad golfbane, plan 38F, vedtatt 09.09.1992, og 38G, vedtatt 29.04.1993, med bestemmelser.
+
+Opplysning:
+Med byggeformål menes arealformål etter plan- og bygningsloven (pbl.) § 12-5 nr. 1.
+    `,
   },
 } as const;
