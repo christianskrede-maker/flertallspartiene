@@ -8,10 +8,24 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+function ryddTelefon(verdi: FormDataEntryValue | null) {
+  const telefon = String(verdi || "").replace(/\s/g, "");
+
+  if (telefon.startsWith("+")) {
+    return telefon;
+  }
+
+  if (telefon.startsWith("47")) {
+    return `+${telefon}`;
+  }
+
+  return `+47${telefon}`;
+}
+
 async function sendKode(formData: FormData) {
   "use server";
 
-  const telefon = String(formData.get("telefon")).replace(/\s/g, "");
+  const telefon = ryddTelefon(formData.get("telefon"));
 
   const { data: bruker } = await supabase
     .from("brukere")
@@ -24,11 +38,14 @@ async function sendKode(formData: FormData) {
     redirect("/login?feil=1");
   }
 
-  const { error } = await supabase.auth.signInWithOtp({
+  const { data, error } = await supabase.auth.signInWithOtp({
     phone: telefon,
   });
 
+  console.log("OTP RESULT", { telefon, data, error });
+
   if (error) {
+    console.log("OTP ERROR", error);
     redirect("/login?feil=sms");
   }
 
@@ -38,16 +55,19 @@ async function sendKode(formData: FormData) {
 async function bekreftKode(formData: FormData) {
   "use server";
 
-  const telefon = String(formData.get("telefon")).replace(/\s/g, "");
+  const telefon = ryddTelefon(formData.get("telefon"));
   const kode = String(formData.get("kode")).replace(/\s/g, "");
 
-  const { error } = await supabase.auth.verifyOtp({
+  const { data, error } = await supabase.auth.verifyOtp({
     phone: telefon,
     token: kode,
     type: "sms",
   });
 
+  console.log("VERIFY RESULT", { telefon, data, error });
+
   if (error) {
+    console.log("VERIFY ERROR", error);
     redirect(`/login?telefon=${encodeURIComponent(telefon)}&feil=kode`);
   }
 
@@ -58,6 +78,7 @@ async function bekreftKode(formData: FormData) {
     secure: true,
     sameSite: "lax",
     path: "/",
+    maxAge: 60 * 60 * 24,
   });
 
   redirect("/retningslinjer");
@@ -75,13 +96,28 @@ export default async function LoginPage({
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6">
-        <Image src="/asker-kommune.png" alt="Asker kommune" width={90} height={90} />
+        <Image
+          src="/asker-kommune.png"
+          alt="Asker kommune"
+          width={90}
+          height={90}
+          priority
+        />
 
-        <h1 className="mt-6 text-3xl font-bold">Flertallsportalen Asker</h1>
+        <h1 className="mt-6 text-center text-3xl font-bold">
+          Flertallsportalen Asker
+        </h1>
+
+        <div className="mt-6 flex items-center justify-center gap-5">
+          <Image src="/hoyre.png" alt="Høyre" width={44} height={44} />
+          <Image src="/frp.png" alt="FrP" width={44} height={44} />
+          <Image src="/venstre.png" alt="Venstre" width={44} height={44} />
+          <Image src="/krf.png" alt="KrF" width={44} height={44} />
+        </div>
 
         {!telefon ? (
           <>
-            <p className="mt-2 text-center text-slate-600">
+            <p className="mt-6 text-center text-slate-600">
               Logg inn med godkjent mobilnummer.
             </p>
 
@@ -93,7 +129,7 @@ export default async function LoginPage({
 
             {feil === "sms" && (
               <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">
-                Kunne ikke sende SMS-kode. Sjekk SMS-oppsettet.
+                Kunne ikke sende SMS-kode. Sjekk Twilio/Supabase-oppsettet.
               </p>
             )}
 
@@ -105,15 +141,15 @@ export default async function LoginPage({
                 className="w-full rounded-xl border p-4"
               />
 
-              <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white">
+              <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white hover:bg-slate-800">
                 Send SMS-kode
               </button>
             </form>
           </>
         ) : (
           <>
-            <p className="mt-2 text-center text-slate-600">
-              Vi har sendt en SMS-kode til {telefon}.
+            <p className="mt-6 text-center text-slate-600">
+              Vi har forsøkt å sende en SMS-kode til {telefon}.
             </p>
 
             {feil === "kode" && (
@@ -132,7 +168,7 @@ export default async function LoginPage({
                 className="w-full rounded-xl border p-4"
               />
 
-              <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white">
+              <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white hover:bg-slate-800">
                 Bekreft og logg inn
               </button>
             </form>
@@ -143,7 +179,7 @@ export default async function LoginPage({
           </>
         )}
 
-        <p className="mt-6 text-sm text-slate-500">
+        <p className="mt-6 text-center text-sm text-slate-500">
           Kun forhåndsgodkjente telefonnumre får tilgang.
         </p>
       </div>
