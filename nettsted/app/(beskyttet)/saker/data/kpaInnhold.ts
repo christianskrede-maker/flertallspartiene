@@ -1,10 +1,10 @@
 export const kpaInnhold = {
   "1": {
-    bestemmelse: `
-1. Eldre arealplaner som ved kommunestyrets vedtak skal gjelde uendret
-Jf. Pbl. §1-5
-
-1.1 Kommunedelplaner som skal gjelde uendret
+    deler: [
+      {
+        nummer: "1.1",
+        tittel: "Kommunedelplaner som skal gjelde uendret",
+        bestemmelse: `
 Jf. Pbl. § 1-5 andre ledd, jf. § 11-15 første ledd
 
 Områder hvor vedtatte kommunedelplaner skal gjelde uendret jf. pbl. § 1-5 andre ledd, jf. § 11-15 første ledd:
@@ -22,26 +22,25 @@ Vedtaksdato: 18.10.2022
 
 Plan: Kommunedelplan for Holmen-Slependen
 Vedtaksdato: 29.01.2013
+        `,
+        spesialmerknad: `
+Utgangspunktet etter plan- og bygningsloven § 1-5 er at ny plan går foran eldre plan ved motstrid, med mindre noe “annet er bestemt”.
 
-1.2 Reguleringsplaner som skal gjelde uendret
+Hensikten med bestemmelsen i 1.1 er å sikre at vedtatte kommunedelplaner, som Asker kommune ønsker å videreføre, ikke viker for nye bestemmelser i kommeplanens arealdel ved eventuell motstrid. Dette er hjemlet i pbl. § 1-5 andre ledd.
+        `,
+      },
+      {
+        nummer: "1.2",
+        tittel: "Reguleringsplaner som skal gjelde uendret",
+        bestemmelse: `
 Jf. pbl. § 1-5 andre ledd, jf. pbl. § 11-15 første ledd
 
 Reguleringsplaner angitt i vedlegg X skal gjelde uendret, og går foran kommuneplanen ved motstrid.
 
 PlanId:
-    `,
-
-    spesialmerknad: `
-1 Eldre arealplaner som ved kommunestyrets vedtak skal gjelde uendret
-
-1.1 Vedtatte kommunedelplaner som skal gjelde uendret
-
-Utgangspunktet etter plan- og bygningsloven § 1-5 er at ny plan går foran eldre plan ved motstrid, med mindre noe “annet er bestemt”.
-
-Hensikten med bestemmelsen i 1.1 er å sikre at vedtatte kommunedelplaner, som Asker kommune ønsker å videreføre, ikke viker for nye bestemmelser i kommeplanens arealdel ved eventuell motstrid. Dette er hjemlet i pbl. § 1-5 andre ledd.
-
-1.2 Vedtatte reguleringsplaner som skal gjelde uendret
-
+-
+        `,
+        spesialmerknad: `
 Hensikten med bestemmelsen i 1.2 er å sikre at vedtatte reguleringsplaner som Asker kommune ønsker å videreføre, ikke viker for nye bestemmelser i kommuneplanens arealdel ved eventuell motstrid. Reguleringsplanene videreføres på denne måten uendret.
 
 Kommunen har gjort en vurdering av disse planene, og slått fast at planene fungerer godt som styringsgrunnlag fremover.
@@ -55,8 +54,9 @@ Planer som videføres i sin helhet, følger av vedlegg X til kommuneplanens area
 I området hvor reguleringsplanene ikke er videreført i sin helhet etter bestemmelsen i 1.2 vil bestemmelsene i kommuneplanens arealdel gå foran bestemmelser i reguleringsplanen ved eventuell motstrid.
 
 Bestemmelsen i 1.2 sikrer at vedtatte reguleringsplaner som Asker kommune ønsker å videreføre, ikke viker for nye bestemmelser i kommuneplanens arealdel ved eventuell motstrid.
-    `,
-
+        `,
+      },
+    ],
     gjeldendeBestemmelse: "",
   },
 } as const;
