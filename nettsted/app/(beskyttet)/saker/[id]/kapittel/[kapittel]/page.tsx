@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { kpaKapitler } from "../../../data/kpaKapitler";
+import { kpaInnhold } from "../../../data/kpaInnhold";
 
 const kartLenker = [
   {
@@ -38,6 +39,9 @@ export default async function Kapittel({ params }: KapittelProps) {
     ? `${valgtKapittel.nummer}. ${valgtKapittel.tittel}`
     : `Kapittel ${kapittel}`;
 
+  const innhold =
+    kpaInnhold[kapittel as keyof typeof kpaInnhold] ?? null;
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
       <Link
@@ -52,7 +56,9 @@ export default async function Kapittel({ params }: KapittelProps) {
           Kommuneplanens arealdel
         </p>
 
-        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{tittel}</h1>
+        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">
+          {tittel}
+        </h1>
 
         <p className="mt-4 text-base leading-7 text-slate-600">
           Arbeidsrom for bestemmelse, spesialmerknad, gjeldende bestemmelse,
@@ -85,7 +91,9 @@ export default async function Kapittel({ params }: KapittelProps) {
               className="rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
               <p className="font-bold">{lenke.tittel}</p>
-              <p className="mt-1 text-sm text-slate-500">{lenke.tekst}</p>
+              <p className="mt-1 text-sm text-slate-500">
+                {lenke.tekst}
+              </p>
             </a>
           ))}
         </div>
@@ -97,11 +105,14 @@ export default async function Kapittel({ params }: KapittelProps) {
             Nytt utkast
           </p>
 
-          <h2 className="mt-2 text-xl font-bold">Ny bestemmelse</h2>
+          <h2 className="mt-2 text-xl font-bold">
+            Ny bestemmelse
+          </h2>
 
-          <p className="mt-3 text-sm leading-6 text-slate-500">
-            Innhold legges inn i neste steg.
-          </p>
+          <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+            {innhold?.bestemmelse ??
+              "Bestemmelse er ikke lagt inn ennå."}
+          </div>
         </div>
 
         <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
@@ -109,11 +120,14 @@ export default async function Kapittel({ params }: KapittelProps) {
             Forklaring og intensjon
           </p>
 
-          <h2 className="mt-2 text-xl font-bold">Spesialmerknad</h2>
+          <h2 className="mt-2 text-xl font-bold">
+            Spesialmerknad
+          </h2>
 
-          <p className="mt-3 text-sm leading-6 text-slate-500">
-            Spesialmerknaden skal alltid vurderes sammen med bestemmelsen.
-          </p>
+          <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+            {innhold?.spesialmerknad ??
+              "Spesialmerknad er ikke lagt inn ennå."}
+          </div>
         </div>
       </section>
 
@@ -122,19 +136,27 @@ export default async function Kapittel({ params }: KapittelProps) {
           Manuell kobling
         </p>
 
-        <h2 className="mt-2 text-xl font-bold">Gjeldende bestemmelse</h2>
+        <h2 className="mt-2 text-xl font-bold">
+          Gjeldende bestemmelse
+        </h2>
 
-        <p className="mt-3 text-sm leading-6 text-slate-500">
-          Gjeldende bestemmelse kobles manuelt der den passer med nytt utkast.
-        </p>
+        <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+          {innhold?.gjeldendeBestemmelse ||
+            "Gjeldende bestemmelse legges inn senere."}
+        </div>
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <h2 className="text-xl font-bold">Partienes vurderinger</h2>
+        <h2 className="text-xl font-bold">
+          Partienes vurderinger
+        </h2>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           {partier.map((parti) => (
-            <div key={parti} className="rounded-xl border bg-slate-50 p-5">
+            <div
+              key={parti}
+              className="rounded-xl border bg-slate-50 p-5"
+            >
               <h3 className="font-bold">{parti}</h3>
 
               <p className="mt-2 text-sm leading-6 text-slate-500">
@@ -146,10 +168,13 @@ export default async function Kapittel({ params }: KapittelProps) {
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-        <h2 className="text-xl font-bold">Omforent forslag</h2>
+        <h2 className="text-xl font-bold">
+          Omforent forslag
+        </h2>
 
         <p className="mt-3 text-sm leading-6 text-slate-500">
-          Felles forslag utarbeides her av administratorer og gruppeledere.
+          Felles forslag utarbeides her av administratorer og
+          gruppeledere.
         </p>
       </section>
     </div>
