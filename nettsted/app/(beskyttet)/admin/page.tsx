@@ -15,10 +15,14 @@ function skjulTelefon(telefon: string) {
 async function leggTilBruker(formData: FormData) {
   "use server";
 
-  const navn = String(formData.get("navn"));
-  const telefon = String(formData.get("telefon")).replace(/\s/g, "");
+  const navn = String(formData.get("navn") ?? "").trim();
+  const telefon = String(formData.get("telefon") ?? "").replace(/\s/g, "");
   const parti_id = Number(formData.get("parti_id"));
-  const rolle = String(formData.get("rolle"));
+  const rolle = String(formData.get("rolle") ?? "bruker");
+
+  if (!navn || !telefon || !parti_id) {
+    return;
+  }
 
   await supabase.from("brukere").insert({
     navn,
@@ -36,15 +40,29 @@ async function oppdaterBruker(formData: FormData) {
 
   const id = Number(formData.get("id"));
   const parti_id = Number(formData.get("parti_id"));
-  const rolle = String(formData.get("rolle"));
-  const aktiv = String(formData.get("aktiv")) === "true";
+  const rolle = String(formData.get("rolle") ?? "bruker");
+  const aktiv = String(formData.get("aktiv") ?? "true") === "true";
 
-  await supabase
+  if (!id || !parti_id) {
+    return;
+  }
+
+  const { error } = await supabase
     .from("brukere")
-    .update({ parti_id, rolle, aktiv })
+    .update({
+      parti_id,
+      rolle,
+      aktiv,
+    })
     .eq("id", id);
 
+  if (error) {
+    console.error("Kunne ikke oppdatere bruker:", error.message);
+    return;
+  }
+
   revalidatePath("/admin");
+  redirect("/admin");
 }
 
 export default async function AdminPage() {
@@ -67,7 +85,7 @@ export default async function AdminPage() {
 
   const { data: brukere } = await supabase
     .from("brukere")
-    .select("id, navn, telefon, rolle, aktiv, parti_id, partier(navn)")
+    .select("id, navn, telefon, rolle, aktiv, parti_id")
     .order("id", { ascending: true });
 
   const { data: partier } = await supabase
@@ -87,8 +105,19 @@ export default async function AdminPage() {
         <h3 className="text-xl font-bold">Legg til bruker</h3>
 
         <form action={leggTilBruker} className="mt-5 grid gap-4 lg:grid-cols-5">
-          <input name="navn" required placeholder="Navn" className="rounded-xl border p-3" />
-          <input name="telefon" required placeholder="+47..." className="rounded-xl border p-3" />
+          <input
+            name="navn"
+            required
+            placeholder="Navn"
+            className="rounded-xl border p-3"
+          />
+
+          <input
+            name="telefon"
+            required
+            placeholder="+47..."
+            className="rounded-xl border p-3"
+          />
 
           <select name="parti_id" required className="rounded-xl border p-3">
             {partier?.map((parti) => (
@@ -119,7 +148,7 @@ export default async function AdminPage() {
         </div>
 
         <div className="space-y-4 p-4">
-          {brukere?.map((bruker: any) => (
+          {brukere?.map((bruker) => (
             <form
               key={bruker.id}
               action={oppdaterBruker}
@@ -139,11 +168,11 @@ export default async function AdminPage() {
 
               <select
                 name="parti_id"
-                defaultValue={bruker.parti_id}
+                defaultValue={String(bruker.parti_id)}
                 className="rounded-lg border p-2 text-sm"
               >
                 {partier?.map((parti) => (
-                  <option key={parti.id} value={parti.id}>
+                  <option key={parti.id} value={String(parti.id)}>
                     {parti.navn}
                   </option>
                 ))}
