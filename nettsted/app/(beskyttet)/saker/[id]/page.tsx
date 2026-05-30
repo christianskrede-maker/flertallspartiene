@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { kpaKapitler } from "../data/kpaKapitler";
 
 const kartLenker = [
   {
@@ -16,40 +17,6 @@ const kartLenker = [
     tekst: "Alle innspill i kart",
     href: "https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f",
   },
-];
-
-const kapitler = [
-  { nummer: 1, tittel: "Eldre arealplaner som skal gjelde uendret" },
-  { nummer: 2, tittel: "Krav om reguleringsplan" },
-  { nummer: 3, tittel: "Rekkefølgekrav" },
-  { nummer: 4, tittel: "Overvann, vannforsyning og avløp" },
-  { nummer: 5, tittel: "Funksjonskrav til utbyggingsområder" },
-  { nummer: 6, tittel: "Byggegrenser" },
-  {
-    nummer: 7,
-    tittel: "Miljøkvalitet, natur, estetikk og landskapstilpasning",
-  },
-  { nummer: 8, tittel: "Kulturminner og kulturmiljø" },
-  { nummer: 9, tittel: "Nærmere angitte tiltak" },
-  { nummer: 10, tittel: "Forhold som skal avklares i reguleringsplan" },
-  { nummer: 11, tittel: "Småhusbebyggelse" },
-  { nummer: 12, tittel: "Spesielle småhusområder" },
-  { nummer: 13, tittel: "Fritidsbebyggelse" },
-  { nummer: 14, tittel: "Næringsformål" },
-  { nummer: 15, tittel: "Andre arealformål under bebyggelse og anlegg" },
-  { nummer: 16, tittel: "Grønnstruktur" },
-  { nummer: 17, tittel: "LNFR" },
-  { nummer: 18, tittel: "Sjø og vassdrag" },
-  {
-    nummer: 19,
-    tittel: "Hensynssoner landskap, naturmiljø og kulturmiljø",
-  },
-  { nummer: 20, tittel: "Hensynssoner fare og sikring" },
-  { nummer: 21, tittel: "Infrastruktur og flomveier" },
-  { nummer: 22, tittel: "Felles planlegging" },
-  { nummer: 23, tittel: "Båndleggingssoner" },
-  { nummer: 24, tittel: "Reguleringsplaner som skal gjelde uendret" },
-  { nummer: 25, tittel: "Bestemmelsesområder" },
 ];
 
 type SakProps = {
@@ -135,7 +102,7 @@ export default async function Sak({ params }: SakProps) {
         </p>
 
         <div className="mt-6 grid gap-3">
-          {kapitler.map((kapittel) => (
+          {kpaKapitler.map((kapittel) => (
             <Link
               key={kapittel.nummer}
               href={`/saker/${id}/kapittel/${kapittel.nummer}`}
@@ -146,6 +113,7 @@ export default async function Sak({ params }: SakProps) {
                   <h3 className="font-bold">
                     {kapittel.nummer}. {kapittel.tittel}
                   </h3>
+
                   <p className="mt-1 text-sm text-slate-500">
                     Ny bestemmelse · Spesialmerknad · Gjeldende bestemmelse ·
                     Politisk vurdering
@@ -173,6 +141,7 @@ export default async function Sak({ params }: SakProps) {
             className="rounded-2xl border border-slate-200 p-5 sm:p-6"
           >
             <h3 className="font-bold">{title}</h3>
+
             <p className="mt-2 text-sm leading-6 text-slate-500">
               Innhold og kommentarer legges inn her i neste fase.
             </p>
@@ -181,12 +150,25 @@ export default async function Sak({ params }: SakProps) {
       </section>
 
       <section className="mt-10 rounded-2xl border border-slate-200 p-5 sm:p-6">
-        <h3 className="text-xl font-bold">Partienes vurderinger</h3>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h3 className="text-xl font-bold">Partienes vurderinger</h3>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              Samlet vurdering for hele saken på tvers av kapitlene.
+            </p>
+          </div>
+
+          <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
+            Eksporter vurderinger
+          </button>
+        </div>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           {["Høyre", "FrP", "Venstre", "KrF"].map((parti) => (
             <div key={parti} className="rounded-xl border bg-slate-50 p-5">
               <h4 className="font-bold">{parti}</h4>
+
               <p className="mt-2 text-sm leading-6 text-slate-500">
                 Kun brukere fra {parti} kan skrive her. Alle kan lese.
               </p>
@@ -196,10 +178,19 @@ export default async function Sak({ params }: SakProps) {
       </section>
 
       <section className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-        <h3 className="text-xl font-bold">Omforent forslag</h3>
-        <p className="mt-2 text-sm leading-6 text-slate-500">
-          Felles forslag utarbeides her av administratorer og gruppeledere.
-        </p>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h3 className="text-xl font-bold">Omforent forslag</h3>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500">
+              Felles forslag utarbeides her av administratorer og gruppeledere.
+            </p>
+          </div>
+
+          <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+            Eksporter sak
+          </button>
+        </div>
       </section>
     </div>
   );
