@@ -8,14 +8,14 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
-async function loggInn(formData: FormData) {
+async function sendKode(formData: FormData) {
   "use server";
 
   const telefon = String(formData.get("telefon")).replace(/\s/g, "");
 
   const { data: bruker } = await supabase
     .from("brukere")
-    .select("id, navn, telefon, rolle, aktiv")
+    .select("id, telefon, aktiv")
     .eq("telefon", telefon)
     .eq("aktiv", true)
     .single();
@@ -24,41 +24,124 @@ async function loggInn(formData: FormData) {
     redirect("/login?feil=1");
   }
 
-const cookieStore = await cookies();
+  const { error } = await supabase.auth.signInWithOtp({
+    phone: telefon,
+  });
 
-cookieStore.set("telefon", telefon, {
-  httpOnly: true,
-  secure: true,
-  sameSite: "lax",
-  path: "/",
-});
+  if (error) {
+    redirect("/login?feil=sms");
+  }
+
+  redirect(`/login?telefon=${encodeURIComponent(telefon)}`);
+}
+
+async function bekreftKode(formData: FormData) {
+  "use server";
+
+  const telefon = String(formData.get("telefon")).replace(/\s/g, "");
+  const kode = String(formData.get("kode")).replace(/\s/g, "");
+
+  const { error } = await supabase.auth.verifyOtp({
+    phone: telefon,
+    token: kode,
+    type: "sms",
+  });
+
+  if (error) {
+    redirect(`/login?telefon=${encodeURIComponent(telefon)}&feil=kode`);
+  }
+
+  const cookieStore = await cookies();
+
+  cookieStore.set("telefon", telefon, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+  });
 
   redirect("/retningslinjer");
 }
 
-export default function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ telefon?: string; feil?: string }>;
+}) {
+  const params = await searchParams;
+  const telefon = params.telefon;
+  const feil = params.feil;
+
   return (
     <main className="min-h-screen bg-white text-slate-900">
       <div className="mx-auto flex min-h-screen max-w-md flex-col items-center justify-center px-6">
         <Image src="/asker-kommune.png" alt="Asker kommune" width={90} height={90} />
 
         <h1 className="mt-6 text-3xl font-bold">Flertallsportalen Asker</h1>
-        <p className="mt-2 text-center text-slate-600">
-          Logg inn med godkjent mobilnummer.
-        </p>
 
-        <form action={loggInn} className="mt-8 w-full space-y-4">
-          <input
-            name="telefon"
-            required
-            placeholder="+4793852693"
-            className="w-full rounded-xl border p-4"
-          />
+        {!telefon ? (
+          <>
+            <p className="mt-2 text-center text-slate-600">
+              Logg inn med godkjent mobilnummer.
+            </p>
 
-          <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white">
-            Logg inn
-          </button>
-        </form>
+            {feil === "1" && (
+              <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">
+                Nummeret er ikke godkjent for tilgang.
+              </p>
+            )}
+
+            {feil === "sms" && (
+              <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">
+                Kunne ikke sende SMS-kode. Sjekk SMS-oppsettet.
+              </p>
+            )}
+
+            <form action={sendKode} className="mt-8 w-full space-y-4">
+              <input
+                name="telefon"
+                required
+                placeholder="+4793852693"
+                className="w-full rounded-xl border p-4"
+              />
+
+              <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white">
+                Send SMS-kode
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <p className="mt-2 text-center text-slate-600">
+              Vi har sendt en SMS-kode til {telefon}.
+            </p>
+
+            {feil === "kode" && (
+              <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-700">
+                Feil kode. Prøv igjen.
+              </p>
+            )}
+
+            <form action={bekreftKode} className="mt-8 w-full space-y-4">
+              <input type="hidden" name="telefon" value={telefon} />
+
+              <input
+                name="kode"
+                required
+                placeholder="6-sifret kode"
+                className="w-full rounded-xl border p-4"
+              />
+
+              <button className="w-full rounded-xl bg-slate-900 px-5 py-4 font-semibold text-white">
+                Bekreft og logg inn
+              </button>
+            </form>
+
+            <a href="/login" className="mt-6 text-sm text-slate-500 underline">
+              Bruk et annet nummer
+            </a>
+          </>
+        )}
 
         <p className="mt-6 text-sm text-slate-500">
           Kun forhåndsgodkjente telefonnumre får tilgang.
