@@ -59,6 +59,7 @@ export default async function AdminPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
       <h2 className="text-2xl font-bold sm:text-3xl">Administrasjon</h2>
+
       <p className="mt-2 text-slate-600">
         Kun administratorer har tilgang til denne siden.
       </p>
@@ -98,75 +99,61 @@ export default async function AdminPage() {
           </p>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-[980px] w-full text-left">
-            <thead className="bg-slate-100">
-              <tr>
-                <th className="p-4">Navn</th>
-                <th className="p-4">Telefon</th>
-                <th className="p-4">Parti</th>
-                <th className="p-4">Rolle</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Handling</th>
-              </tr>
-            </thead>
+        <div className="space-y-4 p-4">
+          {brukere?.map((bruker: any) => (
+            <form
+              key={bruker.id}
+              action={oppdaterBruker}
+              className="grid gap-4 rounded-xl border p-4 lg:grid-cols-6 lg:items-center"
+            >
+              <input type="hidden" name="id" value={bruker.id} />
 
-            <tbody>
-              {brukere?.map((bruker: any) => (
-                <tr key={bruker.id} className="border-t hover:bg-slate-50">
-                  <td className="p-4 font-semibold">{bruker.navn}</td>
-                  <td className="p-4">{skjulTelefon(bruker.telefon)}</td>
+              <div>
+                <p className="text-xs text-slate-500">Navn</p>
+                <p className="font-semibold">{bruker.navn}</p>
+              </div>
 
-                  <td className="p-4">
-                    <form action={oppdaterBruker} className="flex gap-2">
-                      <input type="hidden" name="id" value={bruker.id} />
+              <div>
+                <p className="text-xs text-slate-500">Telefon</p>
+                <p>{skjulTelefon(bruker.telefon)}</p>
+              </div>
 
-                      <select
-                        name="parti_id"
-                        defaultValue={bruker.parti_id}
-                        className="rounded-lg border p-2 text-sm"
-                      >
-                        {partier?.map((parti) => (
-                          <option key={parti.id} value={parti.id}>
-                            {parti.navn}
-                          </option>
-                        ))}
-                      </select>
-                  </td>
+              <select
+                name="parti_id"
+                defaultValue={bruker.parti_id}
+                className="rounded-lg border p-2 text-sm"
+              >
+                {partier?.map((parti) => (
+                  <option key={parti.id} value={parti.id}>
+                    {parti.navn}
+                  </option>
+                ))}
+              </select>
 
-                  <td className="p-4">
-                      <select
-                        name="rolle"
-                        defaultValue={bruker.rolle}
-                        className="rounded-lg border p-2 text-sm"
-                      >
-                        <option value="bruker">Bruker</option>
-                        <option value="gruppeleder">Gruppeleder</option>
-                        <option value="admin">Admin</option>
-                      </select>
-                  </td>
+              <select
+                name="rolle"
+                defaultValue={bruker.rolle}
+                className="rounded-lg border p-2 text-sm"
+              >
+                <option value="bruker">Bruker</option>
+                <option value="gruppeleder">Gruppeleder</option>
+                <option value="admin">Admin</option>
+              </select>
 
-                  <td className="p-4">
-                      <select
-                        name="aktiv"
-                        defaultValue={String(bruker.aktiv)}
-                        className="rounded-lg border p-2 text-sm"
-                      >
-                        <option value="true">Aktiv</option>
-                        <option value="false">Inaktiv</option>
-                      </select>
-                  </td>
+              <select
+                name="aktiv"
+                defaultValue={String(bruker.aktiv)}
+                className="rounded-lg border p-2 text-sm"
+              >
+                <option value="true">Aktiv</option>
+                <option value="false">Inaktiv</option>
+              </select>
 
-                  <td className="p-4">
-                      <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-                        Oppdater
-                      </button>
-                    </form>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <button className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+                Oppdater
+              </button>
+            </form>
+          ))}
         </div>
       </section>
     </div>
