@@ -152,7 +152,6 @@ Administrasjon </h2>
     </div>
   </section>
 </div>
-```
 
 );
 }
