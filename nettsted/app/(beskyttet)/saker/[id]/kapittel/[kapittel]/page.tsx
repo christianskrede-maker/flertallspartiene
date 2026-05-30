@@ -121,7 +121,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                 <div className="mt-6 space-y-3">
                   <details
                     open
-                    className="rounded-xl border border-slate-200 bg-white p-4"
+                 <details className="rounded-xl border border-slate-200 bg-white p-4">
                   >
                     <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                       Ny bestemmelse
