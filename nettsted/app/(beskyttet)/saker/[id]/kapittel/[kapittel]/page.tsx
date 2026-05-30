@@ -118,65 +118,77 @@ export default async function Kapittel({ params }: KapittelProps) {
                   </button>
                 </div>
 
-                <div className="mt-6 grid gap-6 lg:grid-cols-2">
-                  <div className="rounded-xl border border-slate-200 p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                <div className="mt-6 space-y-3">
+                  <details
+                    open
+                    className="rounded-xl border border-slate-200 bg-white p-4"
+                  >
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                       Ny bestemmelse
-                    </p>
+                    </summary>
 
-                    <div className="mt-3 whitespace-pre-wrap text-sm leading-7">
+                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
                       {del.bestemmelse}
                     </div>
-                  </div>
+                  </details>
 
-                  <div className="rounded-xl border border-slate-200 p-4">
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  <details className="rounded-xl border border-slate-200 bg-white p-4">
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                       Spesialmerknad
-                    </p>
+                    </summary>
 
-                    <div className="mt-3 whitespace-pre-wrap text-sm leading-7">
+                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
                       {del.spesialmerknad}
                     </div>
-                  </div>
-                </div>
+                  </details>
 
-                <div className="mt-6 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                    Gjeldende bestemmelse
-                  </p>
+                  <details className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                      Gjeldende bestemmelse
+                    </summary>
 
-                  <div className="mt-3 whitespace-pre-wrap text-sm leading-7">
-                    {innhold.gjeldendeBestemmelse ??
-                      "Gjeldende bestemmelse legges inn senere."}
-                  </div>
-                </div>
-
-                <div className="mt-6 rounded-xl border border-slate-200 p-4">
-                  <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                        Kommentarer og vurderinger
-                      </p>
-                      <h3 className="mt-2 text-lg font-bold">
-                        Partienes innspill til {del.nummer}
-                      </h3>
+                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+                      {innhold.gjeldendeBestemmelse ??
+                        "Gjeldende bestemmelse legges inn senere."}
                     </div>
+                  </details>
 
-                    <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-                      Legg til kommentar
-                    </button>
-                  </div>
+                  <details className="rounded-xl border border-slate-200 bg-white p-4">
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                      Kommentarer og vurderinger
+                    </summary>
 
-                  <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                    {partier.map((parti) => (
-                      <div key={parti} className="rounded-xl border bg-slate-50 p-4">
-                        <h4 className="font-bold">{parti}</h4>
-                        <p className="mt-2 text-sm leading-6 text-slate-500">
-                          Kommentarer til dette delpunktet legges inn her senere.
+                    <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold">
+                          Partienes innspill til {del.nummer}
+                        </h3>
+                        <p className="mt-1 text-sm leading-6 text-slate-500">
+                          Kommentarer legges senere direkte til dette
+                          delpunktet.
                         </p>
                       </div>
-                    ))}
-                  </div>
+
+                      <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+                        Legg til kommentar
+                      </button>
+                    </div>
+
+                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                      {partier.map((parti) => (
+                        <div
+                          key={parti}
+                          className="rounded-xl border bg-slate-50 p-4"
+                        >
+                          <h4 className="font-bold">{parti}</h4>
+                          <p className="mt-2 text-sm leading-6 text-slate-500">
+                            Kommentarer til dette delpunktet legges inn her
+                            senere.
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </details>
                 </div>
               </article>
             ))}
