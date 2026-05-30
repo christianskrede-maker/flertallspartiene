@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const kartLenker = [
   {
     tittel: "K.dir kart",
@@ -17,42 +19,56 @@ const kartLenker = [
 ];
 
 const kapitler = [
-  "1. Eldre arealplaner som skal gjelde uendret",
-  "2. Krav om reguleringsplan",
-  "3. Rekkefølgekrav",
-  "4. Overvann, vannforsyning og avløp",
-  "5. Funksjonskrav til utbyggingsområder",
-  "6. Byggegrenser",
-  "7. Miljøkvalitet, natur, estetikk og landskapstilpasning",
-  "8. Kulturminner og kulturmiljø",
-  "9. Nærmere angitte tiltak",
-  "10. Forhold som skal avklares i reguleringsplan",
-  "11. Småhusbebyggelse",
-  "12. Spesielle småhusområder",
-  "13. Fritidsbebyggelse",
-  "14. Næringsformål",
-  "15. Andre arealformål under bebyggelse og anlegg",
-  "16. Grønnstruktur",
-  "17. LNFR",
-  "18. Sjø og vassdrag",
-  "19. Hensynssoner landskap, naturmiljø og kulturmiljø",
-  "20. Hensynssoner fare og sikring",
-  "21. Infrastruktur og flomveier",
-  "22. Felles planlegging",
-  "23. Båndleggingssoner",
-  "24. Reguleringsplaner som skal gjelde uendret",
-  "25. Bestemmelsesområder",
+  { nummer: 1, tittel: "Eldre arealplaner som skal gjelde uendret" },
+  { nummer: 2, tittel: "Krav om reguleringsplan" },
+  { nummer: 3, tittel: "Rekkefølgekrav" },
+  { nummer: 4, tittel: "Overvann, vannforsyning og avløp" },
+  { nummer: 5, tittel: "Funksjonskrav til utbyggingsområder" },
+  { nummer: 6, tittel: "Byggegrenser" },
+  {
+    nummer: 7,
+    tittel: "Miljøkvalitet, natur, estetikk og landskapstilpasning",
+  },
+  { nummer: 8, tittel: "Kulturminner og kulturmiljø" },
+  { nummer: 9, tittel: "Nærmere angitte tiltak" },
+  { nummer: 10, tittel: "Forhold som skal avklares i reguleringsplan" },
+  { nummer: 11, tittel: "Småhusbebyggelse" },
+  { nummer: 12, tittel: "Spesielle småhusområder" },
+  { nummer: 13, tittel: "Fritidsbebyggelse" },
+  { nummer: 14, tittel: "Næringsformål" },
+  { nummer: 15, tittel: "Andre arealformål under bebyggelse og anlegg" },
+  { nummer: 16, tittel: "Grønnstruktur" },
+  { nummer: 17, tittel: "LNFR" },
+  { nummer: 18, tittel: "Sjø og vassdrag" },
+  {
+    nummer: 19,
+    tittel: "Hensynssoner landskap, naturmiljø og kulturmiljø",
+  },
+  { nummer: 20, tittel: "Hensynssoner fare og sikring" },
+  { nummer: 21, tittel: "Infrastruktur og flomveier" },
+  { nummer: 22, tittel: "Felles planlegging" },
+  { nummer: 23, tittel: "Båndleggingssoner" },
+  { nummer: 24, tittel: "Reguleringsplaner som skal gjelde uendret" },
+  { nummer: 25, tittel: "Bestemmelsesområder" },
 ];
 
-export default function Sak() {
+type SakProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export default async function Sak({ params }: SakProps) {
+  const { id } = await params;
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
-      <a
+      <Link
         href="/dashboard"
         className="inline-flex text-sm text-slate-500 hover:text-slate-900"
       >
         ← Tilbake til saker
-      </a>
+      </Link>
 
       <section className="mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-5 sm:p-6">
         <h2 className="font-bold text-amber-900">Viktig informasjon</h2>
@@ -113,22 +129,26 @@ export default function Sak() {
         <h2 className="text-2xl font-bold">Bestemmelser og spesialmerknader</h2>
 
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          Strukturen følger kommuneplanens bestemmelser. Hvert punkt skal etter
-          hvert vise gjeldende bestemmelse, forslag til ny bestemmelse,
-          spesialmerknad, partienes vurderinger og omforent forslag.
+          Strukturen følger nytt utkast til kommuneplanens bestemmelser.
+          Gjeldende bestemmelser kobles manuelt der de passer. Bestemmelse og
+          spesialmerknad behandles alltid sammen.
         </p>
 
         <div className="mt-6 grid gap-3">
           {kapitler.map((kapittel) => (
-            <div
-              key={kapittel}
-              className="rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+            <Link
+              key={kapittel.nummer}
+              href={`/saker/${id}/kapittel/${kapittel.nummer}`}
+              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="font-bold">{kapittel}</h3>
+                  <h3 className="font-bold">
+                    {kapittel.nummer}. {kapittel.tittel}
+                  </h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Gjeldende bestemmelse · Ny bestemmelse · Spesialmerknad
+                    Ny bestemmelse · Spesialmerknad · Gjeldende bestemmelse ·
+                    Politisk vurdering
                   </p>
                 </div>
 
@@ -136,7 +156,7 @@ export default function Sak() {
                   Ikke behandlet
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
