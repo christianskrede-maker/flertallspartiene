@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { kpaKapitler } from "../../../data/kpaKapitler";
 
 const kartLenker = [
   {
@@ -18,40 +19,6 @@ const kartLenker = [
   },
 ];
 
-const kapitler = [
-  { nummer: "1", tittel: "Eldre arealplaner som skal gjelde uendret" },
-  { nummer: "2", tittel: "Krav om reguleringsplan" },
-  { nummer: "3", tittel: "Rekkefølgekrav" },
-  { nummer: "4", tittel: "Overvann, vannforsyning og avløp" },
-  { nummer: "5", tittel: "Funksjonskrav til utbyggingsområder" },
-  { nummer: "6", tittel: "Byggegrenser" },
-  {
-    nummer: "7",
-    tittel: "Miljøkvalitet, natur, estetikk og landskapstilpasning",
-  },
-  { nummer: "8", tittel: "Kulturminner og kulturmiljø" },
-  { nummer: "9", tittel: "Nærmere angitte tiltak" },
-  { nummer: "10", tittel: "Forhold som skal avklares i reguleringsplan" },
-  { nummer: "11", tittel: "Småhusbebyggelse" },
-  { nummer: "12", tittel: "Spesielle småhusområder" },
-  { nummer: "13", tittel: "Fritidsbebyggelse" },
-  { nummer: "14", tittel: "Næringsformål" },
-  { nummer: "15", tittel: "Andre arealformål under bebyggelse og anlegg" },
-  { nummer: "16", tittel: "Grønnstruktur" },
-  { nummer: "17", tittel: "LNFR" },
-  { nummer: "18", tittel: "Sjø og vassdrag" },
-  {
-    nummer: "19",
-    tittel: "Hensynssoner landskap, naturmiljø og kulturmiljø",
-  },
-  { nummer: "20", tittel: "Hensynssoner fare og sikring" },
-  { nummer: "21", tittel: "Infrastruktur og flomveier" },
-  { nummer: "22", tittel: "Felles planlegging" },
-  { nummer: "23", tittel: "Båndleggingssoner" },
-  { nummer: "24", tittel: "Reguleringsplaner som skal gjelde uendret" },
-  { nummer: "25", tittel: "Bestemmelsesområder" },
-];
-
 const partier = ["Høyre", "FrP", "Venstre", "KrF"];
 
 type KapittelProps = {
@@ -65,7 +32,7 @@ export default async function Kapittel({ params }: KapittelProps) {
   const { id, kapittel } = await params;
 
   const valgtKapittel =
-    kapitler.find((item) => item.nummer === kapittel) ?? null;
+    kpaKapitler.find((item) => item.nummer === kapittel) ?? null;
 
   const tittel = valgtKapittel
     ? `${valgtKapittel.nummer}. ${valgtKapittel.tittel}`
@@ -96,6 +63,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
             Ikke behandlet
           </span>
+
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
             Uten database
           </span>
@@ -128,10 +96,11 @@ export default async function Kapittel({ params }: KapittelProps) {
           <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
             Nytt utkast
           </p>
+
           <h2 className="mt-2 text-xl font-bold">Ny bestemmelse</h2>
+
           <p className="mt-3 text-sm leading-6 text-slate-500">
-            Innhold legges inn i neste steg. Strukturen følger nytt utkast, ikke
-            gjeldende plan.
+            Innhold legges inn i neste steg.
           </p>
         </div>
 
@@ -139,7 +108,9 @@ export default async function Kapittel({ params }: KapittelProps) {
           <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
             Forklaring og intensjon
           </p>
+
           <h2 className="mt-2 text-xl font-bold">Spesialmerknad</h2>
+
           <p className="mt-3 text-sm leading-6 text-slate-500">
             Spesialmerknaden skal alltid vurderes sammen med bestemmelsen.
           </p>
@@ -150,35 +121,22 @@ export default async function Kapittel({ params }: KapittelProps) {
         <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
           Manuell kobling
         </p>
+
         <h2 className="mt-2 text-xl font-bold">Gjeldende bestemmelse</h2>
+
         <p className="mt-3 text-sm leading-6 text-slate-500">
           Gjeldende bestemmelse kobles manuelt der den passer med nytt utkast.
-          Kapittelstrukturen er ikke identisk.
         </p>
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-              Politisk arbeid
-            </p>
-            <h2 className="mt-2 text-xl font-bold">Partienes vurderinger</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Alle partier vises samlet også på kapittelnivå. Senere kobles
-              skriveadgang til rolle og parti.
-            </p>
-          </div>
-
-          <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-            Eksporter vurderinger
-          </button>
-        </div>
+        <h2 className="text-xl font-bold">Partienes vurderinger</h2>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           {partier.map((parti) => (
             <div key={parti} className="rounded-xl border bg-slate-50 p-5">
               <h3 className="font-bold">{parti}</h3>
+
               <p className="mt-2 text-sm leading-6 text-slate-500">
                 Partiets vurdering legges inn her senere.
               </p>
@@ -188,31 +146,10 @@ export default async function Kapittel({ params }: KapittelProps) {
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-              Felles politisk tekst
-            </p>
-            <h2 className="mt-2 text-xl font-bold">Omforent forslag</h2>
-            <p className="mt-3 text-sm leading-6 text-slate-500">
-              Felles forslag utarbeides her av administratorer og gruppeledere.
-            </p>
-          </div>
+        <h2 className="text-xl font-bold">Omforent forslag</h2>
 
-          <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-            Eksporter kapittel
-          </button>
-        </div>
-      </section>
-
-      <section className="mt-8 rounded-2xl border border-dashed border-slate-300 p-5 sm:p-6">
-        <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-          Eksport
-        </p>
-        <h2 className="mt-2 text-xl font-bold">Eksportmuligheter</h2>
         <p className="mt-3 text-sm leading-6 text-slate-500">
-          Her legger vi senere inn eksport til politisk notat, forhandlingsark
-          og samlet dokument for hele saken.
+          Felles forslag utarbeides her av administratorer og gruppeledere.
         </p>
       </section>
     </div>
