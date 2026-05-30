@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -48,6 +48,23 @@ async function oppdaterBruker(formData: FormData) {
 }
 
 export default async function AdminPage() {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon")?.value;
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
+  const { data: innloggetBruker } = await supabase
+    .from("brukere")
+    .select("rolle")
+    .eq("telefon", telefon)
+    .single();
+
+  if (!innloggetBruker || innloggetBruker.rolle !== "admin") {
+    redirect("/dashboard");
+  }
+
   const { data: brukere } = await supabase
     .from("brukere")
     .select("id, navn, telefon, rolle, aktiv, parti_id, partier(navn)")
