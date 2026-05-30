@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { logout } from "../actions/logout";
+import { logout } from "../../actions/logout";
 
 export default async function BeskyttetLayout({
   children,
