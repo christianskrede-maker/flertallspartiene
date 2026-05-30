@@ -1,78 +1,63 @@
-import Image from "next/image";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-
-export default async function RetningslinjerPage() {
-  const cookieStore = await cookies();
-  const telefon = cookieStore.get("telefon");
-
-  if (!telefon) {
-    redirect("/login");
-  }
-
+export default function RetningslinjerPage() {
   return (
-    <main className="min-h-screen bg-white text-slate-900">
-      <div className="mx-auto max-w-4xl px-6 py-10">
-        <header className="border-b pb-6">
-          <div className="flex flex-col items-center text-center">
-            <Image src="/asker-kommune.png" alt="Asker kommune" width={90} height={90} />
+    <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-10">
+      <section>
+        <h2 className="text-2xl font-bold sm:text-3xl">
+          Retningslinjer
+        </h2>
 
-            <h1 className="mt-4 text-3xl font-bold">Retningslinjer</h1>
-            <p className="mt-1 text-sm text-slate-500">Flertallsportalen Asker</p>
+        <p className="mt-2 text-sm text-slate-600 sm:text-base">
+          Viktig informasjon før du bruker Flertallsportalen.
+        </p>
+      </section>
 
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-6">
-              <Image src="/hoyre.png" alt="Høyre" width={56} height={56} />
-              <Image src="/frp.png" alt="FrP" width={56} height={56} />
-              <Image src="/venstre.png" alt="Venstre" width={56} height={56} />
-              <Image src="/krf.png" alt="KrF" width={56} height={56} />
-            </div>
-          </div>
-        </header>
+      <section className="mt-8 rounded-2xl border border-amber-300 bg-amber-50 p-5 sm:p-6">
+        <h3 className="text-xl font-bold text-amber-900 sm:text-2xl">
+          Viktig før du fortsetter
+        </h3>
 
-        <section className="mt-10 rounded-2xl border border-amber-300 bg-amber-50 p-6">
-          <h2 className="text-2xl font-bold text-amber-900">
-            Viktig før du fortsetter
-          </h2>
+        <p className="mt-4 text-sm leading-6 text-amber-800 sm:text-base">
+          Denne portalen skal kun brukes til koordinering mellom
+          flertallspartiene i Asker.
+        </p>
+      </section>
 
-          <p className="mt-4 text-amber-800">
-            Denne portalen skal kun brukes til koordinering mellom
-            flertallspartiene i Asker.
-          </p>
-        </section>
+      <section className="mt-8 rounded-2xl border border-slate-200 p-5 sm:p-6">
+        <h3 className="text-lg font-bold sm:text-xl">
+          Ikke legg inn:
+        </h3>
 
-        <section className="mt-8 rounded-2xl border border-slate-200 p-6">
-          <h3 className="text-xl font-bold">Ikke legg inn:</h3>
+        <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-700 sm:text-base">
+          <li>• Intern partistrategi</li>
+          <li>• Intern kommunikasjon som kun gjelder eget parti</li>
+          <li>• Medlemslister eller interne partiforhold</li>
+          <li>• Sensitive personopplysninger</li>
+          <li>• Dokumenter som ikke skal deles mellom partiene</li>
+        </ul>
+      </section>
 
-          <ul className="mt-4 space-y-3 text-slate-700">
-            <li>• Intern partistrategi</li>
-            <li>• Intern kommunikasjon som kun gjelder eget parti</li>
-            <li>• Medlemslister eller interne partiforhold</li>
-            <li>• Sensitive personopplysninger</li>
-            <li>• Dokumenter som ikke skal deles mellom partiene</li>
-          </ul>
-        </section>
+      <section className="mt-8 rounded-2xl border border-slate-200 p-5 sm:p-6">
+        <h3 className="text-lg font-bold sm:text-xl">
+          Bruk portalen til:
+        </h3>
 
-        <section className="mt-8 rounded-2xl border border-slate-200 p-6">
-          <h3 className="text-xl font-bold">Bruk portalen til:</h3>
+        <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-700 sm:text-base">
+          <li>• Koordinering av saker mellom partiene</li>
+          <li>• Felles vurderinger av kommunedirektørens forslag</li>
+          <li>• Partienes innspill i felles saker</li>
+          <li>• Omforente forslag</li>
+          <li>• Forhandlingslogg og status</li>
+        </ul>
+      </section>
 
-          <ul className="mt-4 space-y-3 text-slate-700">
-            <li>• Koordinering av saker mellom partiene</li>
-            <li>• Felles vurderinger av kommunedirektørens forslag</li>
-            <li>• Partienes innspill i felles saker</li>
-            <li>• Omforente forslag</li>
-            <li>• Forhandlingslogg og status</li>
-          </ul>
-        </section>
-
-        <div className="mt-10 text-center">
-          <a
-            href="/dashboard"
-            className="inline-flex rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white hover:bg-slate-800"
-          >
-            Jeg har lest og forstått
-          </a>
-        </div>
+      <div className="mt-10">
+        <a
+          href="/dashboard"
+          className="flex w-full justify-center rounded-xl bg-slate-900 px-8 py-4 font-semibold text-white hover:bg-slate-800 sm:inline-flex sm:w-auto"
+        >
+          Jeg har lest og forstått
+        </a>
       </div>
-    </main>
+    </div>
   );
 }
