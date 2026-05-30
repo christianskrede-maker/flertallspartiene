@@ -119,10 +119,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                 </div>
 
                 <div className="mt-6 space-y-3">
-                  <details
-                    open
-                 <details className="rounded-xl border border-slate-200 bg-white p-4">
-                  >
+                  <details className="rounded-xl border border-slate-200 bg-white p-4">
                     <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                       Ny bestemmelse
                     </summary>
@@ -164,8 +161,8 @@ export default async function Kapittel({ params }: KapittelProps) {
                           Partienes innspill til {del.nummer}
                         </h3>
                         <p className="mt-1 text-sm leading-6 text-slate-500">
-                          Kommentarer legges senere direkte til dette
-                          delpunktet.
+                          Kommentarer til ny bestemmelse og spesialmerknad
+                          legges senere direkte til dette delpunktet.
                         </p>
                       </div>
 
@@ -182,8 +179,8 @@ export default async function Kapittel({ params }: KapittelProps) {
                         >
                           <h4 className="font-bold">{parti}</h4>
                           <p className="mt-2 text-sm leading-6 text-slate-500">
-                            Kommentarer til dette delpunktet legges inn her
-                            senere.
+                            Kommentarer til ny bestemmelse og spesialmerknad
+                            legges inn her senere.
                           </p>
                         </div>
                       ))}
@@ -203,54 +200,62 @@ export default async function Kapittel({ params }: KapittelProps) {
       </section>
 
       <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-              Kapitteloppsummering
-            </p>
-            <h2 className="mt-2 text-xl font-bold">
-              Oppsummering av partienes innspill
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Her samles hovedpunktene fra kommentarene i delpunktene over.
-            </p>
-          </div>
-
-          <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-            Eksporter kapittel
-          </button>
-        </div>
-
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          {partier.map((parti) => (
-            <div key={parti} className="rounded-xl border bg-slate-50 p-5">
-              <h3 className="font-bold">{parti}</h3>
+        <details>
+          <summary className="cursor-pointer">
+            <div className="inline-flex flex-col">
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                Kapitteloppsummering
+              </p>
+              <h2 className="mt-2 text-xl font-bold">
+                Oppsummering av partienes innspill
+              </h2>
               <p className="mt-2 text-sm leading-6 text-slate-500">
-                Oppsummering av {parti}s innspill til hele kapittelet legges inn
-                her senere.
+                Her samles hovedpunktene fra kommentarene i delpunktene over.
               </p>
             </div>
-          ))}
-        </div>
+          </summary>
+
+          <div className="mt-6 flex justify-end">
+            <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
+              Eksporter kapittel
+            </button>
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {partier.map((parti) => (
+              <div key={parti} className="rounded-xl border bg-slate-50 p-5">
+                <h3 className="font-bold">{parti}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-500">
+                  Oppsummering av {parti}s innspill til hele kapittelet legges
+                  inn her senere.
+                </p>
+              </div>
+            ))}
+          </div>
+        </details>
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-              Felles politisk tekst
-            </p>
-            <h2 className="mt-2 text-xl font-bold">Omforent forslag</h2>
+        <details>
+          <summary className="cursor-pointer">
+            <div className="inline-flex flex-col">
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                Felles politisk tekst
+              </p>
+              <h2 className="mt-2 text-xl font-bold">Omforent forslag</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-500">
+                Felles forslag utarbeides her av administratorer og
+                gruppeledere.
+              </p>
+            </div>
+          </summary>
 
-            <p className="mt-3 text-sm leading-6 text-slate-500">
-              Felles forslag utarbeides her av administratorer og gruppeledere.
-            </p>
+          <div className="mt-6">
+            <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+              Eksporter omforent forslag
+            </button>
           </div>
-
-          <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-            Eksporter omforent forslag
-          </button>
-        </div>
+        </details>
       </section>
     </div>
   );
