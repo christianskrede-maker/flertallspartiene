@@ -214,13 +214,16 @@ export default async function Kapittel({ params }: KapittelProps) {
                         Ny bestemmelse
                       </summary>
 
-                      <KommenterTekst
-                        sakId={id}
-                        kapittel={kapittel}
-                        delpunkt={del.nummer}
-                        tekst={del.bestemmelse}
-                        label="Ny bestemmelse"
-                      />
+<KommenterTekst
+  sakId={id}
+  kapittel={kapittel}
+  delpunkt={del.nummer}
+  tekst={del.bestemmelse}
+  label="Ny bestemmelse"
+  markeringer={alleKommentarer
+    .map((k) => k.tekstutdrag)
+    .filter(Boolean)}
+/>
                     </details>
 
                     <details className="rounded-xl border border-slate-200 bg-white p-4">
@@ -228,15 +231,16 @@ export default async function Kapittel({ params }: KapittelProps) {
                         Spesialmerknad
                       </summary>
 
-                      <KommenterTekst
-                        sakId={id}
-                        kapittel={kapittel}
-                        delpunkt={del.nummer}
-                        tekst={del.spesialmerknad}
-                        label="Spesialmerknad"
-                      />
-                    </details>
-                  </div>
+                  <KommenterTekst
+  sakId={id}
+  kapittel={kapittel}
+  delpunkt={del.nummer}
+  tekst={del.spesialmerknad}
+  label="Spesialmerknad"
+  markeringer={alleKommentarer
+    .map((k) => k.tekstutdrag)
+    .filter(Boolean)}
+/>
 
                   <details className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
                     <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
