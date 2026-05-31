@@ -36,6 +36,19 @@ function partiFarge(parti: string) {
   return "border-slate-200 bg-slate-50";
 }
 
+function kommentarIdFraTekst(tekst?: string | null) {
+  if (!tekst) return "";
+
+  return tekst
+    .toLowerCase()
+    .replace(/æ/g, "ae")
+    .replace(/ø/g, "o")
+    .replace(/å/g, "a")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
 function Tekstutdrag({ tekst }: { tekst?: string | null }) {
   if (!tekst) return null;
 
@@ -149,7 +162,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med markeringer i tekst
+            Klikkbare markeringer
           </span>
         </div>
       </section>
@@ -308,10 +321,19 @@ export default async function Kapittel({ params }: KapittelProps) {
                             (item) => item.forelder_id === kommentar.id
                           );
 
+                          const kommentarAnchorId = kommentarIdFraTekst(
+                            kommentar.tekstutdrag
+                          );
+
                           return (
                             <div key={kommentar.id} className="space-y-3">
                               <div
-                                className={`rounded-xl border p-4 ${partiFarge(
+                                id={
+                                  kommentarAnchorId
+                                    ? `kommentar-${kommentarAnchorId}`
+                                    : undefined
+                                }
+                                className={`scroll-mt-24 rounded-xl border p-4 transition-all duration-300 ${partiFarge(
                                   kommentar.parti
                                 )}`}
                               >
@@ -355,55 +377,66 @@ export default async function Kapittel({ params }: KapittelProps) {
 
                               {svar.length > 0 ? (
                                 <div className="ml-4 space-y-3 border-l-2 border-slate-200 pl-4">
-                                  {svar.map((svarKommentar) => (
-                                    <div
-                                      key={svarKommentar.id}
-                                      className={`rounded-xl border p-4 ${partiFarge(
-                                        svarKommentar.parti
-                                      )}`}
-                                    >
-                                      <div className="flex flex-wrap items-center gap-2">
-                                        <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                                          {svarKommentar.parti || "Parti"}
-                                        </span>
+                                  {svar.map((svarKommentar) => {
+                                    const svarAnchorId = kommentarIdFraTekst(
+                                      svarKommentar.tekstutdrag
+                                    );
 
-                                        <span className="text-sm font-semibold">
-                                          {svarKommentar.navn}
-                                        </span>
-
-                                        {svarKommentar.partiNavn ? (
-                                          <span className="text-xs text-slate-500">
-                                            {svarKommentar.partiNavn}
+                                    return (
+                                      <div
+                                        id={
+                                          svarAnchorId
+                                            ? `kommentar-${svarAnchorId}`
+                                            : undefined
+                                        }
+                                        key={svarKommentar.id}
+                                        className={`scroll-mt-24 rounded-xl border p-4 transition-all duration-300 ${partiFarge(
+                                          svarKommentar.parti
+                                        )}`}
+                                      >
+                                        <div className="flex flex-wrap items-center gap-2">
+                                          <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                            {svarKommentar.parti || "Parti"}
                                           </span>
-                                        ) : null}
+
+                                          <span className="text-sm font-semibold">
+                                            {svarKommentar.navn}
+                                          </span>
+
+                                          {svarKommentar.partiNavn ? (
+                                            <span className="text-xs text-slate-500">
+                                              {svarKommentar.partiNavn}
+                                            </span>
+                                          ) : null}
+                                        </div>
+
+                                        <div className="mt-3">
+                                          <Tekstutdrag
+                                            tekst={svarKommentar.tekstutdrag}
+                                          />
+
+                                          <p className="whitespace-pre-wrap text-sm leading-6">
+                                            {svarKommentar.kommentar}
+                                          </p>
+
+                                          {svarKommentar.kanRedigere ? (
+                                            <>
+                                              <RedigerKommentar
+                                                kommentarId={svarKommentar.id}
+                                                kommentar={
+                                                  svarKommentar.kommentar
+                                                }
+                                              />
+
+                                              <SlettKommentar
+                                                kommentarId={svarKommentar.id}
+                                              />
+                                            </>
+                                          ) : null}
+                                        </div>
                                       </div>
-
-                                      <div className="mt-3">
-                                        <Tekstutdrag
-                                          tekst={svarKommentar.tekstutdrag}
-                                        />
-
-                                        <p className="whitespace-pre-wrap text-sm leading-6">
-                                          {svarKommentar.kommentar}
-                                        </p>
-
-                                        {svarKommentar.kanRedigere ? (
-                                          <>
-                                            <RedigerKommentar
-                                              kommentarId={svarKommentar.id}
-                                              kommentar={
-                                                svarKommentar.kommentar
-                                              }
-                                            />
-
-                                            <SlettKommentar
-                                              kommentarId={svarKommentar.id}
-                                            />
-                                          </>
-                                        ) : null}
-                                      </div>
-                                    </div>
-                                  ))}
+                                    );
+                                  })}
                                 </div>
                               ) : null}
 
