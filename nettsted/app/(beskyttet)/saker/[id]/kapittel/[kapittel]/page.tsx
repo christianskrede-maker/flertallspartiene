@@ -77,7 +77,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med kommentarlagring
+            Med partifarger
           </span>
         </div>
       </section>
@@ -224,15 +224,29 @@ export default async function Kapittel({ params }: KapittelProps) {
                           kommentarer.map((kommentar) => (
                             <div
                               key={kommentar.id}
-                              className="rounded-xl border bg-slate-50 p-4"
+                              className={`rounded-xl border p-4 ${
+                                kommentar.parti_id === 1
+                                  ? "border-blue-300 bg-blue-50"
+                                  : kommentar.parti_id === 2
+                                  ? "border-sky-300 bg-sky-50"
+                                  : kommentar.parti_id === 3
+                                  ? "border-green-300 bg-green-50"
+                                  : kommentar.parti_id === 4
+                                  ? "border-yellow-300 bg-yellow-50"
+                                  : "border-slate-200 bg-slate-50"
+                              }`}
                             >
-                              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                                Kommentar
-                              </p>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                  {kommentar.parti_forkortelse ||
+                                    kommentar.parti_navn ||
+                                    "Parti"}
+                                </span>
 
-                              <p className="mt-1 text-sm font-semibold">
-                                {kommentar.navn}
-                              </p>
+                                <span className="text-sm font-semibold">
+                                  {kommentar.navn}
+                                </span>
+                              </div>
 
                               <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
                                 {kommentar.kommentar}
