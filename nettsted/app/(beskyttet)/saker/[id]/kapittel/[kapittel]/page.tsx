@@ -218,9 +218,12 @@ export default async function Kapittel({ params }: KapittelProps) {
               );
 
               const markeringer = alleKommentarer
-                .map((kommentar) => kommentar.tekstutdrag)
-                .filter((tekstutdrag): tekstutdrag is string =>
-                  Boolean(tekstutdrag && tekstutdrag.trim())
+                .map((kommentar) => ({
+                  tekstutdrag: kommentar.tekstutdrag ?? "",
+                  parti: kommentar.parti ?? "",
+                }))
+                .filter((markering) =>
+                  Boolean(markering.tekstutdrag.trim())
                 );
 
               return (
