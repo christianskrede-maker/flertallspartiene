@@ -132,3 +132,41 @@ export async function redigerKommentar(formData: FormData) {
     `/saker/${eksisterende.sak_id}/kapittel/${eksisterende.kapittel}`
   );
 }
+
+export async function slettKommentar(formData: FormData) {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon")?.value;
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
+  const kommentarId = String(formData.get("kommentar_id") ?? "");
+
+  if (!kommentarId) {
+    return;
+  }
+
+  const { data: eksisterende } = await supabaseAdmin
+    .from("kommentarer")
+    .select("*")
+    .eq("id", kommentarId)
+    .single();
+
+  if (!eksisterende) {
+    return;
+  }
+
+  if (eksisterende.telefon !== telefon) {
+    return;
+  }
+
+  await supabaseAdmin
+    .from("kommentarer")
+    .delete()
+    .or(`id.eq.${kommentarId},forelder_id.eq.${kommentarId}`);
+
+  revalidatePath(
+    `/saker/${eksisterende.sak_id}/kapittel/${eksisterende.kapittel}`
+  );
+}
