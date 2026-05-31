@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { kpaKapitler } from "../../../data/kpaKapitler";
 import { kpaInnhold } from "../../../data/kpaInnhold";
-import { leggTilKommentar } from "../../../../../actions/kommentarer";
+import {
+  leggTilKommentar,
+  hentKommentarer,
+} from "../../../../../actions/kommentarer";
 
 const kartLenker = [
   {
@@ -21,8 +24,6 @@ const kartLenker = [
   },
 ];
 
-const partier = ["Høyre", "FrP", "Venstre", "KrF"];
-
 type KapittelProps = {
   params: Promise<{
     id: string;
@@ -41,6 +42,13 @@ export default async function Kapittel({ params }: KapittelProps) {
     : `Kapittel ${kapittel}`;
 
   const innhold = kpaInnhold[kapittel as keyof typeof kpaInnhold] ?? null;
+
+  const kommentarerPerDelpunkt = await Promise.all(
+    (innhold?.deler ?? []).map(async (del) => ({
+      delpunkt: del.nummer,
+      kommentarer: await hentKommentarer(id, kapittel, del.nummer),
+    }))
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
@@ -98,119 +106,150 @@ export default async function Kapittel({ params }: KapittelProps) {
       <section className="mt-8">
         {innhold?.deler ? (
           <div className="space-y-8">
-            {innhold.deler.map((del) => (
-              <article
-                key={del.nummer}
-                className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
-              >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                      Delpunkt
-                    </p>
-                    <h2 className="mt-2 text-2xl font-bold">
-                      {del.nummer} {del.tittel}
-                    </h2>
+            {innhold.deler.map((del) => {
+              const kommentarer =
+                kommentarerPerDelpunkt.find(
+                  (item) => item.delpunkt === del.nummer
+                )?.kommentarer ?? [];
+
+              return (
+                <article
+                  key={del.nummer}
+                  className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div>
+                      <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                        Delpunkt
+                      </p>
+                      <h2 className="mt-2 text-2xl font-bold">
+                        {del.nummer} {del.tittel}
+                      </h2>
+                    </div>
+
+                    <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
+                      Eksporter delpunkt
+                    </button>
                   </div>
 
-                  <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-                    Eksporter delpunkt
-                  </button>
-                </div>
+                  <div className="mt-6 space-y-3">
+                    <details className="rounded-xl border border-slate-200 bg-white p-4">
+                      <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                        Ny bestemmelse
+                      </summary>
 
-                <div className="mt-6 space-y-3">
-                  <details className="rounded-xl border border-slate-200 bg-white p-4">
-                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                      Ny bestemmelse
-                    </summary>
-
-                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                      {del.bestemmelse}
-                    </div>
-                  </details>
-
-                  <details className="rounded-xl border border-slate-200 bg-white p-4">
-                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                      Spesialmerknad
-                    </summary>
-
-                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                      {del.spesialmerknad}
-                    </div>
-                  </details>
-
-                  <details className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                      Gjeldende bestemmelse
-                    </summary>
-
-                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                      {innhold.gjeldendeBestemmelse ??
-                        "Gjeldende bestemmelse legges inn senere."}
-                    </div>
-                  </details>
-
-                  <details className="rounded-xl border border-slate-200 bg-white p-4">
-                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                      Kommentarer og vurderinger
-                    </summary>
-
-                    <div className="mt-5 grid gap-5 lg:grid-cols-2">
-                      <div>
-                        <h3 className="text-lg font-bold">
-                          Partienes innspill til {del.nummer}
-                        </h3>
-                        <p className="mt-1 text-sm leading-6 text-slate-500">
-                          Skriv kommentar til ny bestemmelse og
-                          spesialmerknad for dette delpunktet.
-                        </p>
+                      <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+                        {del.bestemmelse}
                       </div>
+                    </details>
 
-                      <form action={leggTilKommentar} className="rounded-xl border bg-slate-50 p-4">
-                        <input type="hidden" name="sak_id" value={id} />
-                        <input type="hidden" name="kapittel" value={kapittel} />
-                        <input type="hidden" name="delpunkt" value={del.nummer} />
-                        <input
-                          type="hidden"
-                          name="tekstutdrag"
-                          value={del.bestemmelse ?? ""}
-                        />
+                    <details className="rounded-xl border border-slate-200 bg-white p-4">
+                      <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                        Spesialmerknad
+                      </summary>
 
-                        <label className="text-sm font-bold text-slate-700">
-                          Ny kommentar
-                        </label>
+                      <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+                        {del.spesialmerknad}
+                      </div>
+                    </details>
 
-                        <textarea
-                          name="kommentar"
-                          required
-                          rows={5}
-                          placeholder={`Skriv kommentar til ${del.nummer}...`}
-                          className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
-                        />
+                    <details className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                      <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                        Gjeldende bestemmelse
+                      </summary>
 
-                        <button className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-                          Lagre kommentar
-                        </button>
-                      </form>
-                    </div>
+                      <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+                        {innhold.gjeldendeBestemmelse ??
+                          "Gjeldende bestemmelse legges inn senere."}
+                      </div>
+                    </details>
 
-                    <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                      {partier.map((parti) => (
-                        <div
-                          key={parti}
-                          className="rounded-xl border bg-slate-50 p-4"
-                        >
-                          <h4 className="font-bold">{parti}</h4>
-                          <p className="mt-2 text-sm leading-6 text-slate-500">
-                            Lagrede kommentarer vises her i neste steg.
+                    <details className="rounded-xl border border-slate-200 bg-white p-4">
+                      <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                        Kommentarer og vurderinger
+                      </summary>
+
+                      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+                        <div>
+                          <h3 className="text-lg font-bold">
+                            Partienes innspill til {del.nummer}
+                          </h3>
+                          <p className="mt-1 text-sm leading-6 text-slate-500">
+                            Skriv kommentar til ny bestemmelse og
+                            spesialmerknad for dette delpunktet.
                           </p>
                         </div>
-                      ))}
-                    </div>
-                  </details>
-                </div>
-              </article>
-            ))}
+
+                        <form
+                          action={leggTilKommentar}
+                          className="rounded-xl border bg-slate-50 p-4"
+                        >
+                          <input type="hidden" name="sak_id" value={id} />
+                          <input
+                            type="hidden"
+                            name="kapittel"
+                            value={kapittel}
+                          />
+                          <input
+                            type="hidden"
+                            name="delpunkt"
+                            value={del.nummer}
+                          />
+                          <input
+                            type="hidden"
+                            name="tekstutdrag"
+                            value={del.bestemmelse ?? ""}
+                          />
+
+                          <label className="text-sm font-bold text-slate-700">
+                            Ny kommentar
+                          </label>
+
+                          <textarea
+                            name="kommentar"
+                            required
+                            rows={5}
+                            placeholder={`Skriv kommentar til ${del.nummer}...`}
+                            className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
+                          />
+
+                          <button className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+                            Lagre kommentar
+                          </button>
+                        </form>
+                      </div>
+
+                      <div className="mt-5 space-y-3">
+                        {kommentarer.length > 0 ? (
+                          kommentarer.map((kommentar) => (
+                            <div
+                              key={kommentar.id}
+                              className="rounded-xl border bg-slate-50 p-4"
+                            >
+                              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                                Kommentar
+                              </p>
+
+                              <p className="mt-1 text-sm font-semibold">
+                                {kommentar.telefon}
+                              </p>
+
+                              <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
+                                {kommentar.kommentar}
+                              </p>
+                            </div>
+                          ))
+                        ) : (
+                          <p className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-500">
+                            Ingen kommentarer er lagret for dette delpunktet ennå.
+                          </p>
+                        )}
+                      </div>
+                    </details>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         ) : (
           <div className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
@@ -241,18 +280,6 @@ export default async function Kapittel({ params }: KapittelProps) {
             <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
               Eksporter kapittel
             </button>
-          </div>
-
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {partier.map((parti) => (
-              <div key={parti} className="rounded-xl border bg-slate-50 p-5">
-                <h3 className="font-bold">{parti}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-500">
-                  Oppsummering av {parti}s innspill til hele kapittelet legges
-                  inn her senere.
-                </p>
-              </div>
-            ))}
           </div>
         </details>
       </section>
