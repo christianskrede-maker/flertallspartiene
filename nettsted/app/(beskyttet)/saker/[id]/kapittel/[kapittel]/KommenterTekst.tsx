@@ -3,13 +3,18 @@
 import { useState } from "react";
 import { leggTilKommentar } from "../../../../../actions/kommentarer";
 
+type Markering = {
+  tekstutdrag: string;
+  parti: string;
+};
+
 type KommenterTekstProps = {
   sakId: string;
   kapittel: string;
   delpunkt: string;
   tekst: string;
   label: string;
-  markeringer?: string[];
+  markeringer?: Markering[];
 };
 
 function normaliserTekst(tekst: string) {
@@ -27,8 +32,20 @@ function lagIdFraTekst(tekst: string) {
     .slice(0, 80);
 }
 
-function finnMarkeringMedFleksibleMellomrom(tekst: string, markering: string) {
-  const normalisertMarkering = normaliserTekst(markering);
+function markeringsFarge(parti: string) {
+  if (parti === "H") return "bg-blue-200 hover:bg-blue-300";
+  if (parti === "FrP") return "bg-sky-200 hover:bg-sky-300";
+  if (parti === "V") return "bg-green-200 hover:bg-green-300";
+  if (parti === "KrF") return "bg-yellow-200 hover:bg-yellow-300";
+
+  return "bg-yellow-200 hover:bg-yellow-300";
+}
+
+function finnMarkeringMedFleksibleMellomrom(
+  tekst: string,
+  markering: Markering
+) {
+  const normalisertMarkering = normaliserTekst(markering.tekstutdrag);
 
   if (!normalisertMarkering) {
     return null;
@@ -49,11 +66,12 @@ function finnMarkeringMedFleksibleMellomrom(tekst: string, markering: string) {
     start: match.index,
     slutt: match.index + match[0].length,
     tekst: match[0],
-    originalMarkering: markering,
+    originalMarkering: markering.tekstutdrag,
+    parti: markering.parti,
   };
 }
 
-function delOppTekst(tekst: string, markeringer: string[]) {
+function delOppTekst(tekst: string, markeringer: Markering[]) {
   const funn = markeringer
     .map((markering) => finnMarkeringMedFleksibleMellomrom(tekst, markering))
     .filter(
@@ -64,6 +82,7 @@ function delOppTekst(tekst: string, markeringer: string[]) {
         slutt: number;
         tekst: string;
         originalMarkering: string;
+        parti: string;
       } => Boolean(markering)
     )
     .sort((a, b) => a.start - b.start || b.tekst.length - a.tekst.length);
@@ -74,6 +93,7 @@ function delOppTekst(tekst: string, markeringer: string[]) {
       slutt: number;
       tekst: string;
       originalMarkering: string;
+      parti: string;
     }[]
   >((liste, markering) => {
     const overlapper = liste.some(
@@ -90,13 +110,14 @@ function delOppTekst(tekst: string, markeringer: string[]) {
   }, []);
 
   if (utenOverlapp.length === 0) {
-    return [{ tekst, markert: false, originalMarkering: "" }];
+    return [{ tekst, markert: false, originalMarkering: "", parti: "" }];
   }
 
   const deler: {
     tekst: string;
     markert: boolean;
     originalMarkering: string;
+    parti: string;
   }[] = [];
 
   let posisjon = 0;
@@ -107,6 +128,7 @@ function delOppTekst(tekst: string, markeringer: string[]) {
         tekst: tekst.slice(posisjon, markering.start),
         markert: false,
         originalMarkering: "",
+        parti: "",
       });
     }
 
@@ -114,6 +136,7 @@ function delOppTekst(tekst: string, markeringer: string[]) {
       tekst: tekst.slice(markering.start, markering.slutt),
       markert: true,
       originalMarkering: markering.originalMarkering,
+      parti: markering.parti,
     });
 
     posisjon = markering.slutt;
@@ -124,6 +147,7 @@ function delOppTekst(tekst: string, markeringer: string[]) {
       tekst: tekst.slice(posisjon),
       markert: false,
       originalMarkering: "",
+      parti: "",
     });
   }
 
@@ -182,8 +206,14 @@ export default function KommenterTekst({
               key={`${del.tekst}-${index}`}
               type="button"
               onClick={() => gaTilKommentar(del.originalMarkering)}
-              className="rounded bg-yellow-200 px-1 text-left hover:bg-yellow-300"
-              title="Klikk for å gå til kommentar"
+              className={`rounded px-1 text-left ${markeringsFarge(
+                del.parti
+              )}`}
+              title={
+                del.parti
+                  ? `Klikk for å gå til kommentar fra ${del.parti}`
+                  : "Klikk for å gå til kommentar"
+              }
             >
               {del.tekst}
             </button>
@@ -237,8 +267,8 @@ export default function KommenterTekst({
         </form>
       ) : (
         <p className="mt-3 text-xs text-slate-500">
-          Marker tekst for å kommentere akkurat den delen. Gule markeringer kan
-          klikkes for å gå til kommentaren.
+          Marker tekst for å kommentere akkurat den delen. Fargede markeringer
+          kan klikkes for å gå til kommentaren.
         </p>
       )}
     </div>
