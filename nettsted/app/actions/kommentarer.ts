@@ -170,3 +170,65 @@ export async function slettKommentar(formData: FormData) {
     `/saker/${eksisterende.sak_id}/kapittel/${eksisterende.kapittel}`
   );
 }
+
+export async function hentOmforentInnspill(
+  sak_id: string,
+  kapittel: string,
+  delpunkt: string
+) {
+  const { data } = await supabaseAdmin
+    .from("omforent_innspill")
+    .select("*")
+    .eq("sak_id", sak_id)
+    .eq("kapittel", kapittel)
+    .eq("delpunkt", delpunkt)
+    .maybeSingle();
+
+  return data;
+}
+
+export async function lagreOmforentInnspill(formData: FormData) {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon")?.value;
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
+  const sak_id = String(formData.get("sak_id") ?? "");
+  const kapittel = String(formData.get("kapittel") ?? "");
+  const delpunkt = String(formData.get("delpunkt") ?? "");
+  const tekst = String(formData.get("tekst") ?? "").trim();
+
+  if (!sak_id || !kapittel || !delpunkt) {
+    return;
+  }
+
+  const { data: eksisterende } = await supabaseAdmin
+    .from("omforent_innspill")
+    .select("*")
+    .eq("sak_id", sak_id)
+    .eq("kapittel", kapittel)
+    .eq("delpunkt", delpunkt)
+    .maybeSingle();
+
+  if (eksisterende) {
+    await supabaseAdmin
+      .from("omforent_innspill")
+      .update({
+        tekst,
+        sist_endret: new Date().toISOString(),
+      })
+      .eq("id", eksisterende.id);
+  } else {
+    await supabaseAdmin.from("omforent_innspill").insert({
+      sak_id,
+      kapittel,
+      delpunkt,
+      tekst,
+      sist_endret: new Date().toISOString(),
+    });
+  }
+
+  revalidatePath(`/saker/${sak_id}/kapittel/${kapittel}`);
+}
