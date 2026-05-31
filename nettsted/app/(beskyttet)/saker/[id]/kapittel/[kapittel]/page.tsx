@@ -7,6 +7,8 @@ import {
   hentKommentarer,
   redigerKommentar,
   slettKommentar,
+  hentOmforentInnspill,
+  lagreOmforentInnspill,
 } from "../../../../../actions/kommentarer";
 
 const kartLenker = [
@@ -128,10 +130,11 @@ export default async function Kapittel({ params }: KapittelProps) {
 
   const innhold = kpaInnhold[kapittel as keyof typeof kpaInnhold] ?? null;
 
-  const kommentarerPerDelpunkt = await Promise.all(
+  const dataPerDelpunkt = await Promise.all(
     (innhold?.deler ?? []).map(async (del) => ({
       delpunkt: del.nummer,
       kommentarer: await hentKommentarer(id, kapittel, del.nummer),
+      omforent: await hentOmforentInnspill(id, kapittel, del.nummer),
     }))
   );
 
@@ -177,10 +180,12 @@ export default async function Kapittel({ params }: KapittelProps) {
         {innhold?.deler ? (
           <div className="space-y-8">
             {innhold.deler.map((del) => {
-              const alleKommentarer =
-                kommentarerPerDelpunkt.find(
-                  (item) => item.delpunkt === del.nummer
-                )?.kommentarer ?? [];
+              const dataForDelpunkt = dataPerDelpunkt.find(
+                (item) => item.delpunkt === del.nummer
+              );
+
+              const alleKommentarer = dataForDelpunkt?.kommentarer ?? [];
+              const omforent = dataForDelpunkt?.omforent ?? null;
 
               const hovedKommentarer = alleKommentarer.filter(
                 (kommentar) => !kommentar.forelder_id
@@ -498,6 +503,57 @@ export default async function Kapittel({ params }: KapittelProps) {
                       {innhold.gjeldendeBestemmelse ??
                         "Gjeldende bestemmelse legges inn senere."}
                     </div>
+                  </details>
+
+                  <details
+                    open
+                    className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4"
+                  >
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-emerald-800">
+                      Omforent forslag
+                    </summary>
+
+                    <form action={lagreOmforentInnspill} className="mt-4">
+                      <input type="hidden" name="sak_id" value={id} />
+                      <input type="hidden" name="kapittel" value={kapittel} />
+                      <input type="hidden" name="delpunkt" value={del.nummer} />
+
+                      <p className="mb-3 text-sm leading-6 text-emerald-900">
+                        Dette er masterteksten for delpunktet. Hvis ingen tekst
+                        er lagret ennå, starter feltet med ny bestemmelse som
+                        utgangspunkt.
+                      </p>
+
+                      <textarea
+                        name="tekst"
+                        rows={12}
+                        defaultValue={
+                          omforent?.tekst?.trim()
+                            ? omforent.tekst
+                            : del.bestemmelse.trim()
+                        }
+                        className="w-full rounded-xl border border-emerald-300 bg-white p-4 text-sm leading-7 text-slate-900"
+                      />
+
+                      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                        <button className="w-fit rounded-lg bg-emerald-800 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+                          Lagre omforent forslag
+                        </button>
+
+                        {omforent?.sist_endret ? (
+                          <p className="text-xs text-emerald-900">
+                            Sist lagret:{" "}
+                            {new Date(omforent.sist_endret).toLocaleString(
+                              "nb-NO"
+                            )}
+                          </p>
+                        ) : (
+                          <p className="text-xs text-emerald-900">
+                            Ikke lagret ennå.
+                          </p>
+                        )}
+                      </div>
+                    </form>
                   </details>
                 </article>
               );
