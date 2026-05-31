@@ -228,7 +228,10 @@ export default async function Kapittel({ params }: KapittelProps) {
                   </div>
 
                   <div className="mt-6 grid gap-4 lg:grid-cols-2">
-                    <details className="rounded-xl border border-slate-200 bg-white p-4">
+                    <details
+                      open
+                      className="rounded-xl border border-slate-200 bg-white p-4"
+                    >
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Ny bestemmelse
                       </summary>
@@ -243,7 +246,10 @@ export default async function Kapittel({ params }: KapittelProps) {
                       />
                     </details>
 
-                    <details className="rounded-xl border border-slate-200 bg-white p-4">
+                    <details
+                      open
+                      className="rounded-xl border border-slate-200 bg-white p-4"
+                    >
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Spesialmerknad
                       </summary>
@@ -270,7 +276,10 @@ export default async function Kapittel({ params }: KapittelProps) {
                     </div>
                   </details>
 
-                  <details className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+                  <details
+                    open
+                    className="mt-4 rounded-xl border border-slate-200 bg-white p-4"
+                  >
                     <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                       Kommentarer og vurderinger
                     </summary>
@@ -503,53 +512,6 @@ export default async function Kapittel({ params }: KapittelProps) {
             </p>
           </div>
         )}
-      </section>
-
-      <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <details>
-          <summary className="cursor-pointer">
-            <div className="inline-flex flex-col">
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                Kapitteloppsummering
-              </p>
-              <h2 className="mt-2 text-xl font-bold">
-                Oppsummering av partienes innspill
-              </h2>
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                Her samles hovedpunktene fra kommentarene i delpunktene over.
-              </p>
-            </div>
-          </summary>
-
-          <div className="mt-6 flex justify-end">
-            <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-              Eksporter kapittel
-            </button>
-          </div>
-        </details>
-      </section>
-
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-        <details>
-          <summary className="cursor-pointer">
-            <div className="inline-flex flex-col">
-              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                Felles politisk tekst
-              </p>
-              <h2 className="mt-2 text-xl font-bold">Omforent forslag</h2>
-              <p className="mt-3 text-sm leading-6 text-slate-500">
-                Felles forslag utarbeides her av administratorer og
-                gruppeledere.
-              </p>
-            </div>
-          </summary>
-
-          <div className="mt-6">
-            <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-              Eksporter omforent forslag
-            </button>
-          </div>
-        </details>
       </section>
     </div>
   );
