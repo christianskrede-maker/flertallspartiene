@@ -76,7 +76,10 @@ function filnavnTrygt(tekst: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-async function hentKommentarerForKapittel(sakId: string, kapittel: string) {
+async function hentKommentarerForKapittel(
+  sakId: string,
+  kapittel: string
+): Promise<KommentarMedBruker[]> {
   const { data: kommentarer } = await supabaseAdmin
     .from("kommentarer")
     .select("*")
@@ -114,7 +117,7 @@ async function hentKommentarerForKapittel(sakId: string, kapittel: string) {
       ? await supabaseAdmin.from("partier").select("*").in("id", partiIder)
       : { data: [] };
 
-  return kommentarer.map((kommentar): KommentarMedBruker => {
+  return kommentarer.map((kommentar) => {
     const bruker = brukere?.find((item) => item.telefon === kommentar.telefon);
     const parti = partier?.find((item) => item.id === bruker?.parti_id);
 
@@ -287,17 +290,17 @@ export async function GET(
   const document = new Document({
     sections: [
       {
-        properties: {},
         children: dokumentInnhold,
       },
     ],
   });
 
   const buffer = await Packer.toBuffer(document);
+  const body = new Uint8Array(buffer);
 
   const filename = `${filnavnTrygt(tittel)}.docx`;
 
-  return new NextResponse(buffer, {
+  return new NextResponse(body, {
     status: 200,
     headers: {
       "Content-Type":
