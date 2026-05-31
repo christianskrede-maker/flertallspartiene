@@ -86,7 +86,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med partifarger
+            Med kommentartråder
           </span>
         </div>
       </section>
@@ -116,10 +116,14 @@ export default async function Kapittel({ params }: KapittelProps) {
         {innhold?.deler ? (
           <div className="space-y-8">
             {innhold.deler.map((del) => {
-              const kommentarer =
+              const alleKommentarer =
                 kommentarerPerDelpunkt.find(
                   (item) => item.delpunkt === del.nummer
                 )?.kommentarer ?? [];
+
+              const hovedKommentarer = alleKommentarer.filter(
+                (kommentar) => !kommentar.forelder_id
+              );
 
               return (
                 <article
@@ -203,7 +207,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                           />
 
                           <label className="text-sm font-bold text-slate-700">
-                            Ny kommentar
+                            Ny hovedkommentar
                           </label>
 
                           <textarea
@@ -220,36 +224,119 @@ export default async function Kapittel({ params }: KapittelProps) {
                         </form>
                       </div>
 
-                      <div className="mt-5 space-y-3">
-                        {kommentarer.length > 0 ? (
-                          kommentarer.map((kommentar) => (
-                            <div
-                              key={kommentar.id}
-                              className={`rounded-xl border p-4 ${partiFarge(
-                                kommentar.parti
-                              )}`}
-                            >
-                              <div className="flex flex-wrap items-center gap-2">
-                                <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                                  {kommentar.parti || "Parti"}
-                                </span>
+                      <div className="mt-5 space-y-4">
+                        {hovedKommentarer.length > 0 ? (
+                          hovedKommentarer.map((kommentar) => {
+                            const svar = alleKommentarer.filter(
+                              (item) => item.forelder_id === kommentar.id
+                            );
 
-                                <span className="text-sm font-semibold">
-                                  {kommentar.navn}
-                                </span>
+                            return (
+                              <div key={kommentar.id} className="space-y-3">
+                                <div
+                                  className={`rounded-xl border p-4 ${partiFarge(
+                                    kommentar.parti
+                                  )}`}
+                                >
+                                  <div className="flex flex-wrap items-center gap-2">
+                                    <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                      {kommentar.parti || "Parti"}
+                                    </span>
 
-                                {kommentar.partiNavn ? (
-                                  <span className="text-xs text-slate-500">
-                                    {kommentar.partiNavn}
-                                  </span>
+                                    <span className="text-sm font-semibold">
+                                      {kommentar.navn}
+                                    </span>
+
+                                    {kommentar.partiNavn ? (
+                                      <span className="text-xs text-slate-500">
+                                        {kommentar.partiNavn}
+                                      </span>
+                                    ) : null}
+                                  </div>
+
+                                  <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
+                                    {kommentar.kommentar}
+                                  </p>
+                                </div>
+
+                                {svar.length > 0 ? (
+                                  <div className="ml-4 space-y-3 border-l-2 border-slate-200 pl-4">
+                                    {svar.map((svarKommentar) => (
+                                      <div
+                                        key={svarKommentar.id}
+                                        className={`rounded-xl border p-4 ${partiFarge(
+                                          svarKommentar.parti
+                                        )}`}
+                                      >
+                                        <div className="flex flex-wrap items-center gap-2">
+                                          <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                            {svarKommentar.parti || "Parti"}
+                                          </span>
+
+                                          <span className="text-sm font-semibold">
+                                            {svarKommentar.navn}
+                                          </span>
+
+                                          {svarKommentar.partiNavn ? (
+                                            <span className="text-xs text-slate-500">
+                                              {svarKommentar.partiNavn}
+                                            </span>
+                                          ) : null}
+                                        </div>
+
+                                        <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
+                                          {svarKommentar.kommentar}
+                                        </p>
+                                      </div>
+                                    ))}
+                                  </div>
                                 ) : null}
-                              </div>
 
-                              <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
-                                {kommentar.kommentar}
-                              </p>
-                            </div>
-                          ))
+                                <form
+                                  action={leggTilKommentar}
+                                  className="ml-4 rounded-xl border border-dashed border-slate-300 bg-white p-4"
+                                >
+                                  <input type="hidden" name="sak_id" value={id} />
+                                  <input
+                                    type="hidden"
+                                    name="kapittel"
+                                    value={kapittel}
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="delpunkt"
+                                    value={del.nummer}
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="tekstutdrag"
+                                    value={del.bestemmelse ?? ""}
+                                  />
+                                  <input
+                                    type="hidden"
+                                    name="forelder_id"
+                                    value={kommentar.id}
+                                  />
+
+                                  <label className="text-sm font-bold text-slate-700">
+                                    Svar på kommentaren
+                                  </label>
+
+                                  <textarea
+                                    name="kommentar"
+                                    required
+                                    rows={3}
+                                    placeholder="Skriv svar..."
+                                    className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
+                                  />
+
+                                  <button className="mt-3 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
+                                    Lagre svar
+                                  </button>
+                                </form>
+                              </div>
+                            );
+                          })
                         ) : (
                           <p className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-500">
                             Ingen kommentarer er lagret for dette delpunktet ennå.
