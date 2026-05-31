@@ -231,7 +231,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                               </p>
 
                               <p className="mt-1 text-sm font-semibold">
-                                {kommentar.telefon}
+                                {kommentar.navn}
                               </p>
 
                               <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
