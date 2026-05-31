@@ -77,6 +77,18 @@ function filnavnTrygt(tekst: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+function visningsnavnMedParti(kommentar: KommentarMedBruker) {
+  if (kommentar.parti) {
+    return `${kommentar.navn} (${kommentar.parti})`;
+  }
+
+  if (kommentar.partiNavn) {
+    return `${kommentar.navn} (${kommentar.partiNavn})`;
+  }
+
+  return kommentar.navn;
+}
+
 async function hentKommentarerForKapittel(
   sakId: string,
   kapittel: string
@@ -185,9 +197,12 @@ export async function GET(
   ];
 
   for (const del of innhold.deler) {
-    const hovedKommentarer = alleKommentarer.filter(
-      (kommentar) =>
-        kommentar.delpunkt === del.nummer && !kommentar.forelder_id
+    const kommentarerForDelpunkt = alleKommentarer.filter(
+      (kommentar) => kommentar.delpunkt === del.nummer
+    );
+
+    const hovedKommentarer = kommentarerForDelpunkt.filter(
+      (kommentar) => !kommentar.forelder_id
     );
 
     dokumentInnhold.push(
@@ -228,6 +243,10 @@ export async function GET(
     }
 
     hovedKommentarer.forEach((kommentar, index) => {
+      const svarTilMerknad = kommentarerForDelpunkt.filter(
+        (svar) => svar.forelder_id === kommentar.id
+      );
+
       dokumentInnhold.push(
         tomLinje(),
         new Paragraph({
@@ -289,6 +308,36 @@ export async function GET(
         }),
         ...tekstTilAvsnitt(kommentar.kommentar)
       );
+
+      if (svarTilMerknad.length > 0) {
+        dokumentInnhold.push(
+          tomLinje(),
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: "Kommentarer til merknaden:",
+                bold: true,
+              }),
+            ],
+          })
+        );
+
+        svarTilMerknad.forEach((svar) => {
+          dokumentInnhold.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: `- ${visningsnavnMedParti(svar)}: `,
+                  bold: true,
+                }),
+                new TextRun({
+                  text: svar.kommentar,
+                }),
+              ],
+            })
+          );
+        });
+      }
     });
 
     dokumentInnhold.push(tomLinje());
