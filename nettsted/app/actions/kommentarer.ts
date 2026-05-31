@@ -57,32 +57,34 @@ export async function hentKommentarer(
     return [];
   }
 
-  const telefoner = kommentarer.map((kommentar) => kommentar.telefon);
+  const telefoner = kommentarer.map((k) => k.telefon);
 
   const { data: brukere } = await supabaseAdmin
     .from("brukere")
     .select("navn, telefon, parti_id")
     .in("telefon", telefoner);
 
+  const partiIder = brukere?.map((b) => b.parti_id) ?? [];
+
   const { data: partier } = await supabaseAdmin
     .from("partier")
-    .select("id, navn, forkortelse");
+    .select("*")
+    .in("id", partiIder);
 
   return kommentarer.map((kommentar) => {
     const bruker = brukere?.find(
-      (item) => item.telefon === kommentar.telefon
+      (b) => b.telefon === kommentar.telefon
     );
 
     const parti = partier?.find(
-      (item) => item.id === bruker?.parti_id
+      (p) => p.id === bruker?.parti_id
     );
 
     return {
       ...kommentar,
       navn: bruker?.navn ?? kommentar.telefon,
-      parti_id: bruker?.parti_id ?? null,
-      parti_navn: parti?.navn ?? "Ukjent parti",
-      parti_forkortelse: parti?.forkortelse ?? "",
+      parti: parti?.forkortelse ?? "",
+      partiNavn: parti?.navn ?? "",
     };
   });
 }
