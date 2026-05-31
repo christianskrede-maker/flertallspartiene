@@ -1,4 +1,5 @@
 import Link from "next/link";
+import KommenterTekst from "./KommenterTekst";
 import { kpaKapitler } from "../../../data/kpaKapitler";
 import { kpaInnhold } from "../../../data/kpaInnhold";
 import {
@@ -37,15 +38,15 @@ function Tekstutdrag({ tekst }: { tekst?: string | null }) {
   if (!tekst) return null;
 
   return (
-    <div className="mb-3 rounded-lg border-l-4 border-slate-300 bg-white/70 p-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+    <details className="mb-3 rounded-lg border-l-4 border-slate-300 bg-white/70 p-3">
+      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-slate-500">
         Tekstutdrag
-      </p>
+      </summary>
 
-      <p className="mt-1 max-h-32 overflow-hidden whitespace-pre-wrap text-sm italic leading-6 text-slate-700">
+      <p className="mt-2 whitespace-pre-wrap text-sm italic leading-6 text-slate-700">
         {tekst}
       </p>
-    </div>
+    </details>
   );
 }
 
@@ -102,7 +103,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med tekstutdrag
+            Med tekstmarkering
           </span>
         </div>
       </section>
@@ -167,9 +168,13 @@ export default async function Kapittel({ params }: KapittelProps) {
                         Ny bestemmelse
                       </summary>
 
-                      <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                        {del.bestemmelse}
-                      </div>
+                      <KommenterTekst
+                        sakId={id}
+                        kapittel={kapittel}
+                        delpunkt={del.nummer}
+                        tekst={del.bestemmelse}
+                        label="Ny bestemmelse"
+                      />
                     </details>
 
                     <details className="rounded-xl border border-slate-200 bg-white p-4">
@@ -177,9 +182,13 @@ export default async function Kapittel({ params }: KapittelProps) {
                         Spesialmerknad
                       </summary>
 
-                      <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                        {del.spesialmerknad}
-                      </div>
+                      <KommenterTekst
+                        sakId={id}
+                        kapittel={kapittel}
+                        delpunkt={del.nummer}
+                        tekst={del.spesialmerknad}
+                        label="Spesialmerknad"
+                      />
                     </details>
 
                     <details className="rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -205,7 +214,8 @@ export default async function Kapittel({ params }: KapittelProps) {
                           </h3>
                           <p className="mt-1 text-sm leading-6 text-slate-500">
                             Skriv kommentar til ny bestemmelse og
-                            spesialmerknad for dette delpunktet.
+                            spesialmerknad for dette delpunktet, eller marker
+                            tekst direkte i bestemmelsen over.
                           </p>
                         </div>
 
@@ -216,21 +226,17 @@ export default async function Kapittel({ params }: KapittelProps) {
                           <input type="hidden" name="sak_id" value={id} />
                           <input type="hidden" name="kapittel" value={kapittel} />
                           <input type="hidden" name="delpunkt" value={del.nummer} />
-                          <input
-                            type="hidden"
-                            name="tekstutdrag"
-                            value={del.bestemmelse ?? ""}
-                          />
+                          <input type="hidden" name="tekstutdrag" value="" />
 
                           <label className="text-sm font-bold text-slate-700">
-                            Ny hovedkommentar
+                            Ny hovedkommentar uten tekstmarkering
                           </label>
 
                           <textarea
                             name="kommentar"
                             required
                             rows={5}
-                            placeholder={`Skriv kommentar til ${del.nummer}...`}
+                            placeholder={`Skriv generell kommentar til ${del.nummer}...`}
                             className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
                           />
 
