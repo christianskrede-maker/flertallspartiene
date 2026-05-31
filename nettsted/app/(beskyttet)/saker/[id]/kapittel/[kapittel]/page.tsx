@@ -33,6 +33,22 @@ function partiFarge(parti: string) {
   return "border-slate-200 bg-slate-50";
 }
 
+function Tekstutdrag({ tekst }: { tekst?: string | null }) {
+  if (!tekst) return null;
+
+  return (
+    <div className="mb-3 rounded-lg border-l-4 border-slate-300 bg-white/70 p-3">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+        Tekstutdrag
+      </p>
+
+      <p className="mt-1 max-h-32 overflow-hidden whitespace-pre-wrap text-sm italic leading-6 text-slate-700">
+        {tekst}
+      </p>
+    </div>
+  );
+}
+
 type KapittelProps = {
   params: Promise<{
     id: string;
@@ -86,7 +102,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med kommentartråder
+            Med tekstutdrag
           </span>
         </div>
       </section>
@@ -254,9 +270,13 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     ) : null}
                                   </div>
 
-                                  <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
-                                    {kommentar.kommentar}
-                                  </p>
+                                  <div className="mt-3">
+                                    <Tekstutdrag tekst={kommentar.tekstutdrag} />
+
+                                    <p className="whitespace-pre-wrap text-sm leading-6">
+                                      {kommentar.kommentar}
+                                    </p>
+                                  </div>
                                 </div>
 
                                 {svar.length > 0 ? (
@@ -284,9 +304,15 @@ export default async function Kapittel({ params }: KapittelProps) {
                                           ) : null}
                                         </div>
 
-                                        <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
-                                          {svarKommentar.kommentar}
-                                        </p>
+                                        <div className="mt-3">
+                                          <Tekstutdrag
+                                            tekst={svarKommentar.tekstutdrag}
+                                          />
+
+                                          <p className="whitespace-pre-wrap text-sm leading-6">
+                                            {svarKommentar.kommentar}
+                                          </p>
+                                        </div>
                                       </div>
                                     ))}
                                   </div>
@@ -310,7 +336,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                                   <input
                                     type="hidden"
                                     name="tekstutdrag"
-                                    value={del.bestemmelse ?? ""}
+                                    value={kommentar.tekstutdrag ?? ""}
                                   />
                                   <input
                                     type="hidden"
