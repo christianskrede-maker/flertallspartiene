@@ -48,6 +48,9 @@ export async function hentKommentarer(
   kapittel: string,
   delpunkt: string
 ) {
+  const cookieStore = await cookies();
+  const innloggetTelefon = cookieStore.get("telefon")?.value ?? "";
+
   const { data: kommentarer } = await supabaseAdmin
     .from("kommentarer")
     .select("*")
@@ -75,19 +78,57 @@ export async function hentKommentarer(
     .in("id", partiIder);
 
   return kommentarer.map((kommentar) => {
-    const bruker = brukere?.find(
-      (b) => b.telefon === kommentar.telefon
-    );
+    const bruker = brukere?.find((b) => b.telefon === kommentar.telefon);
 
-    const parti = partier?.find(
-      (p) => p.id === bruker?.parti_id
-    );
+    const parti = partier?.find((p) => p.id === bruker?.parti_id);
 
     return {
       ...kommentar,
       navn: bruker?.navn ?? kommentar.telefon,
       parti: parti?.forkortelse ?? "",
       partiNavn: parti?.navn ?? "",
+      kanRedigere: kommentar.telefon === innloggetTelefon,
     };
   });
+}
+
+export async function redigerKommentar(formData: FormData) {
+  const cookieStore = await cookies();
+  const telefon = cookieStore.get("telefon")?.value;
+
+  if (!telefon) {
+    redirect("/login");
+  }
+
+  const kommentarId = String(formData.get("kommentar_id") ?? "");
+  const nyKommentar = String(formData.get("kommentar") ?? "").trim();
+
+  if (!kommentarId || !nyKommentar) {
+    return;
+  }
+
+  const { data: eksisterende } = await supabaseAdmin
+    .from("kommentarer")
+    .select("*")
+    .eq("id", kommentarId)
+    .single();
+
+  if (!eksisterende) {
+    return;
+  }
+
+  if (eksisterende.telefon !== telefon) {
+    return;
+  }
+
+  await supabaseAdmin
+    .from("kommentarer")
+    .update({
+      kommentar: nyKommentar,
+    })
+    .eq("id", kommentarId);
+
+  revalidatePath(
+    `/saker/${eksisterende.sak_id}/kapittel/${eksisterende.kapittel}`
+  );
 }
