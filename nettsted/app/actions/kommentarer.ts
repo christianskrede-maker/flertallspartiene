@@ -23,6 +23,8 @@ export async function leggTilKommentar(formData: FormData) {
   const delpunkt = String(formData.get("delpunkt") ?? "");
   const tekstutdrag = String(formData.get("tekstutdrag") ?? "");
   const kommentar = String(formData.get("kommentar") ?? "").trim();
+  const forelder_id_raw = String(formData.get("forelder_id") ?? "").trim();
+  const forelder_id = forelder_id_raw ? forelder_id_raw : null;
 
   if (!sak_id || !kapittel || !delpunkt || !kommentar) {
     return;
@@ -35,6 +37,7 @@ export async function leggTilKommentar(formData: FormData) {
     tekstutdrag,
     kommentar,
     telefon,
+    forelder_id,
   });
 
   revalidatePath(`/saker/${sak_id}/kapittel/${kapittel}`);
