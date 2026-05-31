@@ -1,1 +1,308 @@
+import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+import {
+  Document,
+  HeadingLevel,
+  Packer,
+  Paragraph,
+  TextRun,
+} from "docx";
+import { kpaKapitler } from "../../../../data/kpaKapitler";
+import { kpaInnhold } from "../../../../data/kpaInnhold";
 
+export const runtime = "nodejs";
+
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+type KommentarMedBruker = {
+  id: string;
+  sak_id: string;
+  kapittel: string;
+  delpunkt: string;
+  tekstutdrag: string | null;
+  kommentar: string;
+  telefon: string;
+  forelder_id: string | null;
+  opprettet: string;
+  navn: string;
+  parti: string;
+  partiNavn: string;
+};
+
+function tekstTilAvsnitt(tekst: string | null | undefined) {
+  if (!tekst || !tekst.trim()) {
+    return [
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: "Ikke lagt inn.",
+            italics: true,
+          }),
+        ],
+      }),
+    ];
+  }
+
+  return tekst
+    .trim()
+    .split("\n")
+    .map((linje) =>
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: linje.trim(),
+          }),
+        ],
+      })
+    );
+}
+
+function tomLinje() {
+  return new Paragraph({
+    children: [new TextRun({ text: "" })],
+  });
+}
+
+function filnavnTrygt(tekst: string) {
+  return tekst
+    .toLowerCase()
+    .replace(/æ/g, "ae")
+    .replace(/ø/g, "o")
+    .replace(/å/g, "a")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+async function hentKommentarerForKapittel(sakId: string, kapittel: string) {
+  const { data: kommentarer } = await supabaseAdmin
+    .from("kommentarer")
+    .select("*")
+    .eq("sak_id", sakId)
+    .eq("kapittel", kapittel)
+    .order("opprettet", { ascending: true });
+
+  if (!kommentarer || kommentarer.length === 0) {
+    return [];
+  }
+
+  const telefoner = Array.from(
+    new Set(
+      kommentarer
+        .map((kommentar) => kommentar.telefon)
+        .filter((telefon): telefon is string => Boolean(telefon))
+    )
+  );
+
+  const { data: brukere } = await supabaseAdmin
+    .from("brukere")
+    .select("navn, telefon, parti_id")
+    .in("telefon", telefoner);
+
+  const partiIder = Array.from(
+    new Set(
+      (brukere ?? [])
+        .map((bruker) => bruker.parti_id)
+        .filter((partiId): partiId is number => Boolean(partiId))
+    )
+  );
+
+  const { data: partier } =
+    partiIder.length > 0
+      ? await supabaseAdmin.from("partier").select("*").in("id", partiIder)
+      : { data: [] };
+
+  return kommentarer.map((kommentar): KommentarMedBruker => {
+    const bruker = brukere?.find((item) => item.telefon === kommentar.telefon);
+    const parti = partier?.find((item) => item.id === bruker?.parti_id);
+
+    return {
+      ...kommentar,
+      navn: bruker?.navn ?? kommentar.telefon,
+      parti: parti?.forkortelse ?? "",
+      partiNavn: parti?.navn ?? "",
+    };
+  });
+}
+
+export async function GET(
+  _request: Request,
+  context: {
+    params: Promise<{
+      id: string;
+      kapittel: string;
+    }>;
+  }
+) {
+  const { id, kapittel } = await context.params;
+
+  const valgtKapittel =
+    kpaKapitler.find((item) => item.nummer === kapittel) ?? null;
+
+  const tittel = valgtKapittel
+    ? `${valgtKapittel.nummer}. ${valgtKapittel.tittel}`
+    : `Kapittel ${kapittel}`;
+
+  const innhold = kpaInnhold[kapittel as keyof typeof kpaInnhold] ?? null;
+
+  if (!innhold) {
+    return NextResponse.json(
+      { error: "Fant ikke innhold for dette kapittelet." },
+      { status: 404 }
+    );
+  }
+
+  const alleKommentarer = await hentKommentarerForKapittel(id, kapittel);
+
+  const dokumentInnhold: Paragraph[] = [
+    new Paragraph({
+      text: tittel,
+      heading: HeadingLevel.TITLE,
+    }),
+    tomLinje(),
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: "Kommuneplanens arealdel",
+          bold: true,
+        }),
+      ],
+    }),
+    new Paragraph({
+      children: [
+        new TextRun({
+          text: `Eksportert: ${new Date().toLocaleDateString("nb-NO")}`,
+        }),
+      ],
+    }),
+    tomLinje(),
+  ];
+
+  for (const del of innhold.deler) {
+    const kommentarerForDelpunkt = alleKommentarer.filter(
+      (kommentar) => kommentar.delpunkt === del.nummer
+    );
+
+    const hovedKommentarer = kommentarerForDelpunkt.filter(
+      (kommentar) => !kommentar.forelder_id
+    );
+
+    dokumentInnhold.push(
+      new Paragraph({
+        text: `${del.nummer} ${del.tittel}`,
+        heading: HeadingLevel.HEADING_1,
+      }),
+      tomLinje(),
+      new Paragraph({
+        text: "Ny bestemmelse",
+        heading: HeadingLevel.HEADING_2,
+      }),
+      ...tekstTilAvsnitt(del.bestemmelse),
+      tomLinje(),
+      new Paragraph({
+        text: "Spesialmerknad",
+        heading: HeadingLevel.HEADING_2,
+      }),
+      ...tekstTilAvsnitt(del.spesialmerknad),
+      tomLinje(),
+      new Paragraph({
+        text: "Kommentarer og vurderinger",
+        heading: HeadingLevel.HEADING_2,
+      })
+    );
+
+    if (hovedKommentarer.length === 0) {
+      dokumentInnhold.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: "Ingen kommentarer er lagret for dette delpunktet.",
+              italics: true,
+            }),
+          ],
+        })
+      );
+    }
+
+    for (const kommentar of hovedKommentarer) {
+      const svar = kommentarerForDelpunkt.filter(
+        (item) => item.forelder_id === kommentar.id
+      );
+
+      dokumentInnhold.push(
+        tomLinje(),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: `${kommentar.navn}${
+                kommentar.parti ? ` (${kommentar.parti})` : ""
+              }`,
+              bold: true,
+            }),
+          ],
+        })
+      );
+
+      if (kommentar.tekstutdrag?.trim()) {
+        dokumentInnhold.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: "Tekstutdrag: ",
+                bold: true,
+              }),
+              new TextRun({
+                text: kommentar.tekstutdrag.trim(),
+                italics: true,
+              }),
+            ],
+          })
+        );
+      }
+
+      dokumentInnhold.push(...tekstTilAvsnitt(kommentar.kommentar));
+
+      for (const svarKommentar of svar) {
+        dokumentInnhold.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: `Svar fra ${svarKommentar.navn}${
+                  svarKommentar.parti ? ` (${svarKommentar.parti})` : ""
+                }`,
+                bold: true,
+              }),
+            ],
+          }),
+          ...tekstTilAvsnitt(svarKommentar.kommentar)
+        );
+      }
+    }
+
+    dokumentInnhold.push(tomLinje());
+  }
+
+  const document = new Document({
+    sections: [
+      {
+        properties: {},
+        children: dokumentInnhold,
+      },
+    ],
+  });
+
+  const buffer = await Packer.toBuffer(document);
+
+  const filename = `${filnavnTrygt(tittel)}.docx`;
+
+  return new NextResponse(buffer, {
+    status: 200,
+    headers: {
+      "Content-Type":
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "Content-Disposition": `attachment; filename="${filename}"`,
+    },
+  });
+}
