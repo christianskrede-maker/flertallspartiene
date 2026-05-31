@@ -206,6 +206,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                 .filter((tekstutdrag): tekstutdrag is string =>
                   Boolean(tekstutdrag && tekstutdrag.trim())
                 );
+            const markeringer = alleKommentarer
 
               return (
                 <article
