@@ -45,7 +45,7 @@ export async function hentKommentarer(
   kapittel: string,
   delpunkt: string
 ) {
-  const { data } = await supabaseAdmin
+  const { data: kommentarer } = await supabaseAdmin
     .from("kommentarer")
     .select("*")
     .eq("sak_id", sak_id)
@@ -53,5 +53,25 @@ export async function hentKommentarer(
     .eq("delpunkt", delpunkt)
     .order("opprettet", { ascending: true });
 
-  return data ?? [];
+  if (!kommentarer || kommentarer.length === 0) {
+    return [];
+  }
+
+  const telefoner = kommentarer.map((kommentar) => kommentar.telefon);
+
+  const { data: brukere } = await supabaseAdmin
+    .from("brukere")
+    .select("navn, telefon")
+    .in("telefon", telefoner);
+
+  return kommentarer.map((kommentar) => {
+    const bruker = brukere?.find(
+      (item) => item.telefon === kommentar.telefon
+    );
+
+    return {
+      ...kommentar,
+      navn: bruker?.navn ?? kommentar.telefon,
+    };
+  });
 }
