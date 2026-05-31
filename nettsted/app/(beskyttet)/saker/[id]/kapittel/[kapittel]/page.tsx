@@ -6,6 +6,7 @@ import {
   leggTilKommentar,
   hentKommentarer,
   redigerKommentar,
+  slettKommentar,
 } from "../../../../../actions/kommentarer";
 
 const kartLenker = [
@@ -83,6 +84,18 @@ function RedigerKommentar({
   );
 }
 
+function SlettKommentar({ kommentarId }: { kommentarId: string }) {
+  return (
+    <form action={slettKommentar} className="mt-3">
+      <input type="hidden" name="kommentar_id" value={kommentarId} />
+
+      <button className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-700 hover:bg-red-100">
+        Slett kommentar
+      </button>
+    </form>
+  );
+}
+
 type KapittelProps = {
   params: Promise<{
     id: string;
@@ -136,7 +149,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med redigering
+            Med redigering og sletting
           </span>
         </div>
       </section>
@@ -317,10 +330,16 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     </p>
 
                                     {kommentar.kanRedigere ? (
-                                      <RedigerKommentar
-                                        kommentarId={kommentar.id}
-                                        kommentar={kommentar.kommentar}
-                                      />
+                                      <>
+                                        <RedigerKommentar
+                                          kommentarId={kommentar.id}
+                                          kommentar={kommentar.kommentar}
+                                        />
+
+                                        <SlettKommentar
+                                          kommentarId={kommentar.id}
+                                        />
+                                      </>
                                     ) : null}
                                   </div>
                                 </div>
@@ -360,12 +379,18 @@ export default async function Kapittel({ params }: KapittelProps) {
                                           </p>
 
                                           {svarKommentar.kanRedigere ? (
-                                            <RedigerKommentar
-                                              kommentarId={svarKommentar.id}
-                                              kommentar={
-                                                svarKommentar.kommentar
-                                              }
-                                            />
+                                            <>
+                                              <RedigerKommentar
+                                                kommentarId={svarKommentar.id}
+                                                kommentar={
+                                                  svarKommentar.kommentar
+                                                }
+                                              />
+
+                                              <SlettKommentar
+                                                kommentarId={svarKommentar.id}
+                                              />
+                                            </>
                                           ) : null}
                                         </div>
                                       </div>
