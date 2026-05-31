@@ -5,6 +5,7 @@ import { kpaInnhold } from "../../../data/kpaInnhold";
 import {
   leggTilKommentar,
   hentKommentarer,
+  redigerKommentar,
 } from "../../../../../actions/kommentarer";
 
 const kartLenker = [
@@ -46,6 +47,38 @@ function Tekstutdrag({ tekst }: { tekst?: string | null }) {
       <p className="mt-2 whitespace-pre-wrap text-sm italic leading-6 text-slate-700">
         {tekst}
       </p>
+    </details>
+  );
+}
+
+function RedigerKommentar({
+  kommentarId,
+  kommentar,
+}: {
+  kommentarId: string;
+  kommentar: string;
+}) {
+  return (
+    <details className="mt-3 rounded-lg border border-dashed border-slate-300 bg-white/70 p-3">
+      <summary className="cursor-pointer text-xs font-bold uppercase tracking-wide text-slate-500">
+        Rediger kommentar
+      </summary>
+
+      <form action={redigerKommentar} className="mt-3">
+        <input type="hidden" name="kommentar_id" value={kommentarId} />
+
+        <textarea
+          name="kommentar"
+          required
+          rows={4}
+          defaultValue={kommentar}
+          className="w-full rounded-xl border border-slate-300 p-3 text-sm"
+        />
+
+        <button className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+          Lagre endring
+        </button>
+      </form>
     </details>
   );
 }
@@ -103,7 +136,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med tekstmarkering
+            Med redigering
           </span>
         </div>
       </section>
@@ -282,6 +315,13 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     <p className="whitespace-pre-wrap text-sm leading-6">
                                       {kommentar.kommentar}
                                     </p>
+
+                                    {kommentar.kanRedigere ? (
+                                      <RedigerKommentar
+                                        kommentarId={kommentar.id}
+                                        kommentar={kommentar.kommentar}
+                                      />
+                                    ) : null}
                                   </div>
                                 </div>
 
@@ -318,6 +358,15 @@ export default async function Kapittel({ params }: KapittelProps) {
                                           <p className="whitespace-pre-wrap text-sm leading-6">
                                             {svarKommentar.kommentar}
                                           </p>
+
+                                          {svarKommentar.kanRedigere ? (
+                                            <RedigerKommentar
+                                              kommentarId={svarKommentar.id}
+                                              kommentar={
+                                                svarKommentar.kommentar
+                                              }
+                                            />
+                                          ) : null}
                                         </div>
                                       </div>
                                     ))}
