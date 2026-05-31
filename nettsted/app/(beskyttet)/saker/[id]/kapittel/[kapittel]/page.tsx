@@ -207,9 +207,12 @@ export default async function Kapittel({ params }: KapittelProps) {
                       </h2>
                     </div>
 
-                    <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-                      Eksporter delpunkt
-                    </button>
+<a
+  href={`/saker/${id}/kapittel/${kapittel}/eksporter`}
+  className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50"
+>
+  Eksporter delpunkt
+</a>
                   </div>
 
                   <div className="mt-6 grid gap-4 lg:grid-cols-2">
