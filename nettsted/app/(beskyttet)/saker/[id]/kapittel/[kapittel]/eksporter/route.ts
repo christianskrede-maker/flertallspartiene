@@ -49,14 +49,15 @@ function tekstTilAvsnitt(tekst: string | null | undefined) {
   return tekst
     .trim()
     .split("\n")
-    .map((linje) =>
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: linje.trim(),
-          }),
-        ],
-      })
+    .map(
+      (linje) =>
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: linje.trim(),
+            }),
+          ],
+        })
     );
 }
 
@@ -184,12 +185,9 @@ export async function GET(
   ];
 
   for (const del of innhold.deler) {
-    const kommentarerForDelpunkt = alleKommentarer.filter(
-      (kommentar) => kommentar.delpunkt === del.nummer
-    );
-
-    const hovedKommentarer = kommentarerForDelpunkt.filter(
-      (kommentar) => !kommentar.forelder_id
+    const hovedKommentarer = alleKommentarer.filter(
+      (kommentar) =>
+        kommentar.delpunkt === del.nummer && !kommentar.forelder_id
     );
 
     dokumentInnhold.push(
@@ -211,7 +209,7 @@ export async function GET(
       ...tekstTilAvsnitt(del.spesialmerknad),
       tomLinje(),
       new Paragraph({
-        text: "Kommentarer og vurderinger",
+        text: "Politiske merknader",
         heading: HeadingLevel.HEADING_2,
       })
     );
@@ -221,7 +219,7 @@ export async function GET(
         new Paragraph({
           children: [
             new TextRun({
-              text: "Ingen kommentarer er lagret for dette delpunktet.",
+              text: "Ingen merknader er lagret for dette delpunktet.",
               italics: true,
             }),
           ],
@@ -229,20 +227,35 @@ export async function GET(
       );
     }
 
-    for (const kommentar of hovedKommentarer) {
-      const svar = kommentarerForDelpunkt.filter(
-        (item) => item.forelder_id === kommentar.id
-      );
-
+    hovedKommentarer.forEach((kommentar, index) => {
       dokumentInnhold.push(
         tomLinje(),
         new Paragraph({
+          text: `Merknad ${index + 1}`,
+          heading: HeadingLevel.HEADING_3,
+        }),
+        new Paragraph({
           children: [
             new TextRun({
-              text: `${kommentar.navn}${
-                kommentar.parti ? ` (${kommentar.parti})` : ""
-              }`,
+              text: "Parti: ",
               bold: true,
+            }),
+            new TextRun({
+              text:
+                kommentar.partiNavn ||
+                kommentar.parti ||
+                "Ikke oppgitt parti",
+            }),
+          ],
+        }),
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: "Navn: ",
+              bold: true,
+            }),
+            new TextRun({
+              text: kommentar.navn,
             }),
           ],
         })
@@ -265,24 +278,18 @@ export async function GET(
         );
       }
 
-      dokumentInnhold.push(...tekstTilAvsnitt(kommentar.kommentar));
-
-      for (const svarKommentar of svar) {
-        dokumentInnhold.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: `Svar fra ${svarKommentar.navn}${
-                  svarKommentar.parti ? ` (${svarKommentar.parti})` : ""
-                }`,
-                bold: true,
-              }),
-            ],
-          }),
-          ...tekstTilAvsnitt(svarKommentar.kommentar)
-        );
-      }
-    }
+      dokumentInnhold.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: "Merknad:",
+              bold: true,
+            }),
+          ],
+        }),
+        ...tekstTilAvsnitt(kommentar.kommentar)
+      );
+    });
 
     dokumentInnhold.push(tomLinje());
   }
