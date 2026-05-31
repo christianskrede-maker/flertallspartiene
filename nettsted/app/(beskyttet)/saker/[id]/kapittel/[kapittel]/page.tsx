@@ -150,21 +150,6 @@ export default async function Kapittel({ params }: KapittelProps) {
         </p>
 
         <h1 className="mt-2 text-3xl font-bold sm:text-4xl">{tittel}</h1>
-
-        <p className="mt-4 text-base leading-7 text-slate-600">
-          Arbeidsrom for bestemmelse, spesialmerknad, gjeldende bestemmelse,
-          kommentarer, oppsummering og omforent forslag.
-        </p>
-
-        <div className="mt-5 flex flex-wrap gap-2">
-          <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-            Ikke behandlet
-          </span>
-
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Klikkbare markeringer
-          </span>
-        </div>
       </section>
 
       <section className="sticky top-0 z-10 mt-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -206,7 +191,6 @@ export default async function Kapittel({ params }: KapittelProps) {
                 .filter((tekstutdrag): tekstutdrag is string =>
                   Boolean(tekstutdrag && tekstutdrag.trim())
                 );
-            const markeringer = alleKommentarer
 
               return (
                 <article
@@ -291,9 +275,8 @@ export default async function Kapittel({ params }: KapittelProps) {
                           Partienes innspill til {del.nummer}
                         </h3>
                         <p className="mt-1 text-sm leading-6 text-slate-500">
-                          Skriv kommentar til ny bestemmelse og spesialmerknad
-                          for dette delpunktet, eller marker tekst direkte i
-                          bestemmelsen over.
+                          Skriv kommentar til ny bestemmelse og spesialmerknad,
+                          eller marker tekst direkte i bestemmelsen over.
                         </p>
                       </div>
 
@@ -387,66 +370,55 @@ export default async function Kapittel({ params }: KapittelProps) {
 
                               {svar.length > 0 ? (
                                 <div className="ml-4 space-y-3 border-l-2 border-slate-200 pl-4">
-                                  {svar.map((svarKommentar) => {
-                                    const svarAnchorId = kommentarIdFraTekst(
-                                      svarKommentar.tekstutdrag
-                                    );
+                                  {svar.map((svarKommentar) => (
+                                    <div
+                                      key={svarKommentar.id}
+                                      className={`scroll-mt-24 rounded-xl border p-4 transition-all duration-300 ${partiFarge(
+                                        svarKommentar.parti
+                                      )}`}
+                                    >
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                          {svarKommentar.parti || "Parti"}
+                                        </span>
 
-                                    return (
-                                      <div
-                                        id={
-                                          svarAnchorId
-                                            ? `kommentar-${svarAnchorId}`
-                                            : undefined
-                                        }
-                                        key={svarKommentar.id}
-                                        className={`scroll-mt-24 rounded-xl border p-4 transition-all duration-300 ${partiFarge(
-                                          svarKommentar.parti
-                                        )}`}
-                                      >
-                                        <div className="flex flex-wrap items-center gap-2">
-                                          <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                                            {svarKommentar.parti || "Parti"}
+                                        <span className="text-sm font-semibold">
+                                          {svarKommentar.navn}
+                                        </span>
+
+                                        {svarKommentar.partiNavn ? (
+                                          <span className="text-xs text-slate-500">
+                                            {svarKommentar.partiNavn}
                                           </span>
-
-                                          <span className="text-sm font-semibold">
-                                            {svarKommentar.navn}
-                                          </span>
-
-                                          {svarKommentar.partiNavn ? (
-                                            <span className="text-xs text-slate-500">
-                                              {svarKommentar.partiNavn}
-                                            </span>
-                                          ) : null}
-                                        </div>
-
-                                        <div className="mt-3">
-                                          <Tekstutdrag
-                                            tekst={svarKommentar.tekstutdrag}
-                                          />
-
-                                          <p className="whitespace-pre-wrap text-sm leading-6">
-                                            {svarKommentar.kommentar}
-                                          </p>
-
-                                          {svarKommentar.kanRedigere ? (
-                                            <>
-                                              <RedigerKommentar
-                                                kommentarId={svarKommentar.id}
-                                                kommentar={
-                                                  svarKommentar.kommentar
-                                                }
-                                              />
-
-                                              <SlettKommentar
-                                                kommentarId={svarKommentar.id}
-                                              />
-                                            </>
-                                          ) : null}
-                                        </div>
+                                        ) : null}
                                       </div>
-                                    );
-                                  })}
+
+                                      <div className="mt-3">
+                                        <Tekstutdrag
+                                          tekst={svarKommentar.tekstutdrag}
+                                        />
+
+                                        <p className="whitespace-pre-wrap text-sm leading-6">
+                                          {svarKommentar.kommentar}
+                                        </p>
+
+                                        {svarKommentar.kanRedigere ? (
+                                          <>
+                                            <RedigerKommentar
+                                              kommentarId={svarKommentar.id}
+                                              kommentar={
+                                                svarKommentar.kommentar
+                                              }
+                                            />
+
+                                            <SlettKommentar
+                                              kommentarId={svarKommentar.id}
+                                            />
+                                          </>
+                                        ) : null}
+                                      </div>
+                                    </div>
+                                  ))}
                                 </div>
                               ) : null}
 
