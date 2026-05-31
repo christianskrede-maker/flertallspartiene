@@ -40,8 +40,7 @@ export default async function Kapittel({ params }: KapittelProps) {
     ? `${valgtKapittel.nummer}. ${valgtKapittel.tittel}`
     : `Kapittel ${kapittel}`;
 
-  const innhold =
-    kpaInnhold[kapittel as keyof typeof kpaInnhold] ?? null;
+  const innhold = kpaInnhold[kapittel as keyof typeof kpaInnhold] ?? null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
@@ -70,7 +69,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Uten database
+            Med kommentarlagring
           </span>
         </div>
       </section>
@@ -156,20 +155,43 @@ export default async function Kapittel({ params }: KapittelProps) {
                       Kommentarer og vurderinger
                     </summary>
 
-                    <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="mt-5 grid gap-5 lg:grid-cols-2">
                       <div>
                         <h3 className="text-lg font-bold">
                           Partienes innspill til {del.nummer}
                         </h3>
                         <p className="mt-1 text-sm leading-6 text-slate-500">
-                          Kommentarer til ny bestemmelse og spesialmerknad
-                          legges senere direkte til dette delpunktet.
+                          Skriv kommentar til ny bestemmelse og
+                          spesialmerknad for dette delpunktet.
                         </p>
                       </div>
 
-                      <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-                        Legg til kommentar
-                      </button>
+                      <form action={leggTilKommentar} className="rounded-xl border bg-slate-50 p-4">
+                        <input type="hidden" name="sak_id" value={id} />
+                        <input type="hidden" name="kapittel" value={kapittel} />
+                        <input type="hidden" name="delpunkt" value={del.nummer} />
+                        <input
+                          type="hidden"
+                          name="tekstutdrag"
+                          value={del.bestemmelse ?? ""}
+                        />
+
+                        <label className="text-sm font-bold text-slate-700">
+                          Ny kommentar
+                        </label>
+
+                        <textarea
+                          name="kommentar"
+                          required
+                          rows={5}
+                          placeholder={`Skriv kommentar til ${del.nummer}...`}
+                          className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
+                        />
+
+                        <button className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+                          Lagre kommentar
+                        </button>
+                      </form>
                     </div>
 
                     <div className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -180,8 +202,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                         >
                           <h4 className="font-bold">{parti}</h4>
                           <p className="mt-2 text-sm leading-6 text-slate-500">
-                            Kommentarer til ny bestemmelse og spesialmerknad
-                            legges inn her senere.
+                            Lagrede kommentarer vises her i neste steg.
                           </p>
                         </div>
                       ))}
