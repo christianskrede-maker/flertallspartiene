@@ -61,17 +61,28 @@ export async function hentKommentarer(
 
   const { data: brukere } = await supabaseAdmin
     .from("brukere")
-    .select("navn, telefon")
+    .select("navn, telefon, parti_id")
     .in("telefon", telefoner);
+
+  const { data: partier } = await supabaseAdmin
+    .from("partier")
+    .select("id, navn, forkortelse");
 
   return kommentarer.map((kommentar) => {
     const bruker = brukere?.find(
       (item) => item.telefon === kommentar.telefon
     );
 
+    const parti = partier?.find(
+      (item) => item.id === bruker?.parti_id
+    );
+
     return {
       ...kommentar,
       navn: bruker?.navn ?? kommentar.telefon,
+      parti_id: bruker?.parti_id ?? null,
+      parti_navn: parti?.navn ?? "Ukjent parti",
+      parti_forkortelse: parti?.forkortelse ?? "",
     };
   });
 }
