@@ -174,7 +174,8 @@ export async function slettKommentar(formData: FormData) {
 export async function hentOmforentInnspill(
   sak_id: string,
   kapittel: string,
-  delpunkt: string
+  delpunkt: string,
+  type: "bestemmelse" | "spesialmerknad"
 ) {
   const { data } = await supabaseAdmin
     .from("omforent_innspill")
@@ -182,6 +183,7 @@ export async function hentOmforentInnspill(
     .eq("sak_id", sak_id)
     .eq("kapittel", kapittel)
     .eq("delpunkt", delpunkt)
+    .eq("type", type)
     .maybeSingle();
 
   return data;
@@ -198,9 +200,15 @@ export async function lagreOmforentInnspill(formData: FormData) {
   const sak_id = String(formData.get("sak_id") ?? "");
   const kapittel = String(formData.get("kapittel") ?? "");
   const delpunkt = String(formData.get("delpunkt") ?? "");
+  const type = String(formData.get("type") ?? "");
   const tekst = String(formData.get("tekst") ?? "").trim();
 
-  if (!sak_id || !kapittel || !delpunkt) {
+  if (
+    !sak_id ||
+    !kapittel ||
+    !delpunkt ||
+    (type !== "bestemmelse" && type !== "spesialmerknad")
+  ) {
     return;
   }
 
@@ -210,6 +218,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
     .eq("sak_id", sak_id)
     .eq("kapittel", kapittel)
     .eq("delpunkt", delpunkt)
+    .eq("type", type)
     .maybeSingle();
 
   if (eksisterende) {
@@ -225,6 +234,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
       sak_id,
       kapittel,
       delpunkt,
+      type,
       tekst,
       sist_endret: new Date().toISOString(),
     });
