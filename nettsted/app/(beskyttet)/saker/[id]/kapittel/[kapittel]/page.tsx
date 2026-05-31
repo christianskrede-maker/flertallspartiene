@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { kpaKapitler } from "../../../data/kpaKapitler";
 import { kpaInnhold } from "../../../data/kpaInnhold";
+import { leggTilKommentar } from "../../../../../actions/kommentarer";
 
 const kartLenker = [
   {
