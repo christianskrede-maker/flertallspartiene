@@ -9,7 +9,48 @@ type KommenterTekstProps = {
   delpunkt: string;
   tekst: string;
   label: string;
+  markeringer?: string[];
 };
+
+function delOppTekst(tekst: string, markeringer: string[]) {
+  const reneMarkeringer = markeringer
+    .map((markering) => markering.trim())
+    .filter((markering) => markering.length > 0)
+    .sort((a, b) => b.length - a.length);
+
+  if (reneMarkeringer.length === 0) {
+    return [{ tekst, markert: false }];
+  }
+
+  let deler: { tekst: string; markert: boolean }[] = [
+    { tekst, markert: false },
+  ];
+
+  for (const markering of reneMarkeringer) {
+    deler = deler.flatMap((del) => {
+      if (del.markert || !del.tekst.includes(markering)) {
+        return [del];
+      }
+
+      const splittet = del.tekst.split(markering);
+      const nyeDeler: { tekst: string; markert: boolean }[] = [];
+
+      splittet.forEach((tekstDel, index) => {
+        if (tekstDel) {
+          nyeDeler.push({ tekst: tekstDel, markert: false });
+        }
+
+        if (index < splittet.length - 1) {
+          nyeDeler.push({ tekst: markering, markert: true });
+        }
+      });
+
+      return nyeDeler;
+    });
+  }
+
+  return deler;
+}
 
 export default function KommenterTekst({
   sakId,
@@ -17,6 +58,7 @@ export default function KommenterTekst({
   delpunkt,
   tekst,
   label,
+  markeringer = [],
 }: KommenterTekstProps) {
   const [valgtTekst, setValgtTekst] = useState("");
 
@@ -29,6 +71,8 @@ export default function KommenterTekst({
     }
   }
 
+  const tekstDeler = delOppTekst(tekst, markeringer);
+
   return (
     <div>
       <div
@@ -36,7 +80,19 @@ export default function KommenterTekst({
         onTouchEnd={hentMarkertTekst}
         className="mt-4 whitespace-pre-wrap text-sm leading-7"
       >
-        {tekst}
+        {tekstDeler.map((del, index) =>
+          del.markert ? (
+            <mark
+              key={`${del.tekst}-${index}`}
+              className="rounded bg-yellow-200 px-1"
+              title="Denne teksten har kommentarer"
+            >
+              {del.tekst}
+            </mark>
+          ) : (
+            <span key={`${del.tekst}-${index}`}>{del.tekst}</span>
+          )
+        )}
       </div>
 
       {valgtTekst ? (
@@ -83,7 +139,8 @@ export default function KommenterTekst({
         </form>
       ) : (
         <p className="mt-3 text-xs text-slate-500">
-          Marker tekst for å kommentere akkurat den delen.
+          Marker tekst for å kommentere akkurat den delen. Gule markeringer har
+          allerede kommentarer.
         </p>
       )}
     </div>
