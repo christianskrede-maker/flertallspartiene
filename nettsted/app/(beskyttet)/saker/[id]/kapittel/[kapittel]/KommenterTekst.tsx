@@ -12,8 +12,12 @@ type KommenterTekstProps = {
   markeringer?: string[];
 };
 
+function normaliserTekst(tekst: string) {
+  return tekst.replace(/\s+/g, " ").trim();
+}
+
 function lagIdFraTekst(tekst: string) {
-  return tekst
+  return normaliserTekst(tekst)
     .toLowerCase()
     .replace(/æ/g, "ae")
     .replace(/ø/g, "o")
@@ -23,44 +27,103 @@ function lagIdFraTekst(tekst: string) {
     .slice(0, 80);
 }
 
-function delOppTekst(tekst: string, markeringer: string[]) {
-  const reneMarkeringer = markeringer
-    .map((markering) => markering.trim())
-    .filter((markering) => markering.length > 0)
-    .sort((a, b) => b.length - a.length);
+function finnMarkeringMedFleksibleMellomrom(tekst: string, markering: string) {
+  const normalisertMarkering = normaliserTekst(markering);
 
-  if (reneMarkeringer.length === 0) {
-    return [{ tekst, markert: false, id: "" }];
+  if (!normalisertMarkering) {
+    return null;
   }
 
-  let deler: { tekst: string; markert: boolean; id: string }[] = [
-    { tekst, markert: false, id: "" },
-  ];
+  const ord = normalisertMarkering
+    .split(" ")
+    .map((ord) => ord.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
 
-  for (const markering of reneMarkeringer) {
-    deler = deler.flatMap((del) => {
-      if (del.markert || !del.tekst.includes(markering)) {
-        return [del];
-      }
+  const regex = new RegExp(ord.join("\\s+"), "i");
+  const match = tekst.match(regex);
 
-      const splittet = del.tekst.split(markering);
-      const nyeDeler: { tekst: string; markert: boolean; id: string }[] = [];
+  if (!match || match.index === undefined) {
+    return null;
+  }
 
-      splittet.forEach((tekstDel, index) => {
-        if (tekstDel) {
-          nyeDeler.push({ tekst: tekstDel, markert: false, id: "" });
-        }
+  return {
+    start: match.index,
+    slutt: match.index + match[0].length,
+    tekst: match[0],
+    originalMarkering: markering,
+  };
+}
 
-        if (index < splittet.length - 1) {
-          nyeDeler.push({
-            tekst: markering,
-            markert: true,
-            id: lagIdFraTekst(markering),
-          });
-        }
+function delOppTekst(tekst: string, markeringer: string[]) {
+  const funn = markeringer
+    .map((markering) => finnMarkeringMedFleksibleMellomrom(tekst, markering))
+    .filter(
+      (
+        markering
+      ): markering is {
+        start: number;
+        slutt: number;
+        tekst: string;
+        originalMarkering: string;
+      } => Boolean(markering)
+    )
+    .sort((a, b) => a.start - b.start || b.tekst.length - a.tekst.length);
+
+  const utenOverlapp = funn.reduce<
+    {
+      start: number;
+      slutt: number;
+      tekst: string;
+      originalMarkering: string;
+    }[]
+  >((liste, markering) => {
+    const overlapper = liste.some(
+      (eksisterende) =>
+        markering.start < eksisterende.slutt &&
+        markering.slutt > eksisterende.start
+    );
+
+    if (!overlapper) {
+      liste.push(markering);
+    }
+
+    return liste;
+  }, []);
+
+  if (utenOverlapp.length === 0) {
+    return [{ tekst, markert: false, originalMarkering: "" }];
+  }
+
+  const deler: {
+    tekst: string;
+    markert: boolean;
+    originalMarkering: string;
+  }[] = [];
+
+  let posisjon = 0;
+
+  for (const markering of utenOverlapp) {
+    if (markering.start > posisjon) {
+      deler.push({
+        tekst: tekst.slice(posisjon, markering.start),
+        markert: false,
+        originalMarkering: "",
       });
+    }
 
-      return nyeDeler;
+    deler.push({
+      tekst: tekst.slice(markering.start, markering.slutt),
+      markert: true,
+      originalMarkering: markering.originalMarkering,
+    });
+
+    posisjon = markering.slutt;
+  }
+
+  if (posisjon < tekst.length) {
+    deler.push({
+      tekst: tekst.slice(posisjon),
+      markert: false,
+      originalMarkering: "",
     });
   }
 
@@ -79,10 +142,10 @@ export default function KommenterTekst({
 
   function hentMarkertTekst() {
     const selection = window.getSelection();
-    const tekst = selection?.toString().trim() ?? "";
+    const valgt = selection?.toString().trim() ?? "";
 
-    if (tekst.length > 0) {
-      setValgtTekst(tekst);
+    if (valgt.length > 0) {
+      setValgtTekst(valgt);
     }
   }
 
@@ -105,8 +168,6 @@ export default function KommenterTekst({
   }
 
   const tekstDeler = delOppTekst(tekst, markeringer);
-  console.log("TEKST", tekst);
-console.log("MARKERINGER", markeringer);
 
   return (
     <div>
@@ -120,7 +181,7 @@ console.log("MARKERINGER", markeringer);
             <button
               key={`${del.tekst}-${index}`}
               type="button"
-              onClick={() => gaTilKommentar(del.tekst)}
+              onClick={() => gaTilKommentar(del.originalMarkering)}
               className="rounded bg-yellow-200 px-1 text-left hover:bg-yellow-300"
               title="Klikk for å gå til kommentar"
             >
