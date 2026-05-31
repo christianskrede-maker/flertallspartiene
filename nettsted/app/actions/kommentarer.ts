@@ -39,3 +39,19 @@ export async function leggTilKommentar(formData: FormData) {
 
   revalidatePath(`/saker/${sak_id}/kapittel/${kapittel}`);
 }
+
+export async function hentKommentarer(
+  sak_id: string,
+  kapittel: string,
+  delpunkt: string
+) {
+  const { data } = await supabaseAdmin
+    .from("kommentarer")
+    .select("*")
+    .eq("sak_id", sak_id)
+    .eq("kapittel", kapittel)
+    .eq("delpunkt", delpunkt)
+    .order("opprettet", { ascending: true });
+
+  return data ?? [];
+}
