@@ -24,6 +24,15 @@ const kartLenker = [
   },
 ];
 
+function partiFarge(parti: string) {
+  if (parti === "H") return "border-blue-300 bg-blue-50";
+  if (parti === "FrP") return "border-sky-300 bg-sky-50";
+  if (parti === "V") return "border-green-300 bg-green-50";
+  if (parti === "KrF") return "border-yellow-300 bg-yellow-50";
+
+  return "border-slate-200 bg-slate-50";
+}
+
 type KapittelProps = {
   params: Promise<{
     id: string;
@@ -185,16 +194,8 @@ export default async function Kapittel({ params }: KapittelProps) {
                           className="rounded-xl border bg-slate-50 p-4"
                         >
                           <input type="hidden" name="sak_id" value={id} />
-                          <input
-                            type="hidden"
-                            name="kapittel"
-                            value={kapittel}
-                          />
-                          <input
-                            type="hidden"
-                            name="delpunkt"
-                            value={del.nummer}
-                          />
+                          <input type="hidden" name="kapittel" value={kapittel} />
+                          <input type="hidden" name="delpunkt" value={del.nummer} />
                           <input
                             type="hidden"
                             name="tekstutdrag"
@@ -224,28 +225,24 @@ export default async function Kapittel({ params }: KapittelProps) {
                           kommentarer.map((kommentar) => (
                             <div
                               key={kommentar.id}
-                              className={`rounded-xl border p-4 ${
-                                kommentar.parti_id === 1
-                                  ? "border-blue-300 bg-blue-50"
-                                  : kommentar.parti_id === 2
-                                  ? "border-sky-300 bg-sky-50"
-                                  : kommentar.parti_id === 3
-                                  ? "border-green-300 bg-green-50"
-                                  : kommentar.parti_id === 4
-                                  ? "border-yellow-300 bg-yellow-50"
-                                  : "border-slate-200 bg-slate-50"
-                              }`}
+                              className={`rounded-xl border p-4 ${partiFarge(
+                                kommentar.parti
+                              )}`}
                             >
                               <div className="flex flex-wrap items-center gap-2">
                                 <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                                  {kommentar.parti_forkortelse ||
-                                    kommentar.parti_navn ||
-                                    "Parti"}
+                                  {kommentar.parti || "Parti"}
                                 </span>
 
                                 <span className="text-sm font-semibold">
                                   {kommentar.navn}
                                 </span>
+
+                                {kommentar.partiNavn ? (
+                                  <span className="text-xs text-slate-500">
+                                    {kommentar.partiNavn}
+                                  </span>
+                                ) : null}
                               </div>
 
                               <p className="mt-3 whitespace-pre-wrap text-sm leading-6">
