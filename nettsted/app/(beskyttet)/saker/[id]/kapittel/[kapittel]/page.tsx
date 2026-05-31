@@ -111,6 +111,18 @@ function SlettKommentar({ kommentarId }: { kommentarId: string }) {
   );
 }
 
+function SistLagret({ sistEndret }: { sistEndret?: string | null }) {
+  if (!sistEndret) {
+    return <p className="text-xs text-emerald-900">Ikke lagret ennå.</p>;
+  }
+
+  return (
+    <p className="text-xs text-emerald-900">
+      Sist lagret: {new Date(sistEndret).toLocaleString("nb-NO")}
+    </p>
+  );
+}
+
 type KapittelProps = {
   params: Promise<{
     id: string;
@@ -134,7 +146,18 @@ export default async function Kapittel({ params }: KapittelProps) {
     (innhold?.deler ?? []).map(async (del) => ({
       delpunkt: del.nummer,
       kommentarer: await hentKommentarer(id, kapittel, del.nummer),
-      omforent: await hentOmforentInnspill(id, kapittel, del.nummer),
+      omforentBestemmelse: await hentOmforentInnspill(
+        id,
+        kapittel,
+        del.nummer,
+        "bestemmelse"
+      ),
+      omforentSpesialmerknad: await hentOmforentInnspill(
+        id,
+        kapittel,
+        del.nummer,
+        "spesialmerknad"
+      ),
     }))
   );
 
@@ -185,7 +208,10 @@ export default async function Kapittel({ params }: KapittelProps) {
               );
 
               const alleKommentarer = dataForDelpunkt?.kommentarer ?? [];
-              const omforent = dataForDelpunkt?.omforent ?? null;
+              const omforentBestemmelse =
+                dataForDelpunkt?.omforentBestemmelse ?? null;
+              const omforentSpesialmerknad =
+                dataForDelpunkt?.omforentSpesialmerknad ?? null;
 
               const hovedKommentarer = alleKommentarer.filter(
                 (kommentar) => !kommentar.forelder_id
@@ -513,47 +539,105 @@ export default async function Kapittel({ params }: KapittelProps) {
                       Omforent forslag
                     </summary>
 
-                    <form action={lagreOmforentInnspill} className="mt-4">
-                      <input type="hidden" name="sak_id" value={id} />
-                      <input type="hidden" name="kapittel" value={kapittel} />
-                      <input type="hidden" name="delpunkt" value={del.nummer} />
+                    <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                      <form action={lagreOmforentInnspill}>
+                        <input type="hidden" name="sak_id" value={id} />
+                        <input
+                          type="hidden"
+                          name="kapittel"
+                          value={kapittel}
+                        />
+                        <input
+                          type="hidden"
+                          name="delpunkt"
+                          value={del.nummer}
+                        />
+                        <input
+                          type="hidden"
+                          name="type"
+                          value="bestemmelse"
+                        />
 
-                      <p className="mb-3 text-sm leading-6 text-emerald-900">
-                        Dette er masterteksten for delpunktet. Hvis ingen tekst
-                        er lagret ennå, starter feltet med ny bestemmelse som
-                        utgangspunkt.
-                      </p>
+                        <h3 className="text-base font-bold text-emerald-950">
+                          Omforent forslag – bestemmelse
+                        </h3>
 
-                      <textarea
-                        name="tekst"
-                        rows={12}
-                        defaultValue={
-                          omforent?.tekst?.trim()
-                            ? omforent.tekst
-                            : del.bestemmelse.trim()
-                        }
-                        className="w-full rounded-xl border border-emerald-300 bg-white p-4 text-sm leading-7 text-slate-900"
-                      />
+                        <p className="mt-1 text-sm leading-6 text-emerald-900">
+                          Dette er masterteksten for ny bestemmelse.
+                        </p>
 
-                      <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                        <button className="w-fit rounded-lg bg-emerald-800 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
-                          Lagre omforent forslag
-                        </button>
+                        <textarea
+                          name="tekst"
+                          rows={14}
+                          defaultValue={
+                            omforentBestemmelse?.tekst?.trim()
+                              ? omforentBestemmelse.tekst
+                              : del.bestemmelse.trim()
+                          }
+                          className="mt-3 w-full rounded-xl border border-emerald-300 bg-white p-4 text-sm leading-7 text-slate-900"
+                        />
 
-                        {omforent?.sist_endret ? (
-                          <p className="text-xs text-emerald-900">
-                            Sist lagret:{" "}
-                            {new Date(omforent.sist_endret).toLocaleString(
-                              "nb-NO"
-                            )}
-                          </p>
-                        ) : (
-                          <p className="text-xs text-emerald-900">
-                            Ikke lagret ennå.
-                          </p>
-                        )}
-                      </div>
-                    </form>
+                        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                          <button className="w-fit rounded-lg bg-emerald-800 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+                            Lagre bestemmelse
+                          </button>
+
+                          <SistLagret
+                            sistEndret={omforentBestemmelse?.sist_endret}
+                          />
+                        </div>
+                      </form>
+
+                      <form action={lagreOmforentInnspill}>
+                        <input type="hidden" name="sak_id" value={id} />
+                        <input
+                          type="hidden"
+                          name="kapittel"
+                          value={kapittel}
+                        />
+                        <input
+                          type="hidden"
+                          name="delpunkt"
+                          value={del.nummer}
+                        />
+                        <input
+                          type="hidden"
+                          name="type"
+                          value="spesialmerknad"
+                        />
+
+                        <h3 className="text-base font-bold text-emerald-950">
+                          Omforent forslag – spesialmerknad
+                        </h3>
+
+                        <p className="mt-1 text-sm leading-6 text-emerald-900">
+                          Dette er masterteksten for spesialmerknaden.
+                        </p>
+
+                        <textarea
+                          name="tekst"
+                          rows={14}
+                          defaultValue={
+                            omforentSpesialmerknad?.tekst?.trim()
+                              ? omforentSpesialmerknad.tekst
+                              : del.spesialmerknad.trim()
+                          }
+                          className="mt-3 w-full rounded-xl border border-emerald-300 bg-white p-4 text-sm leading-7 text-slate-900"
+                        />
+
+                        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                          <button className="w-fit rounded-lg bg-emerald-800 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+                            Lagre spesialmerknad
+                          </button>
+
+                          <SistLagret
+                            sistEndret={
+                              omforentSpesialmerknad?.sist_endret
+                            }
+                          />
+                        </div>
+                      </form>
+                    </div>
                   </details>
                 </article>
               );
