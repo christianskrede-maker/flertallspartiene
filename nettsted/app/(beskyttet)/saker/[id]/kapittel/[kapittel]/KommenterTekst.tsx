@@ -105,6 +105,8 @@ export default function KommenterTekst({
   }
 
   const tekstDeler = delOppTekst(tekst, markeringer);
+  console.log("TEKST", tekst);
+console.log("MARKERINGER", markeringer);
 
   return (
     <div>
