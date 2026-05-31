@@ -12,6 +12,17 @@ type KommenterTekstProps = {
   markeringer?: string[];
 };
 
+function lagIdFraTekst(tekst: string) {
+  return tekst
+    .toLowerCase()
+    .replace(/æ/g, "ae")
+    .replace(/ø/g, "o")
+    .replace(/å/g, "a")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
 function delOppTekst(tekst: string, markeringer: string[]) {
   const reneMarkeringer = markeringer
     .map((markering) => markering.trim())
@@ -19,11 +30,11 @@ function delOppTekst(tekst: string, markeringer: string[]) {
     .sort((a, b) => b.length - a.length);
 
   if (reneMarkeringer.length === 0) {
-    return [{ tekst, markert: false }];
+    return [{ tekst, markert: false, id: "" }];
   }
 
-  let deler: { tekst: string; markert: boolean }[] = [
-    { tekst, markert: false },
+  let deler: { tekst: string; markert: boolean; id: string }[] = [
+    { tekst, markert: false, id: "" },
   ];
 
   for (const markering of reneMarkeringer) {
@@ -33,15 +44,19 @@ function delOppTekst(tekst: string, markeringer: string[]) {
       }
 
       const splittet = del.tekst.split(markering);
-      const nyeDeler: { tekst: string; markert: boolean }[] = [];
+      const nyeDeler: { tekst: string; markert: boolean; id: string }[] = [];
 
       splittet.forEach((tekstDel, index) => {
         if (tekstDel) {
-          nyeDeler.push({ tekst: tekstDel, markert: false });
+          nyeDeler.push({ tekst: tekstDel, markert: false, id: "" });
         }
 
         if (index < splittet.length - 1) {
-          nyeDeler.push({ tekst: markering, markert: true });
+          nyeDeler.push({
+            tekst: markering,
+            markert: true,
+            id: lagIdFraTekst(markering),
+          });
         }
       });
 
@@ -71,6 +86,24 @@ export default function KommenterTekst({
     }
   }
 
+  function gaTilKommentar(tekstutdrag: string) {
+    const id = lagIdFraTekst(tekstutdrag);
+    const element = document.getElementById(`kommentar-${id}`);
+
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+
+      element.classList.add("ring-4", "ring-yellow-300");
+
+      window.setTimeout(() => {
+        element.classList.remove("ring-4", "ring-yellow-300");
+      }, 2200);
+    }
+  }
+
   const tekstDeler = delOppTekst(tekst, markeringer);
 
   return (
@@ -82,13 +115,15 @@ export default function KommenterTekst({
       >
         {tekstDeler.map((del, index) =>
           del.markert ? (
-            <mark
+            <button
               key={`${del.tekst}-${index}`}
-              className="rounded bg-yellow-200 px-1"
-              title="Denne teksten har kommentarer"
+              type="button"
+              onClick={() => gaTilKommentar(del.tekst)}
+              className="rounded bg-yellow-200 px-1 text-left hover:bg-yellow-300"
+              title="Klikk for å gå til kommentar"
             >
               {del.tekst}
-            </mark>
+            </button>
           ) : (
             <span key={`${del.tekst}-${index}`}>{del.tekst}</span>
           )
@@ -139,8 +174,8 @@ export default function KommenterTekst({
         </form>
       ) : (
         <p className="mt-3 text-xs text-slate-500">
-          Marker tekst for å kommentere akkurat den delen. Gule markeringer har
-          allerede kommentarer.
+          Marker tekst for å kommentere akkurat den delen. Gule markeringer kan
+          klikkes for å gå til kommentaren.
         </p>
       )}
     </div>
