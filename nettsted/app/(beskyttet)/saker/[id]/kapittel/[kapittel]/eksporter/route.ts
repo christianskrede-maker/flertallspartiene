@@ -32,6 +32,16 @@ type KommentarMedBruker = {
   partiNavn: string;
 };
 
+type OmforentInnspill = {
+  id: number;
+  sak_id: string;
+  kapittel: string;
+  delpunkt: string;
+  type: "bestemmelse" | "spesialmerknad";
+  tekst: string | null;
+  sist_endret: string | null;
+};
+
 function tekstTilAvsnitt(tekst: string | null | undefined) {
   if (!tekst || !tekst.trim()) {
     return [
@@ -89,6 +99,23 @@ function visningsnavnMedParti(kommentar: KommentarMedBruker) {
   return kommentar.navn;
 }
 
+function hentOmforentTekst(
+  omforenteInnspill: OmforentInnspill[],
+  delpunkt: string,
+  type: "bestemmelse" | "spesialmerknad",
+  fallbackTekst: string
+) {
+  const lagret = omforenteInnspill.find(
+    (innspill) => innspill.delpunkt === delpunkt && innspill.type === type
+  );
+
+  if (lagret?.tekst?.trim()) {
+    return lagret.tekst;
+  }
+
+  return fallbackTekst;
+}
+
 async function hentKommentarerForKapittel(
   sakId: string,
   kapittel: string
@@ -143,6 +170,19 @@ async function hentKommentarerForKapittel(
   });
 }
 
+async function hentOmforenteInnspillForKapittel(
+  sakId: string,
+  kapittel: string
+): Promise<OmforentInnspill[]> {
+  const { data } = await supabaseAdmin
+    .from("omforent_innspill")
+    .select("*")
+    .eq("sak_id", sakId)
+    .eq("kapittel", kapittel);
+
+  return (data ?? []) as OmforentInnspill[];
+}
+
 export async function GET(
   _request: Request,
   context: {
@@ -170,7 +210,10 @@ export async function GET(
     );
   }
 
-  const alleKommentarer = await hentKommentarerForKapittel(id, kapittel);
+  const [alleKommentarer, omforenteInnspill] = await Promise.all([
+    hentKommentarerForKapittel(id, kapittel),
+    hentOmforenteInnspillForKapittel(id, kapittel),
+  ]);
 
   const dokumentInnhold: Paragraph[] = [
     new Paragraph({
@@ -197,6 +240,20 @@ export async function GET(
   ];
 
   for (const del of innhold.deler) {
+    const omforentBestemmelse = hentOmforentTekst(
+      omforenteInnspill,
+      del.nummer,
+      "bestemmelse",
+      del.bestemmelse
+    );
+
+    const omforentSpesialmerknad = hentOmforentTekst(
+      omforenteInnspill,
+      del.nummer,
+      "spesialmerknad",
+      del.spesialmerknad
+    );
+
     const kommentarerForDelpunkt = alleKommentarer.filter(
       (kommentar) => kommentar.delpunkt === del.nummer
     );
@@ -212,16 +269,16 @@ export async function GET(
       }),
       tomLinje(),
       new Paragraph({
-        text: "Ny bestemmelse",
+        text: "Omforent forslag – bestemmelse",
         heading: HeadingLevel.HEADING_2,
       }),
-      ...tekstTilAvsnitt(del.bestemmelse),
+      ...tekstTilAvsnitt(omforentBestemmelse),
       tomLinje(),
       new Paragraph({
-        text: "Spesialmerknad",
+        text: "Omforent forslag – spesialmerknad",
         heading: HeadingLevel.HEADING_2,
       }),
-      ...tekstTilAvsnitt(del.spesialmerknad),
+      ...tekstTilAvsnitt(omforentSpesialmerknad),
       tomLinje(),
       new Paragraph({
         text: "Politiske merknader",
