@@ -149,7 +149,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           </span>
 
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">
-            Med redigering og sletting
+            Side om side-visning
           </span>
         </div>
       </section>
@@ -208,7 +208,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                     </button>
                   </div>
 
-                  <div className="mt-6 space-y-3">
+                  <div className="mt-6 grid gap-4 lg:grid-cols-2">
                     <details className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Ny bestemmelse
@@ -236,221 +236,221 @@ export default async function Kapittel({ params }: KapittelProps) {
                         label="Spesialmerknad"
                       />
                     </details>
+                  </div>
 
-                    <details className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                      <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                        Gjeldende bestemmelse
-                      </summary>
+                  <details className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                      Gjeldende bestemmelse
+                    </summary>
 
-                      <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                        {innhold.gjeldendeBestemmelse ??
-                          "Gjeldende bestemmelse legges inn senere."}
-                      </div>
-                    </details>
+                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
+                      {innhold.gjeldendeBestemmelse ??
+                        "Gjeldende bestemmelse legges inn senere."}
+                    </div>
+                  </details>
 
-                    <details className="rounded-xl border border-slate-200 bg-white p-4">
-                      <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                        Kommentarer og vurderinger
-                      </summary>
+                  <details className="mt-4 rounded-xl border border-slate-200 bg-white p-4">
+                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
+                      Kommentarer og vurderinger
+                    </summary>
 
-                      <div className="mt-5 grid gap-5 lg:grid-cols-2">
-                        <div>
-                          <h3 className="text-lg font-bold">
-                            Partienes innspill til {del.nummer}
-                          </h3>
-                          <p className="mt-1 text-sm leading-6 text-slate-500">
-                            Skriv kommentar til ny bestemmelse og
-                            spesialmerknad for dette delpunktet, eller marker
-                            tekst direkte i bestemmelsen over.
-                          </p>
-                        </div>
-
-                        <form
-                          action={leggTilKommentar}
-                          className="rounded-xl border bg-slate-50 p-4"
-                        >
-                          <input type="hidden" name="sak_id" value={id} />
-                          <input type="hidden" name="kapittel" value={kapittel} />
-                          <input type="hidden" name="delpunkt" value={del.nummer} />
-                          <input type="hidden" name="tekstutdrag" value="" />
-
-                          <label className="text-sm font-bold text-slate-700">
-                            Ny hovedkommentar uten tekstmarkering
-                          </label>
-
-                          <textarea
-                            name="kommentar"
-                            required
-                            rows={5}
-                            placeholder={`Skriv generell kommentar til ${del.nummer}...`}
-                            className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
-                          />
-
-                          <button className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-                            Lagre kommentar
-                          </button>
-                        </form>
+                    <div className="mt-5 grid gap-5 lg:grid-cols-2">
+                      <div>
+                        <h3 className="text-lg font-bold">
+                          Partienes innspill til {del.nummer}
+                        </h3>
+                        <p className="mt-1 text-sm leading-6 text-slate-500">
+                          Skriv kommentar til ny bestemmelse og spesialmerknad
+                          for dette delpunktet, eller marker tekst direkte i
+                          bestemmelsen over.
+                        </p>
                       </div>
 
-                      <div className="mt-5 space-y-4">
-                        {hovedKommentarer.length > 0 ? (
-                          hovedKommentarer.map((kommentar) => {
-                            const svar = alleKommentarer.filter(
-                              (item) => item.forelder_id === kommentar.id
-                            );
+                      <form
+                        action={leggTilKommentar}
+                        className="rounded-xl border bg-slate-50 p-4"
+                      >
+                        <input type="hidden" name="sak_id" value={id} />
+                        <input type="hidden" name="kapittel" value={kapittel} />
+                        <input type="hidden" name="delpunkt" value={del.nummer} />
+                        <input type="hidden" name="tekstutdrag" value="" />
 
-                            return (
-                              <div key={kommentar.id} className="space-y-3">
-                                <div
-                                  className={`rounded-xl border p-4 ${partiFarge(
-                                    kommentar.parti
-                                  )}`}
-                                >
-                                  <div className="flex flex-wrap items-center gap-2">
-                                    <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                                      {kommentar.parti || "Parti"}
+                        <label className="text-sm font-bold text-slate-700">
+                          Ny hovedkommentar uten tekstmarkering
+                        </label>
+
+                        <textarea
+                          name="kommentar"
+                          required
+                          rows={5}
+                          placeholder={`Skriv generell kommentar til ${del.nummer}...`}
+                          className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
+                        />
+
+                        <button className="mt-3 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+                          Lagre kommentar
+                        </button>
+                      </form>
+                    </div>
+
+                    <div className="mt-5 space-y-4">
+                      {hovedKommentarer.length > 0 ? (
+                        hovedKommentarer.map((kommentar) => {
+                          const svar = alleKommentarer.filter(
+                            (item) => item.forelder_id === kommentar.id
+                          );
+
+                          return (
+                            <div key={kommentar.id} className="space-y-3">
+                              <div
+                                className={`rounded-xl border p-4 ${partiFarge(
+                                  kommentar.parti
+                                )}`}
+                              >
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                    {kommentar.parti || "Parti"}
+                                  </span>
+
+                                  <span className="text-sm font-semibold">
+                                    {kommentar.navn}
+                                  </span>
+
+                                  {kommentar.partiNavn ? (
+                                    <span className="text-xs text-slate-500">
+                                      {kommentar.partiNavn}
                                     </span>
-
-                                    <span className="text-sm font-semibold">
-                                      {kommentar.navn}
-                                    </span>
-
-                                    {kommentar.partiNavn ? (
-                                      <span className="text-xs text-slate-500">
-                                        {kommentar.partiNavn}
-                                      </span>
-                                    ) : null}
-                                  </div>
-
-                                  <div className="mt-3">
-                                    <Tekstutdrag tekst={kommentar.tekstutdrag} />
-
-                                    <p className="whitespace-pre-wrap text-sm leading-6">
-                                      {kommentar.kommentar}
-                                    </p>
-
-                                    {kommentar.kanRedigere ? (
-                                      <>
-                                        <RedigerKommentar
-                                          kommentarId={kommentar.id}
-                                          kommentar={kommentar.kommentar}
-                                        />
-
-                                        <SlettKommentar
-                                          kommentarId={kommentar.id}
-                                        />
-                                      </>
-                                    ) : null}
-                                  </div>
+                                  ) : null}
                                 </div>
 
-                                {svar.length > 0 ? (
-                                  <div className="ml-4 space-y-3 border-l-2 border-slate-200 pl-4">
-                                    {svar.map((svarKommentar) => (
-                                      <div
-                                        key={svarKommentar.id}
-                                        className={`rounded-xl border p-4 ${partiFarge(
-                                          svarKommentar.parti
-                                        )}`}
-                                      >
-                                        <div className="flex flex-wrap items-center gap-2">
-                                          <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
-                                            {svarKommentar.parti || "Parti"}
-                                          </span>
+                                <div className="mt-3">
+                                  <Tekstutdrag tekst={kommentar.tekstutdrag} />
 
-                                          <span className="text-sm font-semibold">
-                                            {svarKommentar.navn}
-                                          </span>
+                                  <p className="whitespace-pre-wrap text-sm leading-6">
+                                    {kommentar.kommentar}
+                                  </p>
 
-                                          {svarKommentar.partiNavn ? (
-                                            <span className="text-xs text-slate-500">
-                                              {svarKommentar.partiNavn}
-                                            </span>
-                                          ) : null}
-                                        </div>
+                                  {kommentar.kanRedigere ? (
+                                    <>
+                                      <RedigerKommentar
+                                        kommentarId={kommentar.id}
+                                        kommentar={kommentar.kommentar}
+                                      />
 
-                                        <div className="mt-3">
-                                          <Tekstutdrag
-                                            tekst={svarKommentar.tekstutdrag}
-                                          />
-
-                                          <p className="whitespace-pre-wrap text-sm leading-6">
-                                            {svarKommentar.kommentar}
-                                          </p>
-
-                                          {svarKommentar.kanRedigere ? (
-                                            <>
-                                              <RedigerKommentar
-                                                kommentarId={svarKommentar.id}
-                                                kommentar={
-                                                  svarKommentar.kommentar
-                                                }
-                                              />
-
-                                              <SlettKommentar
-                                                kommentarId={svarKommentar.id}
-                                              />
-                                            </>
-                                          ) : null}
-                                        </div>
-                                      </div>
-                                    ))}
-                                  </div>
-                                ) : null}
-
-                                <form
-                                  action={leggTilKommentar}
-                                  className="ml-4 rounded-xl border border-dashed border-slate-300 bg-white p-4"
-                                >
-                                  <input type="hidden" name="sak_id" value={id} />
-                                  <input
-                                    type="hidden"
-                                    name="kapittel"
-                                    value={kapittel}
-                                  />
-                                  <input
-                                    type="hidden"
-                                    name="delpunkt"
-                                    value={del.nummer}
-                                  />
-                                  <input
-                                    type="hidden"
-                                    name="tekstutdrag"
-                                    value={kommentar.tekstutdrag ?? ""}
-                                  />
-                                  <input
-                                    type="hidden"
-                                    name="forelder_id"
-                                    value={kommentar.id}
-                                  />
-
-                                  <label className="text-sm font-bold text-slate-700">
-                                    Svar på kommentaren
-                                  </label>
-
-                                  <textarea
-                                    name="kommentar"
-                                    required
-                                    rows={3}
-                                    placeholder="Skriv svar..."
-                                    className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
-                                  />
-
-                                  <button className="mt-3 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-                                    Lagre svar
-                                  </button>
-                                </form>
+                                      <SlettKommentar
+                                        kommentarId={kommentar.id}
+                                      />
+                                    </>
+                                  ) : null}
+                                </div>
                               </div>
-                            );
-                          })
-                        ) : (
-                          <p className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-500">
-                            Ingen kommentarer er lagret for dette delpunktet ennå.
-                          </p>
-                        )}
-                      </div>
-                    </details>
-                  </div>
+
+                              {svar.length > 0 ? (
+                                <div className="ml-4 space-y-3 border-l-2 border-slate-200 pl-4">
+                                  {svar.map((svarKommentar) => (
+                                    <div
+                                      key={svarKommentar.id}
+                                      className={`rounded-xl border p-4 ${partiFarge(
+                                        svarKommentar.parti
+                                      )}`}
+                                    >
+                                      <div className="flex flex-wrap items-center gap-2">
+                                        <span className="rounded-full bg-white px-2 py-1 text-xs font-bold shadow-sm">
+                                          {svarKommentar.parti || "Parti"}
+                                        </span>
+
+                                        <span className="text-sm font-semibold">
+                                          {svarKommentar.navn}
+                                        </span>
+
+                                        {svarKommentar.partiNavn ? (
+                                          <span className="text-xs text-slate-500">
+                                            {svarKommentar.partiNavn}
+                                          </span>
+                                        ) : null}
+                                      </div>
+
+                                      <div className="mt-3">
+                                        <Tekstutdrag
+                                          tekst={svarKommentar.tekstutdrag}
+                                        />
+
+                                        <p className="whitespace-pre-wrap text-sm leading-6">
+                                          {svarKommentar.kommentar}
+                                        </p>
+
+                                        {svarKommentar.kanRedigere ? (
+                                          <>
+                                            <RedigerKommentar
+                                              kommentarId={svarKommentar.id}
+                                              kommentar={
+                                                svarKommentar.kommentar
+                                              }
+                                            />
+
+                                            <SlettKommentar
+                                              kommentarId={svarKommentar.id}
+                                            />
+                                          </>
+                                        ) : null}
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              ) : null}
+
+                              <form
+                                action={leggTilKommentar}
+                                className="ml-4 rounded-xl border border-dashed border-slate-300 bg-white p-4"
+                              >
+                                <input type="hidden" name="sak_id" value={id} />
+                                <input
+                                  type="hidden"
+                                  name="kapittel"
+                                  value={kapittel}
+                                />
+                                <input
+                                  type="hidden"
+                                  name="delpunkt"
+                                  value={del.nummer}
+                                />
+                                <input
+                                  type="hidden"
+                                  name="tekstutdrag"
+                                  value={kommentar.tekstutdrag ?? ""}
+                                />
+                                <input
+                                  type="hidden"
+                                  name="forelder_id"
+                                  value={kommentar.id}
+                                />
+
+                                <label className="text-sm font-bold text-slate-700">
+                                  Svar på kommentaren
+                                </label>
+
+                                <textarea
+                                  name="kommentar"
+                                  required
+                                  rows={3}
+                                  placeholder="Skriv svar..."
+                                  className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
+                                />
+
+                                <button className="mt-3 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
+                                  Lagre svar
+                                </button>
+                              </form>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <p className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-500">
+                          Ingen kommentarer er lagret for dette delpunktet ennå.
+                        </p>
+                      )}
+                    </div>
+                  </details>
                 </article>
               );
             })}
