@@ -19,6 +19,15 @@ const kartLenker = [
   },
 ];
 
+const arbeidskort = [
+  "Innspill",
+  "Arkitektur Asker",
+  "Omforente bestemmelser",
+  "Omforente spesialmerknader",
+  "Omforente innspill",
+  "Omforent arkitektur",
+];
+
 type SakProps = {
   params: Promise<{
     id: string;
@@ -130,12 +139,7 @@ export default async function Sak({ params }: SakProps) {
       </section>
 
       <section className="mt-10 grid gap-4 md:grid-cols-2">
-        {[
-          "Innspill",
-          "Arkitektur Asker",
-          "Dokumentbibliotek",
-          "Forhandlingslogg",
-        ].map((title) => (
+        {arbeidskort.map((title) => (
           <div
             key={title}
             className="rounded-2xl border border-slate-200 p-5 sm:p-6"
@@ -149,34 +153,6 @@ export default async function Sak({ params }: SakProps) {
         ))}
       </section>
 
-      <section className="mt-10 rounded-2xl border border-slate-200 p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h3 className="text-xl font-bold">Partienes vurderinger</h3>
-
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Samlet vurdering for hele saken på tvers av kapitlene.
-            </p>
-          </div>
-
-          <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-            Eksporter vurderinger
-          </button>
-        </div>
-
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          {["Høyre", "FrP", "Venstre", "KrF"].map((parti) => (
-            <div key={parti} className="rounded-xl border bg-slate-50 p-5">
-              <h4 className="font-bold">{parti}</h4>
-
-              <p className="mt-2 text-sm leading-6 text-slate-500">
-                Kun brukere fra {parti} kan skrive her. Alle kan lese.
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -187,12 +163,12 @@ export default async function Sak({ params }: SakProps) {
             </p>
           </div>
 
-         <a
-  href={`/saker/${id}/eksporter`}
-  className="inline-flex w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
->
-  Eksporter sak
-</a>
+          <a
+            href={`/saker/${id}/eksporter`}
+            className="inline-flex w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          >
+            Eksporter sak
+          </a>
         </div>
       </section>
     </div>
