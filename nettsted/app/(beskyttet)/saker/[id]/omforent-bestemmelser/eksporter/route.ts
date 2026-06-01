@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Document, HeadingLevel, Packer, Paragraph, TextRun } from "docx";
-import { kpaKapitler } from "../../../data/kpaKapitler";
-import { kpaInnhold } from "../../../data/kpaInnhold";
+import { kpaKapitler } from "../../data/kpaKapitler";
+import { kpaInnhold } from "../../data/kpaInnhold";
 
 export const runtime = "nodejs";
 
