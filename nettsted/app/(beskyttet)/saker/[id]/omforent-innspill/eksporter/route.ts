@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { Document, HeadingLevel, Packer, Paragraph, TextRun } from "docx";
-import { hentInnspill } from "@/lib/kpa/innspill";
+import { innspillOmrader } from "@/lib/kpa/innspill";
 
 export const runtime = "nodejs";
 
@@ -19,11 +19,6 @@ type OmforentRad = {
   tekst: string | null;
   sist_endret: string | null;
 };
-
-function hentOmradeFraKapittel(kapittel: string) {
-  if (!kapittel.startsWith("innspill-")) return "";
-  return kapittel.replace("innspill-", "");
-}
 
 function tekstTilAvsnitt(tekst: string | null | undefined) {
   if (!tekst || !tekst.trim()) {
@@ -63,11 +58,32 @@ export async function GET(
     .from("omforent_innspill")
     .select("*")
     .eq("sak_id", id)
-    .eq("type", "innspill")
-    .order("kapittel", { ascending: true })
-    .order("delpunkt", { ascending: true });
+    .eq("type", "innspill");
 
-  const rader = (data ?? []) as OmforentRad[];
+  const lagrede = (data ?? []) as OmforentRad[];
+
+  const alleInnspill = Object.values(innspillOmrader).flatMap((omrade) =>
+    omrade.innspill.map((innspill) => {
+      const kapittel = `innspill-${omrade.slug}`;
+      const delpunkt = String(innspill.nummer);
+
+      const lagret =
+        lagrede.find(
+          (rad) => rad.kapittel === kapittel && rad.delpunkt === delpunkt
+        ) ?? null;
+
+      return {
+        omrade,
+        innspill,
+        tekst:
+          lagret?.tekst?.trim() ||
+          innspill.konklusjon?.trim() ||
+          innspill.vurdering?.trim() ||
+          "",
+        erLagret: Boolean(lagret?.tekst?.trim()),
+      };
+    })
+  );
 
   const dokumentInnhold: Paragraph[] = [
     new Paragraph({
@@ -88,35 +104,27 @@ export async function GET(
     tomLinje(),
   ];
 
-  if (rader.length === 0) {
+  for (const item of alleInnspill) {
     dokumentInnhold.push(
       new Paragraph({
-        children: [
-          new TextRun({
-            text: "Ingen omforente innspill er lagret ennå.",
-            italics: true,
-          }),
-        ],
-      })
-    );
-  }
-
-  for (const rad of rader) {
-    const omrade = hentOmradeFraKapittel(rad.kapittel);
-    const innspill = hentInnspill(omrade, rad.delpunkt);
-
-    dokumentInnhold.push(
-      new Paragraph({
-        text: innspill
-          ? `${innspill.omrade} – innspill ${innspill.nummer}`
-          : `${rad.kapittel} / ${rad.delpunkt}`,
+        text: `${item.innspill.omrade} – innspill ${item.innspill.nummer}`,
         heading: HeadingLevel.HEADING_1,
       }),
       new Paragraph({
-        text: innspill?.tittel ?? "Omforent innspill",
+        text: item.innspill.tittel,
         heading: HeadingLevel.HEADING_2,
       }),
-      ...tekstTilAvsnitt(rad.tekst),
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: item.erLagret
+              ? "Omforent tekst"
+              : "Kommunedirektørens forslag som base",
+            bold: true,
+          }),
+        ],
+      }),
+      ...tekstTilAvsnitt(item.tekst),
       tomLinje()
     );
   }
