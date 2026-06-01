@@ -1,52 +1,5 @@
 import Link from "next/link";
-
-const kapitler = [
-  {
-    tittel: "En ambisiøs kommune",
-    slug: "en-ambisios-kommune",
-    tekst: "Arkitektur er samfunnsutvikling og et verktøy for å utvikle gode steder.",
-  },
-  {
-    tittel: "Attraktiv",
-    slug: "attraktiv",
-    tekst: "Helhetlig utvikling med merverdi og vakker arkitektur med særpreg.",
-  },
-  {
-    tittel: "Ansvarlig",
-    slug: "ansvarlig",
-    tekst: "Omtanke for natur, blågrønne verdier, kvalitet og varige valg.",
-  },
-  {
-    tittel: "For alle",
-    slug: "for-alle",
-    tekst: "Gode boliger, nabolag og aktive liv i fellesskap.",
-  },
-  {
-    tittel: "Urbane områder",
-    slug: "urbane-omrader",
-    tekst: "Prinsipper for utvikling av urbane områder.",
-  },
-  {
-    tittel: "Småhusområdene",
-    slug: "smahusomradene",
-    tekst: "Prinsipper for utvikling og tilpasning i småhusområdene.",
-  },
-  {
-    tittel: "Kulturmiljøer",
-    slug: "kulturmiljoer",
-    tekst: "Prinsipper for utvikling med hensyn til kulturmiljøer.",
-  },
-  {
-    tittel: "Kysten",
-    slug: "kysten",
-    tekst: "Prinsipper for arkitektur og stedsforming langs kysten.",
-  },
-  {
-    tittel: "Landbruksområdene",
-    slug: "landbruksomradene",
-    tekst: "Prinsipper for utvikling i landbruksområdene.",
-  },
-];
+import { arkitekturKapittelListe } from "@/lib/kpa/arkitektur";
 
 type ArkitekturProps = {
   params: Promise<{
@@ -86,7 +39,7 @@ export default async function Arkitektur({ params }: ArkitekturProps) {
         <h2 className="text-xl font-bold">Kapitler</h2>
 
         <div className="mt-6 grid gap-3">
-          {kapitler.map((kapittel) => (
+          {arkitekturKapittelListe.map((kapittel) => (
             <Link
               key={kapittel.slug}
               href={`/saker/${id}/arkitektur/${kapittel.slug}`}
@@ -97,7 +50,7 @@ export default async function Arkitektur({ params }: ArkitekturProps) {
                   <h3 className="font-bold">{kapittel.tittel}</h3>
 
                   <p className="mt-1 text-sm leading-6 text-slate-500">
-                    {kapittel.tekst}
+                    {kapittel.ingress}
                   </p>
                 </div>
 
