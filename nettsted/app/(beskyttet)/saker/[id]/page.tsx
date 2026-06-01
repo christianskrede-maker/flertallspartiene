@@ -20,30 +20,66 @@ const kartLenker = [
 ];
 
 const innspillOmrader = [
-  "Heggedal",
-  "Dikemark",
-  "Holmen",
-  "Nesøya",
-  "Røyken",
-  "Sætre",
-  "Asker",
-  "Slemmestad",
-  "Spikkestad",
-  "Tofte",
-  "Vollen",
-  "Generelle innspill",
+  { navn: "Heggedal", slug: "heggedal", antall: 10 },
+  { navn: "Dikemark", slug: "dikemark", antall: 2 },
+  { navn: "Holmen", slug: "holmen", antall: 10 },
+  { navn: "Nesøya", slug: "nesoya", antall: 3 },
+  { navn: "Røyken", slug: "royken", antall: 20 },
+  { navn: "Sætre", slug: "satre", antall: 24 },
+  { navn: "Asker", slug: "asker", antall: 23 },
+  { navn: "Slemmestad", slug: "slemmestad", antall: 14 },
+  { navn: "Spikkestad", slug: "spikkestad", antall: 4 },
+  { navn: "Tofte", slug: "tofte", antall: 8 },
+  { navn: "Vollen", slug: "vollen", antall: 22 },
+  { navn: "Generelle innspill", slug: "generelle", antall: 31 },
 ];
 
 const arkitekturKapitler = [
-  "En ambisiøs kommune",
-  "Attraktiv",
-  "Ansvarlig",
-  "For alle",
-  "Urbane områder",
-  "Småhusområdene",
-  "Kulturmiljøer",
-  "Kysten",
-  "Landbruksområdene",
+  {
+    navn: "En ambisiøs kommune",
+    slug: "en-ambisios-kommune",
+    tekst: "Arkitektur er samfunnsutvikling og et verktøy for å utvikle gode steder.",
+  },
+  {
+    navn: "Attraktiv",
+    slug: "attraktiv",
+    tekst: "Helhetlig utvikling med merverdi og vakker arkitektur med særpreg.",
+  },
+  {
+    navn: "Ansvarlig",
+    slug: "ansvarlig",
+    tekst: "Omtanke for natur, blågrønne verdier, kvalitet og varige valg.",
+  },
+  {
+    navn: "For alle",
+    slug: "for-alle",
+    tekst: "Gode boliger, nabolag og aktive liv i fellesskap.",
+  },
+  {
+    navn: "Urbane områder",
+    slug: "urbane-omrader",
+    tekst: "Prinsipper for utvikling av urbane områder.",
+  },
+  {
+    navn: "Småhusområdene",
+    slug: "smahusomradene",
+    tekst: "Prinsipper for utvikling og tilpasning i småhusområdene.",
+  },
+  {
+    navn: "Kulturmiljøer",
+    slug: "kulturmiljoer",
+    tekst: "Prinsipper for utvikling med hensyn til kulturmiljøer.",
+  },
+  {
+    navn: "Kysten",
+    slug: "kysten",
+    tekst: "Prinsipper for arkitektur og stedsforming langs kysten.",
+  },
+  {
+    navn: "Landbruksområdene",
+    slug: "landbruksomradene",
+    tekst: "Prinsipper for utvikling i landbruksområdene.",
+  },
 ];
 
 type SakProps = {
@@ -167,22 +203,30 @@ export default async function Sak({ params }: SakProps) {
         </summary>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
-          Innspillene behandles etter lokalområde. Selve behandlingssidene
-          bygges ut i neste fase.
+          Innspillene behandles etter lokalområde. Velg lokalområde for å se og
+          behandle innspillene.
         </p>
 
         <div className="mt-6 grid gap-3">
           {innspillOmrader.map((omrade) => (
             <Link
-              key={omrade}
-              href={`/saker/${id}/innspill`}
+              key={omrade.slug}
+              href={`/saker/${id}/innspill/${omrade.slug}`}
               className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
-              <h3 className="font-bold">{omrade}</h3>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="font-bold">{omrade.navn}</h3>
 
-              <p className="mt-1 text-sm text-slate-500">
-                Kommer i neste fase
-              </p>
+                  <p className="mt-1 text-sm text-slate-500">
+                    {omrade.antall} innspill
+                  </p>
+                </div>
+
+                <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                  Ikke behandlet
+                </span>
+              </div>
             </Link>
           ))}
         </div>
@@ -201,15 +245,23 @@ export default async function Sak({ params }: SakProps) {
         <div className="mt-6 grid gap-3">
           {arkitekturKapitler.map((kapittel) => (
             <Link
-              key={kapittel}
-              href={`/saker/${id}/arkitektur`}
+              key={kapittel.slug}
+              href={`/saker/${id}/arkitektur/${kapittel.slug}`}
               className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
-              <h3 className="font-bold">{kapittel}</h3>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="font-bold">{kapittel.navn}</h3>
 
-              <p className="mt-1 text-sm text-slate-500">
-                Kommer i neste fase
-              </p>
+                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                    {kapittel.tekst}
+                  </p>
+                </div>
+
+                <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                  Ikke behandlet
+                </span>
+              </div>
             </Link>
           ))}
         </div>
