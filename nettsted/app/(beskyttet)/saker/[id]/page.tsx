@@ -19,13 +19,31 @@ const kartLenker = [
   },
 ];
 
-const arbeidskort = [
-  "Innspill",
-  "Arkitektur Asker",
-  "Omforente bestemmelser",
-  "Omforente spesialmerknader",
-  "Omforente innspill",
-  "Omforent arkitektur",
+const innspillOmrader = [
+  "Heggedal",
+  "Dikemark",
+  "Holmen",
+  "Nesøya",
+  "Røyken",
+  "Sætre",
+  "Asker",
+  "Slemmestad",
+  "Spikkestad",
+  "Tofte",
+  "Vollen",
+  "Generelle innspill",
+];
+
+const arkitekturKapitler = [
+  "En ambisiøs kommune",
+  "Attraktiv",
+  "Ansvarlig",
+  "For alle",
+  "Urbane områder",
+  "Småhusområdene",
+  "Kulturmiljøer",
+  "Kysten",
+  "Landbruksområdene",
 ];
 
 type SakProps = {
@@ -101,10 +119,15 @@ export default async function Sak({ params }: SakProps) {
         </div>
       </section>
 
-      <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <h2 className="text-2xl font-bold">Bestemmelser og spesialmerknader</h2>
+      <details
+        open
+        className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
+      >
+        <summary className="cursor-pointer text-2xl font-bold">
+          Bestemmelser og spesialmerknader
+        </summary>
 
-        <p className="mt-2 text-sm leading-6 text-slate-600">
+        <p className="mt-4 text-sm leading-6 text-slate-600">
           Strukturen følger nytt utkast til kommuneplanens bestemmelser.
           Gjeldende bestemmelser kobles manuelt der de passer. Bestemmelse og
           spesialmerknad behandles alltid sammen.
@@ -136,39 +159,85 @@ export default async function Sak({ params }: SakProps) {
             </Link>
           ))}
         </div>
-      </section>
+      </details>
 
-      <section className="mt-10 grid gap-4 md:grid-cols-2">
-        {arbeidskort.map((title) => (
-          <div
-            key={title}
-            className="rounded-2xl border border-slate-200 p-5 sm:p-6"
-          >
-            <h3 className="font-bold">{title}</h3>
+      <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+        <summary className="cursor-pointer text-2xl font-bold">
+          Innspill
+        </summary>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Innhold og kommentarer legges inn her i neste fase.
+        <div className="mt-6 grid gap-3">
+          {innspillOmrader.map((omrade) => (
+            <div
+              key={omrade}
+              className="rounded-xl border border-slate-200 p-4"
+            >
+              <h3 className="font-bold">{omrade}</h3>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Kommer i neste fase
+              </p>
+            </div>
+          ))}
+        </div>
+      </details>
+
+      <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+        <summary className="cursor-pointer text-2xl font-bold">
+          Arkitektur Asker
+        </summary>
+
+        <div className="mt-6 grid gap-3">
+          {arkitekturKapitler.map((kapittel) => (
+            <div
+              key={kapittel}
+              className="rounded-xl border border-slate-200 p-4"
+            >
+              <h3 className="font-bold">{kapittel}</h3>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Kommer i neste fase
+              </p>
+            </div>
+          ))}
+        </div>
+      </details>
+
+      <section className="mt-10">
+        <h2 className="mb-4 text-2xl font-bold">Omforente dokumenter</h2>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+            <h3 className="font-bold">Omforente bestemmelser</h3>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Egen eksport av omforente bestemmelser.
             </p>
           </div>
-        ))}
-      </section>
 
-      <section className="mt-10 rounded-2xl border border-slate-200 bg-slate-50 p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h3 className="text-xl font-bold">Omforent forslag</h3>
+          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+            <h3 className="font-bold">Omforente spesialmerknader</h3>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500">
-              Felles forslag utarbeides her av administratorer og gruppeledere.
+            <p className="mt-2 text-sm text-slate-500">
+              Egen eksport av omforente spesialmerknader.
             </p>
           </div>
 
-          <a
-            href={`/saker/${id}/eksporter`}
-            className="inline-flex w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
-          >
-            Eksporter sak
-          </a>
+          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+            <h3 className="font-bold">Omforente innspill</h3>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Egen eksport av omforente innspill.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+            <h3 className="font-bold">Omforent arkitektur</h3>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Egen eksport av omforent arkitektur.
+            </p>
+          </div>
         </div>
       </section>
     </div>
