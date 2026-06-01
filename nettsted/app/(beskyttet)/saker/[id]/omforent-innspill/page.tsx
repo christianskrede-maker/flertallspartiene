@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
-import { hentInnspill } from "@/lib/kpa/innspill";
+import { innspillOmrader } from "@/lib/kpa/innspill";
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,17 +19,9 @@ type OmforentRad = {
   kapittel: string;
   delpunkt: string;
   type: string;
-  tekst: string;
+  tekst: string | null;
   sist_endret: string | null;
 };
-
-function hentOmradeFraKapittel(kapittel: string) {
-  if (!kapittel.startsWith("innspill-")) {
-    return "";
-  }
-
-  return kapittel.replace("innspill-", "");
-}
 
 export default async function OmforentInnspill({
   params,
@@ -40,11 +32,35 @@ export default async function OmforentInnspill({
     .from("omforent_innspill")
     .select("*")
     .eq("sak_id", id)
-    .eq("type", "innspill")
-    .order("kapittel", { ascending: true })
-    .order("delpunkt", { ascending: true });
+    .eq("type", "innspill");
 
-  const omforenteInnspill = (data ?? []) as OmforentRad[];
+  const lagrede = (data ?? []) as OmforentRad[];
+
+  const alleInnspill = Object.values(innspillOmrader).flatMap((omrade) =>
+    omrade.innspill.map((innspill) => {
+      const kapittel = `innspill-${omrade.slug}`;
+      const delpunkt = String(innspill.nummer);
+
+      const lagret =
+        lagrede.find(
+          (rad) => rad.kapittel === kapittel && rad.delpunkt === delpunkt
+        ) ?? null;
+
+      return {
+        omrade,
+        innspill,
+        kapittel,
+        delpunkt,
+        tekst:
+          lagret?.tekst?.trim() ||
+          innspill.konklusjon?.trim() ||
+          innspill.vurdering?.trim() ||
+          "",
+        sist_endret: lagret?.sist_endret ?? null,
+        erLagret: Boolean(lagret?.tekst?.trim()),
+      };
+    })
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
@@ -67,8 +83,8 @@ export default async function OmforentInnspill({
             </h1>
 
             <p className="mt-4 text-sm leading-6 text-slate-600">
-              Her samles de omforente innspillene som skal inngå i samlet
-              oversendelse til kommunedirektøren.
+              Her samles omforente innspill. Der flertallet ikke har lagret en
+              egen omforent tekst, vises kommunedirektørens forslag som base.
             </p>
           </div>
 
@@ -81,57 +97,49 @@ export default async function OmforentInnspill({
         </div>
 
         <div className="mt-6 space-y-4">
-          {omforenteInnspill.length > 0 ? (
-            omforenteInnspill.map((rad) => {
-              const omrade = hentOmradeFraKapittel(rad.kapittel);
-              const innspill = hentInnspill(omrade, rad.delpunkt);
-
-              return (
-                <article
-                  key={rad.id}
-                  className="rounded-xl border border-slate-200 bg-slate-50 p-5"
-                >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-                        {innspill
-                          ? `${innspill.omrade} – innspill ${innspill.nummer}`
-                          : `${rad.kapittel} / ${rad.delpunkt}`}
-                      </p>
-
-                      <h2 className="mt-2 text-xl font-bold">
-                        {innspill?.tittel ?? "Omforent innspill"}
-                      </h2>
-                    </div>
-
-                    <Link
-                      href={`/saker/${id}/innspill/${omrade}/${rad.delpunkt}`}
-                      className="w-fit rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium hover:bg-slate-100"
-                    >
-                      Åpne behandling
-                    </Link>
-                  </div>
-
-                  <div className="mt-4 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-800">
-                    {rad.tekst}
-                  </div>
-
-                  <p className="mt-3 text-xs text-slate-500">
-                    Sist lagret:{" "}
-                    {rad.sist_endret
-                      ? new Date(rad.sist_endret).toLocaleString("nb-NO")
-                      : "Ukjent"}
+          {alleInnspill.map(({ omrade, innspill, delpunkt, tekst, sist_endret, erLagret }) => (
+            <article
+              key={`${omrade.slug}-${innspill.nummer}`}
+              className="rounded-xl border border-slate-200 bg-slate-50 p-5"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                    {innspill.omrade} – innspill {innspill.nummer}
                   </p>
-                </article>
-              );
-            })
-          ) : (
-            <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5">
-              <p className="text-sm font-medium text-slate-600">
-                Ingen omforente innspill er lagret ennå.
+
+                  <h2 className="mt-2 text-xl font-bold">{innspill.tittel}</h2>
+
+                  <p className="mt-2 text-sm text-slate-500">
+                    {erLagret
+                      ? "Omforent tekst er lagret."
+                      : "Bruker kommunedirektørens forslag som base."}
+                  </p>
+                </div>
+
+                <Link
+                  href={`/saker/${id}/innspill/${omrade.slug}/${delpunkt}`}
+                  className="w-fit rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-medium hover:bg-slate-100"
+                >
+                  Åpne behandling
+                </Link>
+              </div>
+
+              <div className="mt-4 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-800">
+                {tekst || "Ikke lagt inn."}
+              </div>
+
+              <p className="mt-3 text-xs text-slate-500">
+                {erLagret
+                  ? `Sist lagret: ${
+                      sist_endret
+                        ? new Date(sist_endret).toLocaleString("nb-NO")
+                        : "Ukjent"
+                    }`
+                  : "Ikke korrigert av flertallet ennå."}
               </p>
-            </div>
-          )}
+            </article>
+          ))}
         </div>
       </section>
     </div>
