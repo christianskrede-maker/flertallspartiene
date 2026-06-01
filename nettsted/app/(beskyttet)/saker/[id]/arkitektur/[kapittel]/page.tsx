@@ -1,48 +1,5 @@
 import Link from "next/link";
-
-const kapitler = {
-  "en-ambisios-kommune": {
-    tittel: "En ambisiøs kommune",
-    ingress:
-      "Arkitektur er samfunnsutvikling og et verktøy for å utvikle gode steder.",
-  },
-  attraktiv: {
-    tittel: "Attraktiv",
-    ingress:
-      "Helhetlig utvikling med merverdi og vakker arkitektur med særpreg.",
-  },
-  ansvarlig: {
-    tittel: "Ansvarlig",
-    ingress:
-      "Omtanke for natur, blågrønne verdier, kvalitet og varige valg.",
-  },
-  "for-alle": {
-    tittel: "For alle",
-    ingress: "Gode boliger, nabolag og aktive liv i fellesskap.",
-  },
-  "urbane-omrader": {
-    tittel: "Urbane områder",
-    ingress: "Prinsipper for utvikling av urbane områder.",
-  },
-  smahusomradene: {
-    tittel: "Småhusområdene",
-    ingress: "Prinsipper for utvikling og tilpasning i småhusområdene.",
-  },
-  kulturmiljoer: {
-    tittel: "Kulturmiljøer",
-    ingress: "Prinsipper for utvikling med hensyn til kulturmiljøer.",
-  },
-  kysten: {
-    tittel: "Kysten",
-    ingress: "Prinsipper for arkitektur og stedsforming langs kysten.",
-  },
-  landbruksomradene: {
-    tittel: "Landbruksområdene",
-    ingress: "Prinsipper for utvikling i landbruksområdene.",
-  },
-};
-
-type KapittelSlug = keyof typeof kapitler;
+import { hentArkitekturKapittel } from "@/lib/kpa/arkitektur";
 
 type ArkitekturKapittelProps = {
   params: Promise<{
@@ -56,7 +13,7 @@ export default async function ArkitekturKapittel({
 }: ArkitekturKapittelProps) {
   const { id, kapittel } = await params;
 
-  const valgtKapittel = kapitler[kapittel as KapittelSlug];
+  const valgtKapittel = hentArkitekturKapittel(kapittel);
 
   if (!valgtKapittel) {
     return (
@@ -132,8 +89,7 @@ export default async function ArkitekturKapittel({
 
             <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
               <p className="whitespace-pre-wrap">
-                Arkitekturteksten kobles inn her når datafilen for Arkitektur
-                Asker er på plass.
+                {valgtKapittel.tekst}
               </p>
             </div>
           </details>
