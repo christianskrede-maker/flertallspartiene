@@ -1,21 +1,5 @@
 import Link from "next/link";
-
-const omrader = {
-  heggedal: "Heggedal",
-  dikemark: "Dikemark",
-  holmen: "Holmen",
-  nesoya: "Nesøya",
-  royken: "Røyken",
-  satre: "Sætre",
-  asker: "Asker",
-  slemmestad: "Slemmestad",
-  spikkestad: "Spikkestad",
-  tofte: "Tofte",
-  vollen: "Vollen",
-  generelle: "Generelle innspill",
-};
-
-type OmradeSlug = keyof typeof omrader;
+import { hentInnspill } from "@/lib/kpa/innspill";
 
 type InnspillDetaljProps = {
   params: Promise<{
@@ -25,12 +9,55 @@ type InnspillDetaljProps = {
   }>;
 };
 
+function statusKlasse(status: string) {
+  if (status === "Anbefales") {
+    return "bg-green-100 text-green-800";
+  }
+
+  if (status === "Anbefales delvis") {
+    return "bg-blue-100 text-blue-800";
+  }
+
+  if (status === "Må avklares ved regulering") {
+    return "bg-yellow-100 text-yellow-800";
+  }
+
+  if (status === "Tas til orientering") {
+    return "bg-slate-100 text-slate-800";
+  }
+
+  return "bg-red-100 text-red-800";
+}
+
 export default async function InnspillDetalj({
   params,
 }: InnspillDetaljProps) {
   const { id, omrade, innspill } = await params;
 
-  const omradeNavn = omrader[omrade as OmradeSlug] ?? "Ukjent lokalområde";
+  const valgtInnspill = hentInnspill(omrade, innspill);
+
+  if (!valgtInnspill) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+        <Link
+          href={`/saker/${id}/innspill/${omrade}`}
+          className="inline-flex text-sm text-slate-500 hover:text-slate-900"
+        >
+          ← Tilbake til området
+        </Link>
+
+        <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+          <h1 className="text-3xl font-bold sm:text-4xl">
+            Ukjent innspill
+          </h1>
+
+          <p className="mt-4 text-sm leading-6 text-slate-600">
+            Dette innspillet finnes ikke i innspillsstrukturen.
+          </p>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-[1800px] px-4 py-6 sm:px-6 sm:py-10">
@@ -38,23 +65,33 @@ export default async function InnspillDetalj({
         href={`/saker/${id}/innspill/${omrade}`}
         className="inline-flex text-sm text-slate-500 hover:text-slate-900"
       >
-        ← Tilbake til {omradeNavn}
+        ← Tilbake til {valgtInnspill.omrade}
       </Link>
 
       <section className="mt-8">
         <p className="text-sm font-medium text-slate-500">
-          Kommuneplanens arealdel / Innspill / {omradeNavn}
+          Kommuneplanens arealdel / Innspill / {valgtInnspill.omrade}
         </p>
 
-        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">
-          Innspill {innspill}
-        </h1>
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold sm:text-4xl">
+              Innspill {valgtInnspill.nummer}
+            </h1>
 
-        <p className="mt-4 text-sm leading-6 text-slate-600">
-          Dette er behandlingssiden for ett enkelt innspill. Her skal partiene
-          kunne lese innspillet, vurdere kommunedirektørens anbefaling, skrive
-          kommentarer og utarbeide omforent innspill.
-        </p>
+            <p className="mt-4 text-sm leading-6 text-slate-600">
+              {valgtInnspill.tittel}
+            </p>
+          </div>
+
+          <span
+            className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${statusKlasse(
+              valgtInnspill.status,
+            )}`}
+          >
+            {valgtInnspill.status}
+          </span>
+        </div>
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
@@ -65,7 +102,7 @@ export default async function InnspillDetalj({
             </p>
 
             <h2 className="mt-2 text-2xl font-bold">
-              {omradeNavn} – innspill {innspill}
+              {valgtInnspill.omrade} – innspill {valgtInnspill.nummer}
             </h2>
           </div>
 
@@ -88,21 +125,42 @@ export default async function InnspillDetalj({
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
                   Saksnummer
                 </p>
-                <p className="mt-1">Kommer i neste fase</p>
+                <p className="mt-1">{valgtInnspill.saksnummer}</p>
               </div>
 
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
                   Innsender
                 </p>
-                <p className="mt-1">Kommer i neste fase</p>
+                <p className="mt-1">{valgtInnspill.innsender}</p>
               </div>
 
               <div>
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
                   På vegne av
                 </p>
-                <p className="mt-1">Kommer i neste fase</p>
+                <p className="mt-1">{valgtInnspill.paVegneAv}</p>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  Kategori
+                </p>
+                <p className="mt-1">{valgtInnspill.kategori}</p>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  Gbnr.
+                </p>
+                <p className="mt-1">{valgtInnspill.gbnr}</p>
+              </div>
+
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                  Dato
+                </p>
+                <p className="mt-1">{valgtInnspill.dato}</p>
               </div>
 
               <div>
@@ -110,8 +168,7 @@ export default async function InnspillDetalj({
                   Hva innspillet handler om
                 </p>
                 <p className="mt-1 whitespace-pre-wrap">
-                  Innspillsteksten kobles inn her når datafilen for innspill er
-                  på plass.
+                  {valgtInnspill.innspillstekst}
                 </p>
               </div>
             </div>
@@ -131,8 +188,7 @@ export default async function InnspillDetalj({
                   Vurdering
                 </p>
                 <p className="mt-1 whitespace-pre-wrap">
-                  Kommunedirektørens vurdering kobles inn her når datafilen for
-                  innspill er på plass.
+                  {valgtInnspill.vurdering}
                 </p>
               </div>
 
@@ -140,7 +196,7 @@ export default async function InnspillDetalj({
                 <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
                   Konklusjon / anbefaling
                 </p>
-                <p className="mt-1">Kommer i neste fase</p>
+                <p className="mt-1">{valgtInnspill.konklusjon}</p>
               </div>
             </div>
           </details>
@@ -156,7 +212,7 @@ export default async function InnspillDetalj({
             <div className="mt-5 space-y-5">
               <div>
                 <h3 className="text-lg font-bold">
-                  Partienes innspill til innspill {innspill}
+                  Partienes innspill til innspill {valgtInnspill.nummer}
                 </h3>
 
                 <p className="mt-1 text-sm leading-6 text-slate-500">
@@ -173,7 +229,7 @@ export default async function InnspillDetalj({
                 <textarea
                   name="kommentar"
                   rows={5}
-                  placeholder={`Skriv generell kommentar til innspill ${innspill}...`}
+                  placeholder={`Skriv generell kommentar til innspill ${valgtInnspill.nummer}...`}
                   className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
                 />
 
