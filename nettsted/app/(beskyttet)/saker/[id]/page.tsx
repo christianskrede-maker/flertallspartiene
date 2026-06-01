@@ -166,18 +166,24 @@ export default async function Sak({ params }: SakProps) {
           Innspill
         </summary>
 
+        <p className="mt-4 text-sm leading-6 text-slate-600">
+          Innspillene behandles etter lokalområde. Selve behandlingssidene
+          bygges ut i neste fase.
+        </p>
+
         <div className="mt-6 grid gap-3">
           {innspillOmrader.map((omrade) => (
-            <div
+            <Link
               key={omrade}
-              className="rounded-xl border border-slate-200 p-4"
+              href={`/saker/${id}/innspill`}
+              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
               <h3 className="font-bold">{omrade}</h3>
 
               <p className="mt-1 text-sm text-slate-500">
                 Kommer i neste fase
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </details>
@@ -187,18 +193,24 @@ export default async function Sak({ params }: SakProps) {
           Arkitektur Asker
         </summary>
 
+        <p className="mt-4 text-sm leading-6 text-slate-600">
+          Arkitektur Asker behandles tematisk etter kapitlene i
+          arkitekturdokumentet.
+        </p>
+
         <div className="mt-6 grid gap-3">
           {arkitekturKapitler.map((kapittel) => (
-            <div
+            <Link
               key={kapittel}
-              className="rounded-xl border border-slate-200 p-4"
+              href={`/saker/${id}/arkitektur`}
+              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
               <h3 className="font-bold">{kapittel}</h3>
 
               <p className="mt-1 text-sm text-slate-500">
                 Kommer i neste fase
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       </details>
@@ -207,37 +219,49 @@ export default async function Sak({ params }: SakProps) {
         <h2 className="mb-4 text-2xl font-bold">Omforente dokumenter</h2>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+          <Link
+            href={`/saker/${id}/omforent-bestemmelser`}
+            className="rounded-2xl border border-slate-200 p-5 transition hover:bg-slate-50 sm:p-6"
+          >
             <h3 className="font-bold">Omforente bestemmelser</h3>
 
             <p className="mt-2 text-sm text-slate-500">
               Egen eksport av omforente bestemmelser.
             </p>
-          </div>
+          </Link>
 
-          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+          <Link
+            href={`/saker/${id}/omforent-spesialmerknader`}
+            className="rounded-2xl border border-slate-200 p-5 transition hover:bg-slate-50 sm:p-6"
+          >
             <h3 className="font-bold">Omforente spesialmerknader</h3>
 
             <p className="mt-2 text-sm text-slate-500">
               Egen eksport av omforente spesialmerknader.
             </p>
-          </div>
+          </Link>
 
-          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+          <Link
+            href={`/saker/${id}/omforent-innspill`}
+            className="rounded-2xl border border-slate-200 p-5 transition hover:bg-slate-50 sm:p-6"
+          >
             <h3 className="font-bold">Omforente innspill</h3>
 
             <p className="mt-2 text-sm text-slate-500">
               Egen eksport av omforente innspill.
             </p>
-          </div>
+          </Link>
 
-          <div className="rounded-2xl border border-slate-200 p-5 sm:p-6">
+          <Link
+            href={`/saker/${id}/omforent-arkitektur`}
+            className="rounded-2xl border border-slate-200 p-5 transition hover:bg-slate-50 sm:p-6"
+          >
             <h3 className="font-bold">Omforent arkitektur</h3>
 
             <p className="mt-2 text-sm text-slate-500">
               Egen eksport av omforent arkitektur.
             </p>
-          </div>
+          </Link>
         </div>
       </section>
     </div>
