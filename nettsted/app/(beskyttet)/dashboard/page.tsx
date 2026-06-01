@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Dashboard() {
   const saker = [
     {
@@ -5,12 +7,14 @@ export default function Dashboard() {
       tittel: "Kommuneplanens arealdel",
       utvalg: "Kommunestyret / Plan og bygg",
       status: "Aktiv",
+      href: "/saker/kpa",
     },
     {
       saksnr: "25/1322",
       tittel: "Handlingsprogram 2026–2029",
       utvalg: "Formannskapet / Kommunestyret",
       status: "Aktiv",
+      href: "#",
     },
   ];
 
@@ -46,9 +50,10 @@ export default function Dashboard() {
 
         <div className="mt-6 space-y-4 sm:mt-8">
           {saker.map((sak) => (
-            <div
+            <Link
               key={sak.saksnr}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:bg-slate-50 sm:p-6"
+              href={sak.href}
+              className="block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm hover:bg-slate-50 sm:p-6"
             >
               <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                 <div>
@@ -67,7 +72,7 @@ export default function Dashboard() {
                   {sak.status}
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
