@@ -193,7 +193,7 @@ export default async function Sak({ params }: SakProps) {
         </p>
 
         <div className="mt-6 grid gap-3">
-          {arkitekturKapitler.map((kapittel) => (
+          {Object.values(arkitekturKapitler).map((kapittel) => (
             <Link
               key={kapittel.slug}
               href={`/saker/${id}/arkitektur/${kapittel.slug}`}
