@@ -1,57 +1,5 @@
 import Link from "next/link";
-
-const omrader = {
-  heggedal: {
-    navn: "Heggedal",
-    antall: 10,
-  },
-  dikemark: {
-    navn: "Dikemark",
-    antall: 2,
-  },
-  holmen: {
-    navn: "Holmen",
-    antall: 10,
-  },
-  nesoya: {
-    navn: "Nesøya",
-    antall: 3,
-  },
-  royken: {
-    navn: "Røyken",
-    antall: 20,
-  },
-  satre: {
-    navn: "Sætre",
-    antall: 24,
-  },
-  asker: {
-    navn: "Asker",
-    antall: 23,
-  },
-  slemmestad: {
-    navn: "Slemmestad",
-    antall: 14,
-  },
-  spikkestad: {
-    navn: "Spikkestad",
-    antall: 4,
-  },
-  tofte: {
-    navn: "Tofte",
-    antall: 8,
-  },
-  vollen: {
-    navn: "Vollen",
-    antall: 22,
-  },
-  generelle: {
-    navn: "Generelle innspill",
-    antall: 31,
-  },
-};
-
-type OmradeSlug = keyof typeof omrader;
+import { hentInnspillOmrade } from "@/lib/kpa/innspill";
 
 type InnspillOmradeProps = {
   params: Promise<{
@@ -60,12 +8,32 @@ type InnspillOmradeProps = {
   }>;
 };
 
+function statusKlasse(status: string) {
+  if (status === "Anbefales") {
+    return "bg-green-100 text-green-800";
+  }
+
+  if (status === "Anbefales delvis") {
+    return "bg-blue-100 text-blue-800";
+  }
+
+  if (status === "Må avklares ved regulering") {
+    return "bg-yellow-100 text-yellow-800";
+  }
+
+  if (status === "Tas til orientering") {
+    return "bg-slate-100 text-slate-800";
+  }
+
+  return "bg-red-100 text-red-800";
+}
+
 export default async function InnspillOmrade({
   params,
 }: InnspillOmradeProps) {
   const { id, omrade } = await params;
 
-  const valgtOmrade = omrader[omrade as OmradeSlug];
+  const valgtOmrade = hentInnspillOmrade(omrade);
 
   if (!valgtOmrade) {
     return (
@@ -90,10 +58,6 @@ export default async function InnspillOmrade({
     );
   }
 
-  const innspill = Array.from({ length: valgtOmrade.antall }, (_, index) => ({
-    nummer: index + 1,
-  }));
-
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
       <Link
@@ -113,7 +77,7 @@ export default async function InnspillOmrade({
         </h1>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
-          Her behandles innspillene for {valgtOmrade.navn}. Hvert innspill får
+          Her behandles innspillene for {valgtOmrade.navn}. Hvert innspill har
           egen behandlingsside med innspillstekst, kommunedirektørens vurdering,
           partienes kommentarer og omforent innspill.
         </p>
@@ -127,7 +91,7 @@ export default async function InnspillOmrade({
             </h2>
 
             <p className="mt-2 text-sm text-slate-500">
-              {valgtOmrade.antall} innspill
+              {valgtOmrade.innspill.length} innspill
             </p>
           </div>
 
@@ -137,7 +101,7 @@ export default async function InnspillOmrade({
         </div>
 
         <div className="mt-6 grid gap-3">
-          {innspill.map((sak) => (
+          {valgtOmrade.innspill.map((sak) => (
             <Link
               key={sak.nummer}
               href={`/saker/${id}/innspill/${omrade}/${sak.nummer}`}
@@ -146,21 +110,23 @@ export default async function InnspillOmrade({
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-500">
-                    Innspill {sak.nummer}
+                    Innspill {sak.nummer} · {sak.saksnummer}
                   </p>
 
-                  <h3 className="mt-1 font-bold">
-                    Behandlingsside kommer i neste fase
-                  </h3>
+                  <h3 className="mt-1 font-bold">{sak.tittel}</h3>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    Innspillstekst, kommunedirektørens vurdering og omforent
-                    innspill kobles inn her.
+                    {sak.innsender}
+                    {sak.paVegneAv ? ` / ${sak.paVegneAv}` : ""}
                   </p>
                 </div>
 
-                <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-                  Ikke behandlet
+                <span
+                  className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${statusKlasse(
+                    sak.status,
+                  )}`}
+                >
+                  {sak.status}
                 </span>
               </div>
             </Link>
