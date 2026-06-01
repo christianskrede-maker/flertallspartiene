@@ -10,6 +10,12 @@ const supabaseAdmin = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+type OmforentType =
+  | "bestemmelse"
+  | "spesialmerknad"
+  | "innspill"
+  | "arkitektur";
+
 export async function leggTilKommentar(formData: FormData) {
   const cookieStore = await cookies();
   const telefon = cookieStore.get("telefon")?.value;
@@ -175,7 +181,7 @@ export async function hentOmforentInnspill(
   sak_id: string,
   kapittel: string,
   delpunkt: string,
-  type: "bestemmelse" | "spesialmerknad"
+  type: OmforentType
 ) {
   const { data } = await supabaseAdmin
     .from("omforent_innspill")
@@ -207,7 +213,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
     !sak_id ||
     !kapittel ||
     !delpunkt ||
-    (type !== "bestemmelse" && type !== "spesialmerknad")
+    !["bestemmelse", "spesialmerknad", "innspill", "arkitektur"].includes(type)
   ) {
     return;
   }
