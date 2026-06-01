@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { arkitekturKapitler } from "@/lib/kpa/arkitektur";
 import { kpaKapitler } from "../data/kpaKapitler";
 
 const kartLenker = [
@@ -32,54 +33,6 @@ const innspillOmrader = [
   { navn: "Tofte", slug: "tofte", antall: 8 },
   { navn: "Vollen", slug: "vollen", antall: 22 },
   { navn: "Generelle innspill", slug: "generelle", antall: 31 },
-];
-
-const arkitekturKapitler = [
-  {
-    navn: "En ambisiøs kommune",
-    slug: "en-ambisios-kommune",
-    tekst: "Arkitektur er samfunnsutvikling og et verktøy for å utvikle gode steder.",
-  },
-  {
-    navn: "Attraktiv",
-    slug: "attraktiv",
-    tekst: "Helhetlig utvikling med merverdi og vakker arkitektur med særpreg.",
-  },
-  {
-    navn: "Ansvarlig",
-    slug: "ansvarlig",
-    tekst: "Omtanke for natur, blågrønne verdier, kvalitet og varige valg.",
-  },
-  {
-    navn: "For alle",
-    slug: "for-alle",
-    tekst: "Gode boliger, nabolag og aktive liv i fellesskap.",
-  },
-  {
-    navn: "Urbane områder",
-    slug: "urbane-omrader",
-    tekst: "Prinsipper for utvikling av urbane områder.",
-  },
-  {
-    navn: "Småhusområdene",
-    slug: "smahusomradene",
-    tekst: "Prinsipper for utvikling og tilpasning i småhusområdene.",
-  },
-  {
-    navn: "Kulturmiljøer",
-    slug: "kulturmiljoer",
-    tekst: "Prinsipper for utvikling med hensyn til kulturmiljøer.",
-  },
-  {
-    navn: "Kysten",
-    slug: "kysten",
-    tekst: "Prinsipper for arkitektur og stedsforming langs kysten.",
-  },
-  {
-    navn: "Landbruksområdene",
-    slug: "landbruksomradene",
-    tekst: "Prinsipper for utvikling i landbruksområdene.",
-  },
 ];
 
 type SakProps = {
@@ -197,9 +150,7 @@ export default async function Sak({ params }: SakProps) {
       </details>
 
       <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <summary className="cursor-pointer text-2xl font-bold">
-          Innspill
-        </summary>
+        <summary className="cursor-pointer text-2xl font-bold">Innspill</summary>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
           Innspillene behandles etter lokalområde. Velg lokalområde for å se og
@@ -250,10 +201,10 @@ export default async function Sak({ params }: SakProps) {
             >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="font-bold">{kapittel.navn}</h3>
+                  <h3 className="font-bold">{kapittel.tittel}</h3>
 
                   <p className="mt-1 text-sm leading-6 text-slate-500">
-                    {kapittel.tekst}
+                    {kapittel.ingress}
                   </p>
                 </div>
 
