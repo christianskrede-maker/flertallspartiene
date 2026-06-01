@@ -1,67 +1,5 @@
 import Link from "next/link";
-
-const omrader = [
-  {
-    navn: "Heggedal",
-    slug: "heggedal",
-    antall: 10,
-  },
-  {
-    navn: "Dikemark",
-    slug: "dikemark",
-    antall: 2,
-  },
-  {
-    navn: "Holmen",
-    slug: "holmen",
-    antall: 10,
-  },
-  {
-    navn: "Nesøya",
-    slug: "nesoya",
-    antall: 3,
-  },
-  {
-    navn: "Røyken",
-    slug: "royken",
-    antall: 20,
-  },
-  {
-    navn: "Sætre",
-    slug: "satre",
-    antall: 24,
-  },
-  {
-    navn: "Asker",
-    slug: "asker",
-    antall: 23,
-  },
-  {
-    navn: "Slemmestad",
-    slug: "slemmestad",
-    antall: 14,
-  },
-  {
-    navn: "Spikkestad",
-    slug: "spikkestad",
-    antall: 4,
-  },
-  {
-    navn: "Tofte",
-    slug: "tofte",
-    antall: 8,
-  },
-  {
-    navn: "Vollen",
-    slug: "vollen",
-    antall: 22,
-  },
-  {
-    navn: "Generelle innspill",
-    slug: "generelle",
-    antall: 31,
-  },
-];
+import { innspillOmrader } from "@/lib/kpa/innspill";
 
 type InnspillProps = {
   params: Promise<{
@@ -71,6 +9,8 @@ type InnspillProps = {
 
 export default async function Innspill({ params }: InnspillProps) {
   const { id } = await params;
+
+  const omrader = Object.values(innspillOmrader);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
@@ -89,7 +29,7 @@ export default async function Innspill({ params }: InnspillProps) {
         <h1 className="mt-2 text-3xl font-bold sm:text-4xl">Innspill</h1>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
-          Innspill behandles per lokalområde. Hvert innspill vil senere få egen
+          Innspill behandles per lokalområde. Hvert innspill har egen
           behandlingsside med kommunedirektørens vurdering, partienes
           kommentarer og omforent innspill.
         </p>
@@ -110,12 +50,12 @@ export default async function Innspill({ params }: InnspillProps) {
                   <h3 className="font-bold">{omrade.navn}</h3>
 
                   <p className="mt-1 text-sm text-slate-500">
-                    {omrade.antall} innspill
+                    {omrade.innspill.length} innspill
                   </p>
                 </div>
 
                 <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-                  Ikke behandlet
+                  Under behandling
                 </span>
               </div>
             </Link>
