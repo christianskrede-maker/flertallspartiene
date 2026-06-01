@@ -156,7 +156,6 @@ export default async function Sak({ params }: SakProps) {
       </section>
 
       <details
-        open
         className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
       >
         <summary className="cursor-pointer text-2xl font-bold">
