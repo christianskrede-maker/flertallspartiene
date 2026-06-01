@@ -3,51 +3,63 @@ import Link from "next/link";
 const omrader = [
   {
     navn: "Heggedal",
-    antall: 18,
+    slug: "heggedal",
+    antall: 10,
   },
   {
     navn: "Dikemark",
-    antall: 12,
+    slug: "dikemark",
+    antall: 2,
   },
   {
     navn: "Holmen",
-    antall: 14,
+    slug: "holmen",
+    antall: 10,
   },
   {
     navn: "Nesøya",
-    antall: 9,
+    slug: "nesoya",
+    antall: 3,
   },
   {
     navn: "Røyken",
-    antall: 16,
+    slug: "royken",
+    antall: 20,
   },
   {
     navn: "Sætre",
-    antall: 11,
+    slug: "satre",
+    antall: 24,
   },
   {
     navn: "Asker",
-    antall: 27,
+    slug: "asker",
+    antall: 23,
   },
   {
     navn: "Slemmestad",
-    antall: 21,
+    slug: "slemmestad",
+    antall: 14,
   },
   {
     navn: "Spikkestad",
-    antall: 8,
+    slug: "spikkestad",
+    antall: 4,
   },
   {
     navn: "Tofte",
-    antall: 7,
+    slug: "tofte",
+    antall: 8,
   },
   {
     navn: "Vollen",
-    antall: 13,
+    slug: "vollen",
+    antall: 22,
   },
   {
     navn: "Generelle innspill",
-    antall: 15,
+    slug: "generelle",
+    antall: 31,
   },
 ];
 
@@ -74,33 +86,28 @@ export default async function Innspill({ params }: InnspillProps) {
           Kommuneplanens arealdel
         </p>
 
-        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">
-          Innspill
-        </h1>
+        <h1 className="mt-2 text-3xl font-bold sm:text-4xl">Innspill</h1>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
-          Innspill behandles per lokalområde. Hvert innspill vil senere få
-          egen behandlingsside med kommunedirektørens vurdering,
-          partienes kommentarer og omforent innspill.
+          Innspill behandles per lokalområde. Hvert innspill vil senere få egen
+          behandlingsside med kommunedirektørens vurdering, partienes
+          kommentarer og omforent innspill.
         </p>
       </section>
 
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <h2 className="text-xl font-bold">
-          Lokalområder
-        </h2>
+        <h2 className="text-xl font-bold">Lokalområder</h2>
 
         <div className="mt-6 grid gap-3">
           {omrader.map((omrade) => (
-            <div
-              key={omrade.navn}
-              className="rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+            <Link
+              key={omrade.slug}
+              href={`/saker/${id}/innspill/${omrade.slug}`}
+              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
             >
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <h3 className="font-bold">
-                    {omrade.navn}
-                  </h3>
+                  <h3 className="font-bold">{omrade.navn}</h3>
 
                   <p className="mt-1 text-sm text-slate-500">
                     {omrade.antall} innspill
@@ -108,10 +115,10 @@ export default async function Innspill({ params }: InnspillProps) {
                 </div>
 
                 <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-                  Kommer snart
+                  Ikke behandlet
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
