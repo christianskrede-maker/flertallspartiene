@@ -72,9 +72,12 @@ export default async function OmforentInnspill({
             </p>
           </div>
 
-          <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
+          <a
+            href={`/saker/${id}/omforent-innspill/eksporter`}
+            className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          >
             Eksporter Word
-          </button>
+          </a>
         </div>
 
         <div className="mt-6 space-y-4">
