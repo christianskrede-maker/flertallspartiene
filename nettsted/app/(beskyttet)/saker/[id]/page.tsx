@@ -187,9 +187,12 @@ export default async function Sak({ params }: SakProps) {
             </p>
           </div>
 
-          <button className="w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700">
-            Eksporter sak
-          </button>
+         <a
+  href={`/saker/${id}/eksporter`}
+  className="inline-flex w-fit rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+>
+  Eksporter sak
+</a>
         </div>
       </section>
     </div>
