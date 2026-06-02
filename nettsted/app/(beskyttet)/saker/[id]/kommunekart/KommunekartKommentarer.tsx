@@ -1,6 +1,3 @@
-Ja. Erstatt hele `KommunekartKommentarer.tsx` med dette:
-
-```tsx
 "use client";
 
 import { useEffect, useState } from "react";
