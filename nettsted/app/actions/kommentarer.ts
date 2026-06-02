@@ -33,6 +33,7 @@ function omforentPath(sak_id: string, type: string) {
   if (type === "arkitektur") return `/saker/${sak_id}/omforent-arkitektur`;
   if (type === "innspill") return `/saker/${sak_id}/omforent-innspill`;
   if (type === "bestemmelse") return `/saker/${sak_id}/omforent-bestemmelser`;
+
   if (type === "spesialmerknad") {
     return `/saker/${sak_id}/omforent-spesialmerknader`;
   }
@@ -208,7 +209,7 @@ export async function hentOmforentInnspill(
   return data;
 }
 
-exportexport async function lagreOmforentInnspill(formData: FormData) {
+export async function lagreOmforentInnspill(formData: FormData) {
   const cookieStore = await cookies();
   const telefon = cookieStore.get("telefon")?.value;
 
@@ -219,7 +220,7 @@ exportexport async function lagreOmforentInnspill(formData: FormData) {
   const sak_id = String(formData.get("sak_id") ?? "");
   const kapittel = String(formData.get("kapittel") ?? "");
   const delpunkt = String(formData.get("delpunkt") ?? "");
-  const type = String(formData.get("type") ?? "");
+  const type = String(formData.get("type") ?? "") as OmforentType;
   const tekst = String(formData.get("tekst") ?? "").trim();
 
   if (
@@ -240,7 +241,9 @@ exportexport async function lagreOmforentInnspill(formData: FormData) {
     .eq("type", type);
 
   if (hentFeil) {
-    throw new Error(`Kunne ikke hente eksisterende omforent tekst: ${hentFeil.message}`);
+    throw new Error(
+      `Kunne ikke hente eksisterende omforent tekst: ${hentFeil.message}`
+    );
   }
 
   if (eksisterende && eksisterende.length > 0) {
@@ -256,7 +259,9 @@ exportexport async function lagreOmforentInnspill(formData: FormData) {
       .eq("type", type);
 
     if (oppdaterFeil) {
-      throw new Error(`Kunne ikke oppdatere omforent tekst: ${oppdaterFeil.message}`);
+      throw new Error(
+        `Kunne ikke oppdatere omforent tekst: ${oppdaterFeil.message}`
+      );
     }
   } else {
     const { error: insertFeil } = await supabaseAdmin
@@ -271,69 +276,14 @@ exportexport async function lagreOmforentInnspill(formData: FormData) {
       });
 
     if (insertFeil) {
-      throw new Error(`Kunne ikke lagre omforent tekst: ${insertFeil.message}`);
+      throw new Error(
+        `Kunne ikke lagre omforent tekst: ${insertFeil.message}`
+      );
     }
-  }
-
-  if (kapittel === "arkitektur") {
-    revalidatePath(`/saker/${sak_id}/arkitektur/${delpunkt}`);
-    revalidatePath(`/saker/${sak_id}/omforent-arkitektur`);
-    redirect(`/saker/${sak_id}/arkitektur/${delpunkt}`);
-  }
-
-  revalidatePath(`/saker/${sak_id}/kapittel/${kapittel}`);
-  redirect(`/saker/${sak_id}/kapittel/${kapittel}`);
-} async function lagreOmforentInnspill(formData: FormData) {
-  const cookieStore = await cookies();
-  const telefon = cookieStore.get("telefon")?.value;
-
-  if (!telefon) {
-    redirect("/login");
-  }
-
-  const sak_id = String(formData.get("sak_id") ?? "");
-  const kapittel = String(formData.get("kapittel") ?? "");
-  const delpunkt = String(formData.get("delpunkt") ?? "");
-  const type = String(formData.get("type") ?? "") as OmforentType;
-  const tekst = String(formData.get("tekst") ?? "").trim();
-
-  if (
-    !sak_id ||
-    !kapittel ||
-    !delpunkt ||
-    !["bestemmelse", "spesialmerknad", "innspill", "arkitektur"].includes(type)
-  ) {
-    return;
-  }
-
-  const { data: eksisterende } = await supabaseAdmin
-    .from("omforent_innspill")
-    .select("*")
-    .eq("sak_id", sak_id)
-    .eq("kapittel", kapittel)
-    .eq("delpunkt", delpunkt)
-    .eq("type", type)
-    .maybeSingle();
-
-  if (eksisterende) {
-    await supabaseAdmin
-      .from("omforent_innspill")
-      .update({
-        tekst,
-        sist_endret: new Date().toISOString(),
-      })
-      .eq("id", eksisterende.id);
-  } else {
-    await supabaseAdmin.from("omforent_innspill").insert({
-      sak_id,
-      kapittel,
-      delpunkt,
-      type,
-      tekst,
-      sist_endret: new Date().toISOString(),
-    });
   }
 
   revalidatePath(sidePath(sak_id, kapittel, delpunkt));
   revalidatePath(omforentPath(sak_id, type));
+
+  redirect(sidePath(sak_id, kapittel, delpunkt));
 }
