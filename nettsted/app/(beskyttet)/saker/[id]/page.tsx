@@ -232,6 +232,99 @@ export default async function Sak({ params }: SakProps) {
         </div>
       </details>
 
+      <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+        <summary className="cursor-pointer text-2xl font-bold">
+          Kommunekart
+        </summary>
+
+        <p className="mt-4 text-sm leading-6 text-slate-600">
+          Kartgrunnlag, originaldokumenter og politiske kartkommentarer.
+        </p>
+
+        <div className="mt-6 grid gap-3">
+          <Link
+            href={`/saker/${id}/kommunekart`}
+            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+          >
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="font-bold">Kartkommentarer</h3>
+
+                <p className="mt-1 text-sm text-slate-500">
+                  Samle kommentarer til arealkartet punkt for punkt
+                </p>
+              </div>
+
+              <span className="w-fit rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
+                Nytt verktøy
+              </span>
+            </div>
+          </Link>
+
+          <a
+            href="https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+          >
+            <h3 className="font-bold">K.dir kart</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Kommunedirektørens kartforslag
+            </p>
+          </a>
+
+          <a
+            href="https://kart.asker.kommune.no/geoinnsyn/?project=Askerkart&application=geoinnsyn&zoom=8&lat=6619195.00&lon=581710.00"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+          >
+            <h3 className="font-bold">Askerkart</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Kommunens ordinære kartløsning
+            </p>
+          </a>
+
+          <a
+            href="/bestemmelser-utkast-22-mai-26.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+          >
+            <h3 className="font-bold">Bestemmelser PDF</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Originalt utkast 22. mai 2026
+            </p>
+          </a>
+
+          <a
+            href="/spesialmerknader-til-bestemmelsene-utkast-22-mai-26.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+          >
+            <h3 className="font-bold">Spesialmerknader PDF</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Originalt utkast 22. mai 2026
+            </p>
+          </a>
+
+          <a
+            href="/innspill.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+          >
+            <h3 className="font-bold">Innspill PDF</h3>
+            <p className="mt-1 text-sm text-slate-500">
+              Originale innspill
+            </p>
+          </a>
+        </div>
+      </details>
+
+      <section className="mt-10">
+        <h2 className="mb-4 text-2xl font-bold">Omforente dokumenter</h2>
       <section className="mt-10">
         <h2 className="mb-4 text-2xl font-bold">Omforente dokumenter</h2>
 
