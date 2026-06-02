@@ -330,4 +330,3 @@ For blokkbebyggelse bør parkering planlegges samlet i parkeringsanlegg under ba
     },
   ],
 } as const;
-```
