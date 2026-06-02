@@ -188,6 +188,7 @@ Store deler av kysten, skogen og landbruksarealene er underlagt vern og restrikt
 
 Fremtidig utvikling skal balansere vekst med vern av natur, jordbruksarealer og kulturarv, og bygge opp under et bærekraftig Asker med levende lokalsamfunn og høy bokvalitet.`,
   },
+  
     "slik-former-vi-asker": {
     slug: "slik-former-vi-asker",
     tittel: "Slik former vi Asker",
@@ -350,6 +351,7 @@ For å oppnå dette peker strategien på to fokusområder:
 #3 Omtanke for natur og blågrønne verdier
 #4 Kvalitet og varige valg`,
   },
+  
     "omtanke-for-natur-og-blagronne-verdier": {
     slug: "omtanke-for-natur-og-blagronne-verdier",
     tittel: "Omtanke for natur og blågrønne verdier",
@@ -502,6 +504,7 @@ Boliger skal ses i sammenheng med skoler, barnehager, kollektivtransport, grønn
 
 God arkitektur og gode nabolag kan bidra til å redusere sosiale forskjeller, fremme deltakelse og styrke lokalsamfunn.`,
   },
+  
     "aktive-liv-i-fellesskap": {
     slug: "aktive-liv-i-fellesskap",
     tittel: "Aktive liv i fellesskap",
@@ -651,6 +654,7 @@ B.7. Ivareta grønnstrukturen
 
 Utviklingen skal bidra til sammenhengende vegetasjon, biologisk mangfold og overvannshåndtering.`,
   },
+  
     kulturmiljoer: {
     slug: "kulturmiljoer",
     tittel: "Kulturmiljøer",
