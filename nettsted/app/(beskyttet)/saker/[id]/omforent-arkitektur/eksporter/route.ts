@@ -24,7 +24,7 @@ function tekstTilAvsnitt(tekst: string | null | undefined) {
   if (!tekst || !tekst.trim()) {
     return [
       new Paragraph({
-        children: [new TextRun({ text: "Ikke lagt inn.", italics: true })],
+        children: [new TextRun({ text: "Ikke skrevet ennå.", italics: true })],
       }),
     ];
   }
@@ -71,7 +71,7 @@ export async function GET(
 
     return {
       kapittel,
-      tekst: lagret?.tekst?.trim() || kapittel.tekst?.trim() || "",
+      tekst: lagret?.tekst?.trim() ?? "",
       erLagret: Boolean(lagret?.tekst?.trim()),
     };
   });
@@ -116,7 +116,7 @@ export async function GET(
           new TextRun({
             text: item.erLagret
               ? "Omforent tekst"
-              : "Arkitektur Asker-tekst brukt som base",
+              : "Ingen omforent tekst lagret",
             bold: true,
           }),
         ],
