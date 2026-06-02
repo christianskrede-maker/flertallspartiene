@@ -1,4 +1,3 @@
-```ts id="q9m4xt"
 export const kapittel18 = {
   deler: [
     {
@@ -43,4 +42,3 @@ naturmangfold vurderes.`,
     },
   ],
 } as const;
-```
