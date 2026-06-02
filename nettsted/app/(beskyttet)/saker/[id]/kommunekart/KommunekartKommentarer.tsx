@@ -6,7 +6,8 @@ type KartKommentar = {
   id: string;
   tittel: string;
   objectId: string;
-  arealformal: string;
+  identLokalid: string;
+  kparealformal: string;
   forklaring: string;
   koordinat: string;
   kommentar: string;
@@ -22,7 +23,8 @@ export default function KommunekartKommentarer() {
 
   const [tittel, setTittel] = useState("");
   const [objectId, setObjectId] = useState("");
-  const [arealformal, setArealformal] = useState("");
+  const [identLokalid, setIdentLokalid] = useState("");
+  const [kparealformal, setKparealformal] = useState("");
   const [forklaring, setForklaring] = useState("");
   const [koordinat, setKoordinat] = useState("");
   const [kommentar, setKommentar] = useState("");
@@ -48,7 +50,8 @@ export default function KommunekartKommentarer() {
       id: crypto.randomUUID(),
       tittel,
       objectId,
-      arealformal,
+      identLokalid,
+      kparealformal,
       forklaring,
       koordinat,
       kommentar,
@@ -61,7 +64,8 @@ export default function KommunekartKommentarer() {
 
     setTittel("");
     setObjectId("");
-    setArealformal("");
+    setIdentLokalid("");
+    setKparealformal("");
     setForklaring("");
     setKoordinat("");
     setKommentar("");
@@ -82,10 +86,18 @@ export default function KommunekartKommentarer() {
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
         <h2 className="text-2xl font-bold">Ny kartkommentar</h2>
 
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          Klikk på et område i ArcGIS-kartet og kopier inn OBJECTID,
-          KPAREALFORMÅL og forklaring dersom feltet er relevant.
-        </p>
+        <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4">
+          <p className="text-sm font-semibold text-blue-900">
+            Klikk på et område i kartet og kopier inn feltene fra popupen:
+          </p>
+
+          <ul className="mt-2 list-disc pl-5 text-sm leading-6 text-blue-800">
+            <li>OBJECTID</li>
+            <li>IDENT_LOKALID</li>
+            <li>KPAREALFORMÅL</li>
+            <li>FORKLARING</li>
+          </ul>
+        </div>
 
         <div className="mt-5 grid gap-4">
           <label className="grid gap-2">
@@ -101,7 +113,7 @@ export default function KommunekartKommentarer() {
             />
           </label>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2">
             <label className="grid gap-2">
               <span className="text-sm font-semibold text-slate-700">
                 OBJECTID
@@ -117,12 +129,27 @@ export default function KommunekartKommentarer() {
 
             <label className="grid gap-2">
               <span className="text-sm font-semibold text-slate-700">
-                Arealformål
+                IDENT_LOKALID
               </span>
               <input
                 type="text"
-                value={arealformal}
-                onChange={(event) => setArealformal(event.target.value)}
+                value={identLokalid}
+                onChange={(event) => setIdentLokalid(event.target.value)}
+                placeholder="F.eks. eaef5557-58e0-4a7a-bc8d-c0b95e94519e"
+                className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
+              />
+            </label>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="grid gap-2">
+              <span className="text-sm font-semibold text-slate-700">
+                KPAREALFORMÅL
+              </span>
+              <input
+                type="text"
+                value={kparealformal}
+                onChange={(event) => setKparealformal(event.target.value)}
                 placeholder="F.eks. 5100"
                 className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
               />
@@ -144,7 +171,7 @@ export default function KommunekartKommentarer() {
 
           <label className="grid gap-2">
             <span className="text-sm font-semibold text-slate-700">
-              Forklaring fra kartet
+              FORKLARING
             </span>
             <textarea
               rows={3}
@@ -242,9 +269,15 @@ export default function KommunekartKommentarer() {
                         </span>
                       )}
 
-                      {kommentar.arealformal && (
+                      {kommentar.identLokalid && (
                         <span className="rounded bg-slate-100 px-2 py-1">
-                          Arealformål: {kommentar.arealformal}
+                          IDENT_LOKALID: {kommentar.identLokalid}
+                        </span>
+                      )}
+
+                      {kommentar.kparealformal && (
+                        <span className="rounded bg-slate-100 px-2 py-1">
+                          KPAREALFORMÅL: {kommentar.kparealformal}
                         </span>
                       )}
                     </div>
@@ -257,7 +290,7 @@ export default function KommunekartKommentarer() {
 
                 {kommentar.forklaring && (
                   <div className="mt-3 rounded-xl bg-slate-50 p-3 text-sm leading-6 text-slate-700">
-                    <span className="font-semibold">Forklaring:</span>{" "}
+                    <span className="font-semibold">FORKLARING:</span>{" "}
                     {kommentar.forklaring}
                   </div>
                 )}
