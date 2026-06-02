@@ -261,65 +261,6 @@ export default async function Sak({ params }: SakProps) {
             </div>
           </Link>
 
-          <a
-            href="https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f"
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-          >
-            <h3 className="font-bold">K.dir kart</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Kommunedirektørens kartforslag
-            </p>
-          </a>
-
-          <a
-            href="https://kart.asker.kommune.no/geoinnsyn/?project=Askerkart&application=geoinnsyn&zoom=8&lat=6619195.00&lon=581710.00"
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-          >
-            <h3 className="font-bold">Askerkart</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Kommunens ordinære kartløsning
-            </p>
-          </a>
-
-          <a
-            href="/bestemmelser-utkast-22-mai-26.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-          >
-            <h3 className="font-bold">Bestemmelser PDF</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Originalt utkast 22. mai 2026
-            </p>
-          </a>
-
-          <a
-            href="/spesialmerknader-til-bestemmelsene-utkast-22-mai-26.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-          >
-            <h3 className="font-bold">Spesialmerknader PDF</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Originalt utkast 22. mai 2026
-            </p>
-          </a>
-
-          <a
-            href="/innspill.pdf"
-            target="_blank"
-            rel="noreferrer"
-            className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-          >
-            <h3 className="font-bold">Innspill PDF</h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Originale innspill
-            </p>
-          </a>
         </div>
       </details>
 
