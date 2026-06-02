@@ -1,4 +1,3 @@
-```ts id="z7n4qm"
 export const kapittel20 = {
   deler: [
     {
@@ -171,4 +170,3 @@ b. Innenfor hensynssone H350_5 (2 kPa) tillates tiltak etter pbl. § 20-1 på to
     },
   ],
 } as const;
-```
