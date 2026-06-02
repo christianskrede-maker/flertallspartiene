@@ -16,6 +16,11 @@ type OmforentType =
   | "innspill"
   | "arkitektur";
 
+function databaseSakId(sak_id: string) {
+  if (sak_id === "kpa") return "1";
+  return sak_id;
+}
+
 function sidePath(sak_id: string, kapittel: string, delpunkt: string) {
   if (kapittel === "arkitektur") {
     return `/saker/${sak_id}/arkitektur/${delpunkt}`;
@@ -200,7 +205,7 @@ export async function hentOmforentInnspill(
   const { data } = await supabaseAdmin
     .from("omforent_innspill")
     .select("*")
-    .eq("sak_id", sak_id)
+    .eq("sak_id", databaseSakId(sak_id))
     .eq("kapittel", kapittel)
     .eq("delpunkt", delpunkt)
     .eq("type", type)
@@ -232,10 +237,12 @@ export async function lagreOmforentInnspill(formData: FormData) {
     throw new Error("Mangler nødvendig informasjon for å lagre omforent tekst.");
   }
 
+  const dbSakId = databaseSakId(sak_id);
+
   const { data: eksisterende, error: hentFeil } = await supabaseAdmin
     .from("omforent_innspill")
     .select("*")
-    .eq("sak_id", sak_id)
+    .eq("sak_id", dbSakId)
     .eq("kapittel", kapittel)
     .eq("delpunkt", delpunkt)
     .eq("type", type);
@@ -253,7 +260,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
         tekst,
         sist_endret: new Date().toISOString(),
       })
-      .eq("sak_id", sak_id)
+      .eq("sak_id", dbSakId)
       .eq("kapittel", kapittel)
       .eq("delpunkt", delpunkt)
       .eq("type", type);
@@ -267,7 +274,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
     const { error: insertFeil } = await supabaseAdmin
       .from("omforent_innspill")
       .insert({
-        sak_id,
+        sak_id: dbSakId,
         kapittel,
         delpunkt,
         type,
