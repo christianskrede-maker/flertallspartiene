@@ -46,7 +46,7 @@ export default async function OmforentArkitektur({
 
     return {
       kapittel,
-      tekst: lagret?.tekst?.trim() || kapittel.tekst?.trim() || "",
+      tekst: lagret?.tekst?.trim() ?? "",
       sist_endret: lagret?.sist_endret ?? null,
       erLagret: Boolean(lagret?.tekst?.trim()),
     };
@@ -73,8 +73,8 @@ export default async function OmforentArkitektur({
             </h1>
 
             <p className="mt-4 text-sm leading-6 text-slate-600">
-              Her samles omforent arkitektur. Der flertallet ikke har lagret en
-              egen omforent tekst, vises Arkitektur Asker-teksten som base.
+              Her samles kun flertallets omforente arkitekturinnspill. Original
+              Arkitektur Asker vises som PDF på behandlingssidene.
             </p>
           </div>
 
@@ -112,7 +112,7 @@ export default async function OmforentArkitektur({
                     <p className="mt-2 text-sm text-slate-500">
                       {erLagret
                         ? "Omforent tekst er lagret."
-                        : "Bruker Arkitektur Asker-teksten som base."}
+                        : "Ingen omforent tekst er lagret ennå."}
                     </p>
                   </div>
 
@@ -125,7 +125,7 @@ export default async function OmforentArkitektur({
                 </div>
 
                 <div className="mt-4 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white p-4 text-sm leading-7 text-slate-800">
-                  {tekst || "Ikke lagt inn."}
+                  {erLagret ? tekst : "Ikke skrevet ennå."}
                 </div>
 
                 <p className="mt-3 text-xs text-slate-500">
@@ -135,7 +135,7 @@ export default async function OmforentArkitektur({
                           ? new Date(sist_endret).toLocaleString("nb-NO")
                           : "Ukjent"
                       }`
-                    : "Ikke korrigert av flertallet ennå."}
+                    : "Ikke lagret av flertallet ennå."}
                 </p>
               </article>
             );
