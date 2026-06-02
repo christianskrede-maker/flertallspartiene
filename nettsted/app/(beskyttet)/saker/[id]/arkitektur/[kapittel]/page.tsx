@@ -1,5 +1,4 @@
 import Link from "next/link";
-import KommenterTekst from "@/components/KommenterTekst";
 import { hentArkitekturKapittel } from "@/lib/kpa/arkitektur";
 import {
   leggTilKommentar,
@@ -14,6 +13,9 @@ type ArkitekturKapittelProps = {
   params: Promise<{
     id: string;
     kapittel: string;
+  }>;
+  searchParams?: Promise<{
+    zoom?: string;
   }>;
 };
 
@@ -111,10 +113,27 @@ function SistLagret({ sistEndret }: { sistEndret?: string | null }) {
   );
 }
 
+function pdfSideFraDokumentside(dokumentside: number) {
+  return Math.floor(dokumentside / 2) + 1;
+}
+
+function tryggZoom(verdi?: string) {
+  const zoom = Number(verdi);
+
+  if (!Number.isFinite(zoom)) return 100;
+  if (zoom < 50) return 50;
+  if (zoom > 200) return 200;
+
+  return zoom;
+}
+
 export default async function ArkitekturKapittel({
   params,
+  searchParams,
 }: ArkitekturKapittelProps) {
   const { id, kapittel } = await params;
+  const query = searchParams ? await searchParams : {};
+  const zoom = tryggZoom(query.zoom);
 
   const valgtKapittel = hentArkitekturKapittel(kapittel);
 
@@ -144,6 +163,12 @@ export default async function ArkitekturKapittel({
   const kommentarKapittel = "arkitektur";
   const kommentarDelpunkt = kapittel;
 
+  const pdfSide = pdfSideFraDokumentside(valgtKapittel.pdfFra);
+  const pdfUrl = `/arkitektur-asker.pdf#page=${pdfSide}&zoom=${zoom}`;
+
+  const zoomUt = Math.max(50, zoom - 25);
+  const zoomInn = Math.min(200, zoom + 25);
+
   const alleKommentarer = await hentKommentarer(
     id,
     kommentarKapittel,
@@ -161,15 +186,8 @@ export default async function ArkitekturKapittel({
     (kommentar) => !kommentar.forelder_id
   );
 
-  const markeringer = alleKommentarer
-    .map((kommentar) => ({
-      tekstutdrag: kommentar.tekstutdrag ?? "",
-      parti: kommentar.parti ?? "",
-    }))
-    .filter((markering) => Boolean(markering.tekstutdrag.trim()));
-
   return (
-    <div className="mx-auto max-w-[1800px] px-4 py-6 sm:px-6 sm:py-10">
+    <div className="mx-auto max-w-[1900px] px-4 py-6 sm:px-6 sm:py-10">
       <Link
         href={`/saker/${id}/arkitektur`}
         className="inline-flex text-sm text-slate-500 hover:text-slate-900"
@@ -191,47 +209,73 @@ export default async function ArkitekturKapittel({
         </p>
       </section>
 
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
-              Arkitekturkapittel
-            </p>
+      <section className="mt-8 grid gap-4 xl:grid-cols-[minmax(0,70fr)_minmax(360px,30fr)]">
+        <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
+          <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
+                Original PDF
+              </p>
 
-            <h2 className="mt-2 text-2xl font-bold">
-              {valgtKapittel.tittel}
-            </h2>
+              <h2 className="mt-1 text-xl font-bold">
+                {valgtKapittel.tittel}
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500">
+                Viser dokumentside {valgtKapittel.pdfFra}
+                {valgtKapittel.pdfTil !== valgtKapittel.pdfFra
+                  ? `–${valgtKapittel.pdfTil}`
+                  : ""}
+                .
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <Link
+                href={`/saker/${id}/arkitektur/${kapittel}?zoom=${zoomUt}`}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50"
+              >
+                Zoom ut
+              </Link>
+
+              <Link
+                href={`/saker/${id}/arkitektur/${kapittel}?zoom=100`}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50"
+              >
+                100%
+              </Link>
+
+              <Link
+                href={`/saker/${id}/arkitektur/${kapittel}?zoom=${zoomInn}`}
+                className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium hover:bg-slate-50"
+              >
+                Zoom inn
+              </Link>
+
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-lg bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
+              >
+                Åpne PDF
+              </a>
+            </div>
           </div>
 
-          <button className="w-fit rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-50">
-            Eksporter kapittel
-          </button>
+          <div className="mt-4 h-[78vh] overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+            <iframe
+              title={`Arkitektur Asker – ${valgtKapittel.tittel}`}
+              src={pdfUrl}
+              className="h-full w-full"
+            />
+          </div>
         </div>
 
-        <div className="mt-6 grid gap-4 xl:grid-cols-[50fr_50fr]">
+        <aside className="space-y-4 xl:sticky xl:top-6 xl:max-h-[calc(100vh-3rem)] xl:overflow-y-auto">
           <details
             open
-            className="rounded-xl border border-slate-200 bg-white p-4"
-          >
-            <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-              Arkitekturtekst
-            </summary>
-
-            <div className="mt-5 space-y-4 text-sm leading-7 text-slate-700">
-              <KommenterTekst
-                sakId={id}
-                kapittel={kommentarKapittel}
-                delpunkt={kommentarDelpunkt}
-                tekst={valgtKapittel.tekst}
-                label="arkitekturtekst"
-                markeringer={markeringer}
-              />
-            </div>
-          </details>
-
-          <details
-            open
-            className="rounded-xl border border-slate-200 bg-white p-4"
+            className="rounded-2xl border border-slate-200 bg-white p-4"
           >
             <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
               Kommentarer og vurderinger
@@ -244,8 +288,7 @@ export default async function ArkitekturKapittel({
                 </h3>
 
                 <p className="mt-1 text-sm leading-6 text-slate-500">
-                  Skriv kommentar til arkitekturkapittelet, eller marker tekst
-                  direkte i arkitekturteksten.
+                  Skriv kommentarer til denne PDF-siden/oppslaget.
                 </p>
               </div>
 
@@ -264,17 +307,25 @@ export default async function ArkitekturKapittel({
                   name="delpunkt"
                   value={kommentarDelpunkt}
                 />
-                <input type="hidden" name="tekstutdrag" value="" />
+                <input
+                  type="hidden"
+                  name="tekstutdrag"
+                  value={`PDF side ${valgtKapittel.pdfFra}${
+                    valgtKapittel.pdfTil !== valgtKapittel.pdfFra
+                      ? `–${valgtKapittel.pdfTil}`
+                      : ""
+                  }`}
+                />
 
                 <label className="text-sm font-bold text-slate-700">
-                  Ny hovedkommentar uten tekstmarkering
+                  Ny hovedkommentar
                 </label>
 
                 <textarea
                   name="kommentar"
                   required
                   rows={5}
-                  placeholder={`Skriv generell kommentar til ${valgtKapittel.tittel}...`}
+                  placeholder={`Skriv kommentar til ${valgtKapittel.tittel}...`}
                   className="mt-2 w-full rounded-xl border border-slate-300 p-3 text-sm"
                 />
 
@@ -447,48 +498,48 @@ export default async function ArkitekturKapittel({
               </div>
             </div>
           </details>
-        </div>
 
-        <details
-          open
-          className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4"
-        >
-          <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-emerald-800">
-            Omforent arkitektur
-          </summary>
+          <details
+            open
+            className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4"
+          >
+            <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-emerald-800">
+              Omforent arkitektur
+            </summary>
 
-          <form action={lagreOmforentInnspill} className="mt-4">
-            <input type="hidden" name="sak_id" value={id} />
-            <input type="hidden" name="kapittel" value={kommentarKapittel} />
-            <input type="hidden" name="delpunkt" value={kommentarDelpunkt} />
-            <input type="hidden" name="type" value="arkitektur" />
+            <form action={lagreOmforentInnspill} className="mt-4">
+              <input type="hidden" name="sak_id" value={id} />
+              <input type="hidden" name="kapittel" value={kommentarKapittel} />
+              <input type="hidden" name="delpunkt" value={kommentarDelpunkt} />
+              <input type="hidden" name="type" value="arkitektur" />
 
-            <h3 className="text-base font-bold text-emerald-950">
-              Omforent forslag – arkitektur
-            </h3>
+              <h3 className="text-base font-bold text-emerald-950">
+                Omforent forslag – arkitektur
+              </h3>
 
-            <p className="mt-1 text-sm leading-6 text-emerald-900">
-              Dette blir masterteksten for flertallspartienes omforente
-              arkitekturinnspill.
-            </p>
+              <p className="mt-1 text-sm leading-6 text-emerald-900">
+                Dette blir masterteksten for flertallspartienes omforente
+                arkitekturinnspill.
+              </p>
 
-            <textarea
-              name="tekst"
-              rows={14}
-              defaultValue={omforentArkitektur?.tekst ?? ""}
-              placeholder="Skriv omforent arkitektur her..."
-              className="mt-3 w-full rounded-xl border border-emerald-300 bg-white p-4 text-sm leading-7 text-slate-900"
-            />
+              <textarea
+                name="tekst"
+                rows={12}
+                defaultValue={omforentArkitektur?.tekst ?? ""}
+                placeholder="Skriv omforent arkitektur her..."
+                className="mt-3 w-full rounded-xl border border-emerald-300 bg-white p-4 text-sm leading-7 text-slate-900"
+              />
 
-            <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <button className="w-fit rounded-lg bg-emerald-800 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
-                Lagre omforent arkitektur
-              </button>
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <button className="w-fit rounded-lg bg-emerald-800 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+                  Lagre omforent arkitektur
+                </button>
 
-              <SistLagret sistEndret={omforentArkitektur?.sist_endret} />
-            </div>
-          </form>
-        </details>
+                <SistLagret sistEndret={omforentArkitektur?.sist_endret} />
+              </div>
+            </form>
+          </details>
+        </aside>
       </section>
     </div>
   );
