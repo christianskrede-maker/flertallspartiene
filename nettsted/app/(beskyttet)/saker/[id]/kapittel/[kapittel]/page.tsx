@@ -27,6 +27,11 @@ const kartLenker = [
     tekst: "Alle innspill i kart",
     href: "https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f",
   },
+  {
+    tittel: "Gjeldende bestemmelser",
+    tekst: "Vedtatte bestemmelser som gjelder i dag",
+    href: "/gjeldende-bestemmelser.pdf",
+  },
 ];
 
 function partiFarge(parti: string) {
@@ -183,7 +188,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           Kart og arbeidsverktøy
         </h2>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {kartLenker.map((lenke) => (
             <a
               key={lenke.tittel}
@@ -222,9 +227,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                   tekstutdrag: kommentar.tekstutdrag ?? "",
                   parti: kommentar.parti ?? "",
                 }))
-                .filter((markering) =>
-                  Boolean(markering.tekstutdrag.trim())
-                );
+                .filter((markering) => Boolean(markering.tekstutdrag.trim()));
 
               return (
                 <article
@@ -522,17 +525,6 @@ export default async function Kapittel({ params }: KapittelProps) {
                       </div>
                     </details>
                   </div>
-
-                  <details className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
-                      Gjeldende bestemmelse
-                    </summary>
-
-                    <div className="mt-4 whitespace-pre-wrap text-sm leading-7">
-                      {innhold.gjeldendeBestemmelse ??
-                        "Gjeldende bestemmelse legges inn senere."}
-                    </div>
-                  </details>
 
                   <details
                     open
