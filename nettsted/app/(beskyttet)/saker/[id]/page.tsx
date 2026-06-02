@@ -325,8 +325,6 @@ export default async function Sak({ params }: SakProps) {
 
       <section className="mt-10">
         <h2 className="mb-4 text-2xl font-bold">Omforente dokumenter</h2>
-      <section className="mt-10">
-        <h2 className="mb-4 text-2xl font-bold">Omforente dokumenter</h2>
 
         <div className="grid gap-4 md:grid-cols-2">
           <Link
