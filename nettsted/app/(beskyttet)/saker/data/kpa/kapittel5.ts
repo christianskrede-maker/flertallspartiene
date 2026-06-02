@@ -1,6 +1,3 @@
-Ja. Her er **komplett `kapittel5.ts`** uten ekstra frontend-endringer. Tabellen ligger som lesbar tekst i `bestemmelse`.
-
-```ts
 export const kapittel5 = {
   deler: [
     {
