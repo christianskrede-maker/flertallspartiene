@@ -1,4 +1,5 @@
 import Link from "next/link";
+import KommunekartKommentarer from "./KommunekartKommentarer";
 
 type KommunekartProps = {
   params: Promise<{
@@ -71,75 +72,14 @@ export default async function Kommunekart({ params }: KommunekartProps) {
       </section>
 
       <section className="mt-8 rounded-2xl border border-amber-300 bg-amber-50 p-5 sm:p-6">
-        <h2 className="font-bold text-amber-900">
-          Midlertidig arbeidsmetode
-        </h2>
+        <h2 className="font-bold text-amber-900">Midlertidig lagring</h2>
         <p className="mt-2 text-sm leading-6 text-amber-800">
-          Inntil kartkommentarer lagres automatisk, brukes kommentarfeltet
-          under som arbeidsmal. Kopier inn kommentarene i felles dokument eller
-          saksliste etter møtet.
+          Kommentarene lagres foreløpig lokalt i nettleseren på maskinen som
+          brukes. Neste steg blir felles lagring for alle partiene.
         </p>
       </section>
 
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <h2 className="text-2xl font-bold">Ny kartkommentar</h2>
-
-        <div className="mt-5 grid gap-4">
-          <label className="grid gap-2">
-            <span className="text-sm font-semibold text-slate-700">
-              Tittel / område
-            </span>
-            <input
-              type="text"
-              placeholder="F.eks. Dikemark, felt X eller gbnr."
-              className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
-            />
-          </label>
-
-          <label className="grid gap-2">
-            <span className="text-sm font-semibold text-slate-700">
-              Koordinat eller kartlenke
-            </span>
-            <input
-              type="text"
-              placeholder="Lim inn koordinat, gbnr. eller lenke fra kartet"
-              className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
-            />
-          </label>
-
-          <label className="grid gap-2">
-            <span className="text-sm font-semibold text-slate-700">
-              Kommentar
-            </span>
-            <textarea
-              rows={6}
-              placeholder="Skriv vurdering, spørsmål eller forslag til politisk avklaring."
-              className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
-            />
-          </label>
-
-          <button
-            type="button"
-            className="w-fit rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white"
-          >
-            Lagre kommentar kommer senere
-          </button>
-        </div>
-      </section>
-
-      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <h2 className="text-2xl font-bold">Kommentarer til gjennomgang</h2>
-
-        <p className="mt-3 text-sm leading-6 text-slate-600">
-          Her kommer samlede kartkommentarer når lagring er koblet på. Målet er
-          at alle partiene kan legge inn punkter fortløpende, og at gruppen kan
-          gå gjennom dem punkt for punkt.
-        </p>
-
-        <div className="mt-5 rounded-xl border border-dashed border-slate-300 p-5 text-sm text-slate-500">
-          Ingen kommentarer registrert ennå.
-        </div>
-      </section>
+      <KommunekartKommentarer />
     </div>
   );
 }
