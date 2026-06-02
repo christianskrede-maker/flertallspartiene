@@ -28,24 +28,38 @@ export default async function Kommunekart({ params }: KommunekartProps) {
 
         <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600">
           Bruk denne siden til å samle politiske kommentarer til arealkartet.
-          Åpne kartet, finn området du vil kommentere, og legg inn kommentar
-          med område, koordinat eller kartlenke.
+          Klikk i kartet for å finne OBJECTID, arealformål og forklaring, og
+          legg inn vurdering eller forslag til politisk avklaring.
         </p>
       </section>
 
-      <section className="mt-8 grid gap-4 md:grid-cols-3">
-        <a
-          href="https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f"
-          target="_blank"
-          rel="noreferrer"
-          className="rounded-2xl border border-slate-200 bg-white p-5 hover:bg-slate-50"
-        >
-          <h2 className="font-bold">K.dir kart</h2>
-          <p className="mt-2 text-sm text-slate-500">
-            Åpne kartgrunnlaget fra kommunedirektørens forslag.
-          </p>
-        </a>
+      <section className="mt-8 overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="flex flex-col gap-3 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h2 className="font-bold">K.dir kart</h2>
+            <p className="text-sm text-slate-500">
+              Bruk kartet til å finne område og kopiere OBJECTID.
+            </p>
+          </div>
 
+          <a
+            href="https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f"
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-semibold text-blue-700 underline"
+          >
+            Åpne i ny fane
+          </a>
+        </div>
+
+        <iframe
+          src="https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f"
+          className="h-[650px] w-full"
+          title="K.dir kart"
+        />
+      </section>
+
+      <section className="mt-8 grid gap-4 md:grid-cols-3">
         <a
           href="https://kart.asker.kommune.no/geoinnsyn/?project=Askerkart&application=geoinnsyn&zoom=8&lat=6619195.00&lon=581710.00"
           target="_blank"
@@ -67,6 +81,18 @@ export default async function Kommunekart({ params }: KommunekartProps) {
           <h2 className="font-bold">Bestemmelser PDF</h2>
           <p className="mt-2 text-sm text-slate-500">
             Åpne originalt utkast til bestemmelser.
+          </p>
+        </a>
+
+        <a
+          href="/spesialmerknader-til-bestemmelsene-utkast-22-mai-26.pdf"
+          target="_blank"
+          rel="noreferrer"
+          className="rounded-2xl border border-slate-200 bg-white p-5 hover:bg-slate-50"
+        >
+          <h2 className="font-bold">Spesialmerknader PDF</h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Åpne originalt utkast til spesialmerknader.
           </p>
         </a>
       </section>
