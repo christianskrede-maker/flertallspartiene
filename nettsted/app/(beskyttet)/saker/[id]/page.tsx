@@ -18,6 +18,21 @@ const kartLenker = [
     tekst: "Alle innspill i kart",
     href: "https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f",
   },
+  {
+    tittel: "Bestemmelser PDF",
+    tekst: "Originalt utkast 22. mai 2026",
+    href: "/bestemmelser-utkast-22-mai-26.pdf",
+  },
+  {
+    tittel: "Spesialmerknader PDF",
+    tekst: "Originalt utkast 22. mai 2026",
+    href: "/spesialmerknader-til-bestemmelsene-utkast-22-mai-26.pdf",
+  },
+  {
+    tittel: "Innspill PDF",
+    tekst: "Originale innspill",
+    href: "/innspill.pdf",
+  },
 ];
 
 const innspillOmrader = [
