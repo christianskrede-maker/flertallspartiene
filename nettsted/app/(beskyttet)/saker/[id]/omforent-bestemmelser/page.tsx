@@ -32,7 +32,7 @@ export default async function OmforentBestemmelser({
   const { data } = await supabaseAdmin
     .from("omforent_innspill")
     .select("*")
-    .eq("sak_id", id)
+    .eq("sak_id", id === "kpa" ? "1" : id)
     .eq("type", "bestemmelse");
 
   const lagrede = (data ?? []) as OmforentRad[];
