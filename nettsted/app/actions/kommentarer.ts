@@ -16,6 +16,30 @@ type OmforentType =
   | "innspill"
   | "arkitektur";
 
+function sidePath(sak_id: string, kapittel: string, delpunkt: string) {
+  if (kapittel === "arkitektur") {
+    return `/saker/${sak_id}/arkitektur/${delpunkt}`;
+  }
+
+  if (kapittel.startsWith("innspill-")) {
+    const omrade = kapittel.replace("innspill-", "");
+    return `/saker/${sak_id}/innspill/${omrade}/${delpunkt}`;
+  }
+
+  return `/saker/${sak_id}/kapittel/${kapittel}`;
+}
+
+function omforentPath(sak_id: string, type: string) {
+  if (type === "arkitektur") return `/saker/${sak_id}/omforent-arkitektur`;
+  if (type === "innspill") return `/saker/${sak_id}/omforent-innspill`;
+  if (type === "bestemmelse") return `/saker/${sak_id}/omforent-bestemmelser`;
+  if (type === "spesialmerknad") {
+    return `/saker/${sak_id}/omforent-spesialmerknader`;
+  }
+
+  return `/saker/${sak_id}`;
+}
+
 export async function leggTilKommentar(formData: FormData) {
   const cookieStore = await cookies();
   const telefon = cookieStore.get("telefon")?.value;
@@ -46,7 +70,7 @@ export async function leggTilKommentar(formData: FormData) {
     forelder_id,
   });
 
-  revalidatePath(`/saker/${sak_id}/kapittel/${kapittel}`);
+  revalidatePath(sidePath(sak_id, kapittel, delpunkt));
 }
 
 export async function hentKommentarer(
@@ -85,7 +109,6 @@ export async function hentKommentarer(
 
   return kommentarer.map((kommentar) => {
     const bruker = brukere?.find((b) => b.telefon === kommentar.telefon);
-
     const parti = partier?.find((p) => p.id === bruker?.parti_id);
 
     return {
@@ -119,23 +142,17 @@ export async function redigerKommentar(formData: FormData) {
     .eq("id", kommentarId)
     .single();
 
-  if (!eksisterende) {
-    return;
-  }
-
-  if (eksisterende.telefon !== telefon) {
+  if (!eksisterende || eksisterende.telefon !== telefon) {
     return;
   }
 
   await supabaseAdmin
     .from("kommentarer")
-    .update({
-      kommentar: nyKommentar,
-    })
+    .update({ kommentar: nyKommentar })
     .eq("id", kommentarId);
 
   revalidatePath(
-    `/saker/${eksisterende.sak_id}/kapittel/${eksisterende.kapittel}`
+    sidePath(eksisterende.sak_id, eksisterende.kapittel, eksisterende.delpunkt)
   );
 }
 
@@ -159,11 +176,7 @@ export async function slettKommentar(formData: FormData) {
     .eq("id", kommentarId)
     .single();
 
-  if (!eksisterende) {
-    return;
-  }
-
-  if (eksisterende.telefon !== telefon) {
+  if (!eksisterende || eksisterende.telefon !== telefon) {
     return;
   }
 
@@ -173,7 +186,7 @@ export async function slettKommentar(formData: FormData) {
     .or(`id.eq.${kommentarId},forelder_id.eq.${kommentarId}`);
 
   revalidatePath(
-    `/saker/${eksisterende.sak_id}/kapittel/${eksisterende.kapittel}`
+    sidePath(eksisterende.sak_id, eksisterende.kapittel, eksisterende.delpunkt)
   );
 }
 
@@ -206,7 +219,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
   const sak_id = String(formData.get("sak_id") ?? "");
   const kapittel = String(formData.get("kapittel") ?? "");
   const delpunkt = String(formData.get("delpunkt") ?? "");
-  const type = String(formData.get("type") ?? "");
+  const type = String(formData.get("type") ?? "") as OmforentType;
   const tekst = String(formData.get("tekst") ?? "").trim();
 
   if (
@@ -246,5 +259,6 @@ export async function lagreOmforentInnspill(formData: FormData) {
     });
   }
 
-  revalidatePath(`/saker/${sak_id}/kapittel/${kapittel}`);
+  revalidatePath(sidePath(sak_id, kapittel, delpunkt));
+  revalidatePath(omforentPath(sak_id, type));
 }
