@@ -34,7 +34,7 @@ export default async function OmforentArkitektur({
   const { data } = await supabaseAdmin
     .from("omforent_innspill")
     .select("*")
-    .eq("sak_id", id)
+    .eq("sak_id", id === "kpa" ? "1" : id)
     .eq("kapittel", "arkitektur")
     .eq("type", "arkitektur");
 
