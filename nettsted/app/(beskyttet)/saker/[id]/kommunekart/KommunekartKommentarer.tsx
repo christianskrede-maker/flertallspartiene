@@ -1,3 +1,6 @@
+Ja. Erstatt hele `KommunekartKommentarer.tsx` med dette:
+
+```tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -5,6 +8,9 @@ import { useEffect, useState } from "react";
 type KartKommentar = {
   id: string;
   tittel: string;
+  objectId: string;
+  arealformal: string;
+  forklaring: string;
   koordinat: string;
   kommentar: string;
   parti: string;
@@ -16,7 +22,11 @@ const STORAGE_KEY = "kpa-kommunekart-kommentarer";
 
 export default function KommunekartKommentarer() {
   const [kommentarer, setKommentarer] = useState<KartKommentar[]>([]);
+
   const [tittel, setTittel] = useState("");
+  const [objectId, setObjectId] = useState("");
+  const [arealformal, setArealformal] = useState("");
+  const [forklaring, setForklaring] = useState("");
   const [koordinat, setKoordinat] = useState("");
   const [kommentar, setKommentar] = useState("");
   const [parti, setParti] = useState("");
@@ -40,6 +50,9 @@ export default function KommunekartKommentarer() {
     const nyKommentar: KartKommentar = {
       id: crypto.randomUUID(),
       tittel,
+      objectId,
+      arealformal,
+      forklaring,
       koordinat,
       kommentar,
       parti,
@@ -48,7 +61,11 @@ export default function KommunekartKommentarer() {
     };
 
     setKommentarer([nyKommentar, ...kommentarer]);
+
     setTittel("");
+    setObjectId("");
+    setArealformal("");
+    setForklaring("");
     setKoordinat("");
     setKommentar("");
     setParti("");
@@ -59,10 +76,19 @@ export default function KommunekartKommentarer() {
     setKommentarer(kommentarer.filter((kommentar) => kommentar.id !== id));
   }
 
+  function erLenke(verdi: string) {
+    return verdi.startsWith("http://") || verdi.startsWith("https://");
+  }
+
   return (
     <>
       <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
         <h2 className="text-2xl font-bold">Ny kartkommentar</h2>
+
+        <p className="mt-3 text-sm leading-6 text-slate-600">
+          Klikk på et område i ArcGIS-kartet og kopier inn OBJECTID,
+          KPAREALFORMÅL og forklaring dersom feltet er relevant.
+        </p>
 
         <div className="mt-5 grid gap-4">
           <label className="grid gap-2">
@@ -78,6 +104,60 @@ export default function KommunekartKommentarer() {
             />
           </label>
 
+          <div className="grid gap-4 md:grid-cols-3">
+            <label className="grid gap-2">
+              <span className="text-sm font-semibold text-slate-700">
+                OBJECTID
+              </span>
+              <input
+                type="text"
+                value={objectId}
+                onChange={(event) => setObjectId(event.target.value)}
+                placeholder="F.eks. 4114"
+                className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
+              />
+            </label>
+
+            <label className="grid gap-2">
+              <span className="text-sm font-semibold text-slate-700">
+                Arealformål
+              </span>
+              <input
+                type="text"
+                value={arealformal}
+                onChange={(event) => setArealformal(event.target.value)}
+                placeholder="F.eks. 5100"
+                className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
+              />
+            </label>
+
+            <label className="grid gap-2">
+              <span className="text-sm font-semibold text-slate-700">
+                Parti / person
+              </span>
+              <input
+                type="text"
+                value={parti}
+                onChange={(event) => setParti(event.target.value)}
+                placeholder="F.eks. Høyre, Venstre, FrP, KrF eller navn"
+                className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
+              />
+            </label>
+          </div>
+
+          <label className="grid gap-2">
+            <span className="text-sm font-semibold text-slate-700">
+              Forklaring fra kartet
+            </span>
+            <textarea
+              rows={3}
+              value={forklaring}
+              onChange={(event) => setForklaring(event.target.value)}
+              placeholder="F.eks. LNFR-areal for nødvendige tiltak ..."
+              className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
+            />
+          </label>
+
           <label className="grid gap-2">
             <span className="text-sm font-semibold text-slate-700">
               Koordinat eller kartlenke
@@ -87,19 +167,6 @@ export default function KommunekartKommentarer() {
               value={koordinat}
               onChange={(event) => setKoordinat(event.target.value)}
               placeholder="Lim inn koordinat, gbnr. eller lenke fra kartet"
-              className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
-            />
-          </label>
-
-          <label className="grid gap-2">
-            <span className="text-sm font-semibold text-slate-700">
-              Parti / person
-            </span>
-            <input
-              type="text"
-              value={parti}
-              onChange={(event) => setParti(event.target.value)}
-              placeholder="F.eks. Høyre, Venstre, FrP, KrF eller navn"
               className="rounded-xl border border-slate-300 px-4 py-3 text-sm"
             />
           </label>
@@ -170,6 +237,20 @@ export default function KommunekartKommentarer() {
                       {kommentar.opprettet}
                       {kommentar.parti ? ` · ${kommentar.parti}` : ""}
                     </p>
+
+                    <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-700">
+                      {kommentar.objectId && (
+                        <span className="rounded bg-slate-100 px-2 py-1">
+                          OBJECTID: {kommentar.objectId}
+                        </span>
+                      )}
+
+                      {kommentar.arealformal && (
+                        <span className="rounded bg-slate-100 px-2 py-1">
+                          Arealformål: {kommentar.arealformal}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
@@ -177,11 +258,29 @@ export default function KommunekartKommentarer() {
                   </span>
                 </div>
 
+                {kommentar.forklaring && (
+                  <div className="mt-3 rounded-xl bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+                    <span className="font-semibold">Forklaring:</span>{" "}
+                    {kommentar.forklaring}
+                  </div>
+                )}
+
                 {kommentar.koordinat && (
-                  <p className="mt-3 text-sm text-slate-600">
+                  <div className="mt-3 text-sm text-slate-600">
                     <span className="font-semibold">Koordinat/kartlenke:</span>{" "}
-                    {kommentar.koordinat}
-                  </p>
+                    {erLenke(kommentar.koordinat) ? (
+                      <a
+                        href={kommentar.koordinat}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-blue-700 underline"
+                      >
+                        Åpne kartpunkt
+                      </a>
+                    ) : (
+                      kommentar.koordinat
+                    )}
+                  </div>
                 )}
 
                 <p className="mt-3 whitespace-pre-wrap text-sm leading-6 text-slate-700">
@@ -203,3 +302,4 @@ export default function KommunekartKommentarer() {
     </>
   );
 }
+```
