@@ -28,6 +28,16 @@ const kartLenker = [
     href: "https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f",
   },
   {
+    tittel: "Bestemmelser, datert 4.6.2026",
+    tekst: "Nye bestemmelser til behandling",
+    href: "/bestemmelser__datert_4_6_2026%20(3).pdf",
+  },
+  {
+    tittel: "Planbeskrivelse, datert 4.6.2026",
+    tekst: "Inneholder spesialmerknader fra side 28",
+    href: "/planbeskrivelse__datert_4_6_2026%20(3).pdf",
+  },
+  {
     tittel: "Gjeldende bestemmelser",
     tekst: "Vedtatte bestemmelser som gjelder i dag",
     href: "/gjeldende-bestemmelser.pdf",
@@ -188,7 +198,7 @@ export default async function Kapittel({ params }: KapittelProps) {
           Kart og arbeidsverktøy
         </h2>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
           {kartLenker.map((lenke) => (
             <a
               key={lenke.tittel}
@@ -253,10 +263,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                   </div>
 
                   <div className="mt-6 grid gap-4 xl:grid-cols-[33fr_33fr_34fr]">
-                    <details
-                      open
-                      className="rounded-xl border border-slate-200 bg-white p-4"
-                    >
+                    <details open className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Ny bestemmelse
                       </summary>
@@ -271,10 +278,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                       />
                     </details>
 
-                    <details
-                      open
-                      className="rounded-xl border border-slate-200 bg-white p-4"
-                    >
+                    <details open className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Spesialmerknad
                       </summary>
@@ -289,10 +293,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                       />
                     </details>
 
-                    <details
-                      open
-                      className="rounded-xl border border-slate-200 bg-white p-4"
-                    >
+                    <details open className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Kommentarer og vurderinger
                       </summary>
@@ -309,21 +310,10 @@ export default async function Kapittel({ params }: KapittelProps) {
                           </p>
                         </div>
 
-                        <form
-                          action={leggTilKommentar}
-                          className="rounded-xl border bg-slate-50 p-4"
-                        >
+                        <form action={leggTilKommentar} className="rounded-xl border bg-slate-50 p-4">
                           <input type="hidden" name="sak_id" value={id} />
-                          <input
-                            type="hidden"
-                            name="kapittel"
-                            value={kapittel}
-                          />
-                          <input
-                            type="hidden"
-                            name="delpunkt"
-                            value={del.nummer}
-                          />
+                          <input type="hidden" name="kapittel" value={kapittel} />
+                          <input type="hidden" name="delpunkt" value={del.nummer} />
                           <input type="hidden" name="tekstutdrag" value="" />
 
                           <label className="text-sm font-bold text-slate-700">
@@ -383,9 +373,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     </div>
 
                                     <div className="mt-3">
-                                      <Tekstutdrag
-                                        tekst={kommentar.tekstutdrag}
-                                      />
+                                      <Tekstutdrag tekst={kommentar.tekstutdrag} />
 
                                       <p className="whitespace-pre-wrap text-sm leading-6">
                                         {kommentar.kommentar}
@@ -398,9 +386,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                                             kommentar={kommentar.kommentar}
                                           />
 
-                                          <SlettKommentar
-                                            kommentarId={kommentar.id}
-                                          />
+                                          <SlettKommentar kommentarId={kommentar.id} />
                                         </>
                                       ) : null}
                                     </div>
@@ -432,11 +418,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                                           </div>
 
                                           <div className="mt-3">
-                                            <Tekstutdrag
-                                              tekst={
-                                                svarKommentar.tekstutdrag
-                                              }
-                                            />
+                                            <Tekstutdrag tekst={svarKommentar.tekstutdrag} />
 
                                             <p className="whitespace-pre-wrap text-sm leading-6">
                                               {svarKommentar.kommentar}
@@ -445,19 +427,11 @@ export default async function Kapittel({ params }: KapittelProps) {
                                             {svarKommentar.kanRedigere ? (
                                               <>
                                                 <RedigerKommentar
-                                                  kommentarId={
-                                                    svarKommentar.id
-                                                  }
-                                                  kommentar={
-                                                    svarKommentar.kommentar
-                                                  }
+                                                  kommentarId={svarKommentar.id}
+                                                  kommentar={svarKommentar.kommentar}
                                                 />
 
-                                                <SlettKommentar
-                                                  kommentarId={
-                                                    svarKommentar.id
-                                                  }
-                                                />
+                                                <SlettKommentar kommentarId={svarKommentar.id} />
                                               </>
                                             ) : null}
                                           </div>
@@ -470,31 +444,15 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     action={leggTilKommentar}
                                     className="ml-4 rounded-xl border border-dashed border-slate-300 bg-white p-4"
                                   >
-                                    <input
-                                      type="hidden"
-                                      name="sak_id"
-                                      value={id}
-                                    />
-                                    <input
-                                      type="hidden"
-                                      name="kapittel"
-                                      value={kapittel}
-                                    />
-                                    <input
-                                      type="hidden"
-                                      name="delpunkt"
-                                      value={del.nummer}
-                                    />
+                                    <input type="hidden" name="sak_id" value={id} />
+                                    <input type="hidden" name="kapittel" value={kapittel} />
+                                    <input type="hidden" name="delpunkt" value={del.nummer} />
                                     <input
                                       type="hidden"
                                       name="tekstutdrag"
                                       value={kommentar.tekstutdrag ?? ""}
                                     />
-                                    <input
-                                      type="hidden"
-                                      name="forelder_id"
-                                      value={kommentar.id}
-                                    />
+                                    <input type="hidden" name="forelder_id" value={kommentar.id} />
 
                                     <label className="text-sm font-bold text-slate-700">
                                       Svar på kommentaren
@@ -517,8 +475,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                             })
                           ) : (
                             <p className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-500">
-                              Ingen kommentarer er lagret for dette delpunktet
-                              ennå.
+                              Ingen kommentarer er lagret for dette delpunktet ennå.
                             </p>
                           )}
                         </div>
@@ -526,10 +483,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                     </details>
                   </div>
 
-                  <details
-                    open
-                    className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4"
-                  >
+                  <details open className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
                     <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-emerald-800">
                       Omforent forslag
                     </summary>
@@ -537,21 +491,9 @@ export default async function Kapittel({ params }: KapittelProps) {
                     <div className="mt-4 grid gap-4 lg:grid-cols-2">
                       <form action={lagreOmforentInnspill}>
                         <input type="hidden" name="sak_id" value={id} />
-                        <input
-                          type="hidden"
-                          name="kapittel"
-                          value={kapittel}
-                        />
-                        <input
-                          type="hidden"
-                          name="delpunkt"
-                          value={del.nummer}
-                        />
-                        <input
-                          type="hidden"
-                          name="type"
-                          value="bestemmelse"
-                        />
+                        <input type="hidden" name="kapittel" value={kapittel} />
+                        <input type="hidden" name="delpunkt" value={del.nummer} />
+                        <input type="hidden" name="type" value="bestemmelse" />
 
                         <h3 className="text-base font-bold text-emerald-950">
                           Omforent forslag – bestemmelse
@@ -577,29 +519,15 @@ export default async function Kapittel({ params }: KapittelProps) {
                             Lagre bestemmelse
                           </button>
 
-                          <SistLagret
-                            sistEndret={omforentBestemmelse?.sist_endret}
-                          />
+                          <SistLagret sistEndret={omforentBestemmelse?.sist_endret} />
                         </div>
                       </form>
 
                       <form action={lagreOmforentInnspill}>
                         <input type="hidden" name="sak_id" value={id} />
-                        <input
-                          type="hidden"
-                          name="kapittel"
-                          value={kapittel}
-                        />
-                        <input
-                          type="hidden"
-                          name="delpunkt"
-                          value={del.nummer}
-                        />
-                        <input
-                          type="hidden"
-                          name="type"
-                          value="spesialmerknad"
-                        />
+                        <input type="hidden" name="kapittel" value={kapittel} />
+                        <input type="hidden" name="delpunkt" value={del.nummer} />
+                        <input type="hidden" name="type" value="spesialmerknad" />
 
                         <h3 className="text-base font-bold text-emerald-950">
                           Omforent forslag – spesialmerknad
@@ -625,11 +553,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                             Lagre spesialmerknad
                           </button>
 
-                          <SistLagret
-                            sistEndret={
-                              omforentSpesialmerknad?.sist_endret
-                            }
-                          />
+                          <SistLagret sistEndret={omforentSpesialmerknad?.sist_endret} />
                         </div>
                       </form>
                     </div>
