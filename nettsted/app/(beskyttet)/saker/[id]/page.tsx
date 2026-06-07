@@ -19,14 +19,19 @@ const kartLenker = [
     href: "https://www.arcgis.com/apps/dashboards/f2d273a638a9420992b7bad2bd7cb81f",
   },
   {
-    tittel: "Bestemmelser PDF",
-    tekst: "Originalt utkast 22. mai 2026",
-    href: "/bestemmelser-utkast-22-mai-26.pdf",
+    tittel: "Bestemmelser 4.6.2026",
+    tekst: "Nytt høringsutkast",
+    href: "/bestemmelser__datert_4_6_2026%20(3).pdf",
   },
   {
-    tittel: "Spesialmerknader PDF",
-    tekst: "Originalt utkast 22. mai 2026",
-    href: "/spesialmerknader-til-bestemmelsene-utkast-22-mai-26.pdf",
+    tittel: "Planbeskrivelse 4.6.2026",
+    tekst: "Inkluderer spesialmerknader",
+    href: "/planbeskrivelse__datert_4_6_2026%20(3).pdf",
+  },
+  {
+    tittel: "Gjeldende bestemmelser",
+    tekst: "Vedtatte bestemmelser som gjelder i dag",
+    href: "/gjeldende-bestemmelser.pdf",
   },
   {
     tittel: "Innspill PDF",
@@ -107,7 +112,7 @@ export default async function Sak({ params }: SakProps) {
           Kart og arbeidsverktøy
         </h2>
 
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+        <div className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           {kartLenker.map((lenke) => (
             <a
               key={lenke.tittel}
