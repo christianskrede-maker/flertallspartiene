@@ -20,9 +20,6 @@ import { kapittel19 } from "./kpa/kapittel19";
 import { kapittel20 } from "./kpa/kapittel20";
 import { kapittel21 } from "./kpa/kapittel21";
 import { kapittel22 } from "./kpa/kapittel22";
-import { kapittel23 } from "./kpa/kapittel23";
-import { kapittel24 } from "./kpa/kapittel24";
-import { kapittel25 } from "./kpa/kapittel25";
 
 export const kpaInnhold = {
   "1": kapittel1,
@@ -47,7 +44,4 @@ export const kpaInnhold = {
   "20": kapittel20,
   "21": kapittel21,
   "22": kapittel22,
-  "23": kapittel23,
-  "24": kapittel24,
-  "25": kapittel25,
 } as const;
