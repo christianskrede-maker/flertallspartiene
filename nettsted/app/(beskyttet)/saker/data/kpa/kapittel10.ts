@@ -1,78 +1,105 @@
 export const kapittel10 = {
   deler: [
     {
-      nummer: "10.1",
-      tittel: "Oppfølging av arkitekturstrategien",
-      bestemmelse: `Ved regulering skal det arkitektoniske, landskapsmessige og funksjonelle hovedgrepet belyses og avklares. Det skal fremgå hvordan kommunens arkitekturstrategi er vurdert og fulgt opp i planforslaget, samt hvordan kommunens tekniske normer og uteoppholdsarealer er helhetlig løst.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å sikre helhetlig stedsutvikling og at kommunens arkitekturstrategi følges opp i reguleringsplan. Planbeskrivelsen skal redegjøre for hvordan relevante prinsipper i arkitekturstrategien er vurdert og fulgt opp, og hvordan kvaliteter er sikret i planen.
+      nummer: "10",
+      tittel: "Krav om forhold som skal avklares i reguleringsplan",
+      bestemmelse: `
+Jf. pbl. § 11-9 nr. 8
 
-Avklaringen bør, så langt det er relevant for planens formål, omfang, lokalisering og virkninger, omfatte:
+Ved regulering skal det arkitektoniske, landskapsmessige og funksjonelle hovedgrepet
+belyses og avklares. Det skal fremgå hvordan kommunens arkitekturstrategi er vurdert og
+fulgt opp i planforslaget, hvordan funksjonskrav, krav til tekniske løsninger, og krav til miljø
+og naturkvaliteter er helhetlig løst og virkningene av dette.
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er å sikre at forhold som er
+viktige for planens kvalitet, gjennomførbarhet og helhet, belyses
+og avklares i reguleringsplanen. Bestemmelsen skal bidra til
+riktige prioriteringer tidlig i planarbeidet og redusere behovet for
+kostbare endringer i senere faser.
 
-a. forholdet til landskap, terreng, grønnstruktur, naturverdier, kulturmiljø, bebyggelsesstruktur og stedlig identitet
+Planens hovedgrep
+Planbeskrivelsen skal redegjøre for planens arkitektoniske,
+landskapsmessige og funksjonelle hovedgrep, og hvordan
+kommunens arkitekturstrategi er vurdert og fulgt opp i
+planforslaget. Den skal også vise hvordan relevante hensyn
+og krav er sett i sammenheng og fulgt opp gjennom plankart,
+bestemmelser, løsninger og eventuelle rekkefølgekrav.
 
-b. bebyggelsens plassering, volum, skala, høyder, takform, fasader, materialbruk og fargebruk
+Omfang og dokumentasjon i planbeskrivelsen
+Omfanget av redegjørelsen må tilpasses planens formål,
+omfang, lokalisering, kompleksitet og virkninger. Enkle planer
+kan kreve begrensede avklaringer, mens større eller mer
+sammensatte planer vil kreve bredere vurderinger og mer
+utfyllende dokumentasjon.
 
-c. utforming av gater, torg, møteplasser, uteoppholdsarealer og overganger mellom private, felles og offentlige arealer
+Redegjørelsen skal ikke være en oppramsing av temaer, men vise
+hvordan valgte løsninger understøtter planens helhetlige grep og
+svarer ut de forholdene som er avgjørende for gjennomføring og
+kvalitet.
 
-d. tilrettelegging for sosial interaksjon, fellesskap og sambruk-/deleløsninger gjennom innganger, gangforbindelser, fellesarealer og fellesfunksjoner
+Temaer som bor avklares
+Det bør særskilt redegjøres for forhold som er nødvendige for
+å sikre gjennomførbarhet, kvalitet og forutsigbarhet i planen,
+herunder:
 
-e. leke-, aktivitets- og rekreasjonsarealers plassering, funksjon, utstyrsnivå og egnethet for aktuelle alders- og brukergrupper
+Logistikk og drift
+Planforslaget skal vise hvordan logistikk er løst i sammenheng
+med bebyggelse, utearealer og nødvendige funksjoner. Dette
+omfatter blant annet renovasjon, varelevering, adkomst,
+snumuligheter, brøyting, drift og trafikksikkerhet.
+Ved utbygginger med mer enn 300 boenheter skal stasjonært
+avfallssug vurderes opp mot nedgravde løsninger.
 
-f. forbindelser for gående og syklende, tilgjengelighet, trygghet og universell utforming
+Transport og mobilitet
+Innenfor nullvekstområdet skal det redegjøres for et
+samlet mobilitetsgrep som viser hvordan persontransport
+kan løses med gange, sykkel og kollektivtransport. For
+reguleringsplaner nord for nullvekstlinjen som tilrettelegger
+for ny næringsbebyggelse over 1000 m² BRA eller nye boligfelt
+med mer enn 10 hovedbruksenheter, skal transportutredning
+og mobilitetsplan følge planforslaget. Behov for mobilitetspunkt
+bør vurderes i tilknytning til alle lokal- og nærsentre.
+Ved regulering og nye tiltak langs prioriterte kollektivtraseer bør
+planen avklare nødvendig areal til bussframkommelighet og
+kollektivfelt.
 
-g. blågrønne sammenhenger, vegetasjon, landskapstilpasning, naturbaserte løsninger og overvannshåndtering
+Miljostyring
+For planer med behov for særskilt miljøstyring bør det vurderes
+miljøprogram etter NS 3466 og behov for miljøoppfølgingsplan
+(MOP). Omfanget skal tilpasset planens størrelse,
+kompleksitet og virkninger. Relevante føringer bør innarbeides i
+reguleringsplanen og ses i sammenheng med øvrige avklaringer
+i planforslaget.
 
-h. tekniske funksjoner, renovasjon, varelevering, parkering, snøhåndtering, energiløsninger og annen nødvendig infrastruktur
+Masseforvaltning
+Det skal redegjøres for hvordan planen ivaretar hensynet
+til miljø, landskap, natur, friluftsliv, trafikk, vannmiljø og
+nærliggende bebyggelse gjennom en bærekraftig og helhetlig
+masseforvaltning. Planbeskrivelsen skal omtale forventede
+massemengder, muligheter for lokal massebalanse, håndtering,
+transport og disponering av overskuddsmasser. Den skal også
+omtale behov for miljøoppfølging, miljøovervåking, istandsetting
+og etterbruk der dette er relevant. Kommunens prinsipper for
+bærekraftig og sirkulær masseforvaltning skal legges til grunn.
 
-i. behov for sosial og teknisk infrastruktur, herunder skole- og barnehagekapasitet, vannforsyning, avløp, trafikksikker skolevei, gang- og sykkelforbindelser, grønnstruktur, torg, møteplasser og lekeplasser.
+Flomveier og overvann
+Planforslaget skal redegjøre for hvordan flomveier sikres fra
+planområdet til naturlige flomveier, og hvordan overvann
+håndteres som del av en helhetlig blågrønn struktur. Der det
+er relevant, bør det vurderes om lukkede bekkeløp kan åpnes
+eller gjenåpnes som del av løsningen for vannmiljø, flomveier og
+naturbasert overvannshåndtering.
 
-For sentrumsområder, lokalsentre, transformasjonsområder, større bolig- eller næringsområder, områder med vesentlig landskapsvirkning, kulturmiljøer, kystområder og andre områder der planforslaget har særlig betydning for stedets karakter, bør det arkitektoniske hovedgrepet avklares særskilt.
-
-Stedstilpasset helhetsgrep skal sikre at logistikk, herunder renovasjon, varelevering, adkomst, snumuligheter, brøyting, drift og trafikksikkerhet, løses i sammenheng med bebyggelse, utearealer og nødvendige funksjoner.
-
-Ved utbygginger med mer enn 300 boenheter skal stasjonært avfallssug vurderes opp mot nedgravde løsninger.
-
-Ved regulering og nye tiltak langs prioriterte kollektivtraseer bør nødvendig areal til bussframkommelighet og kollektivfelt avklares i planen.`,
-    },
-    {
-      nummer: "10.2",
-      tittel: "Bokvalitet og nabolag/fellesskap",
-      bestemmelse: `Reguleringsplaner med flere enn 10 boenheter innenfor eller tett opptil prioritert vekstområde skal i tillegg særskilt avklare hvordan boligområdet skal fungere som et aldersvennlig og inkluderende nabolag, herunder bokvalitet, utearealer, mobilitet, fellesarealer og sosiale boformer.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å skape attraktive nabolag med god bokvalitet og kvaliteter som styrker fellesskapet i boligområdet. Bestemmelsen skal også bidra til økt andel boliger i sosiale boformer.
-
-Nye boligprosjekter bør bidra til en god miks av boliger i området og flere aldersvennlige boliger innenfor prioriterte vekstområder. Bebyggelsen bør tilrettelegge for sosial interaksjon, fellesskap og sambruk-/deleløsninger gjennom utforming av innganger, gangforbindelser, fellesarealer og fellesfunksjoner. Det bør redegjøres for hvordan hensynet til ulike grupper, herunder eldre og funksjonsvarierte, ivaretas, og hvordan prosjektet tilfører supplerende kvaliteter til eksisterende nabolag.
-
-Fellesarealer bør være tilpasset målgruppen og ha fleksibilitet for endrede behov over tid. Innendørs fellesarealer bør være lett tilgjengelige fra boligene, ligge på bakkeplan og ha direkte adkomst til uteoppholdsarealer.
-
-Ved regulering bør leke-, aktivitets- og rekreasjonsarealers plassering, funksjon, utstyrsnivå og egnethet for aktuelle alders- og brukergrupper avklares.
-
-Behov for mobilitetspunkt bør vurderes i tilknytning til alle lokal- og nærsentre. Et mobilitetspunkt kan omfatte felles sykkelparkering, delingsmobilitet, informasjon om kollektivtransport, hentested for pakker, servicestasjon for sykkel og ladepunkter.`,
-    },
-    {
-      nummer: "10.3",
-      tittel: "Masseforvaltning og natur",
-      bestemmelse: `Reguleringsplaner for næring, masseforvaltning, masseuttak og masselagring skal i tillegg særskilt avklare virkninger for miljø, landskap, natur, friluftsliv, trafikk, vannmiljø og nærliggende bebyggelse. Planen skal også avklare behov for miljøoppfølging, miljøovervåking, istandsetting og etterbruk.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å sikre hensynet til miljø, landskap, natur, friluftsliv, trafikk, vannmiljø og bebyggelse i planer for næring, masseuttak og masseforvaltning.
-
-Ved regulering kan kommunen stille krav om bruk av blågrønn faktor eller tilsvarende ordning. Blågrønn faktor er et verktøy for kvantifisering av vegetasjon og vannelementer.
-
-Overvannshåndtering bør bidra til bruksmessige og visuelle kvaliteter, og fremme biologisk mangfold. Uteoppholdsareal kan inngå i løsninger for overvann og flomvann.`,
-    },
-    {
-      nummer: "10.4",
-      tittel: "Mobilitet",
-      bestemmelse: `Reguleringsplaner innenfor nullvekstområdet skal i tillegg særskilt avklare et samlet mobilitetsgrep som belyser hvordan persontransport kan tas med gange, sykkel og kollektivtransport.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å sikre gode løsninger for transport og mobilitet innenfor nullvekstområdet, med vekt på gange, sykkel og kollektivtransport.
-
-Ved regulering og nye tiltak langs hovedsykkelnettet, bør nødvendig areal til gang- og sykkelanlegg avsettes i planen. Nord for nullvekstlinjen bør det avsettes areal til separat anlegg for fotgjengere og syklister.
-
-Reguleringsplaner for bolig, offentlig eller privat tjenesteyting og næring bør bidra til økt andel fotgjengere og syklister. Gang- og sykkeltraseer til kollektivtransport, sentre, skoler, idrettsanlegg og andre fritidsområder bør inngå i planen.
-
-Gangforbindelser bør planlegges og reguleres som direkte og effektive forbindelser. Aktiviteter, møblering og vegetasjon bør vurderes langs viktige gangforbindelser for å øke attraktiviteten.
-
-Hvorvidt et nytt byggetiltak medfører vekst i personbiltrafikken skal avklares gjennom en egen transportutredning, og en mobilitetsplan, som skal følge reguleringsplaner nord for nullvekstlinjen som tilrettelegger for ny næringsbebyggelse over 1000 m2 BRA, eller nye boligfelt med mer enn 10 hovedbruksenheter.
-
-Mobilitetsplanen skal redegjøre for hvordan transportbehovet i planområdet er tenkt løst, med særlig vekt på løsninger som støtter opp under målsettingen om redusert personbiltrafikk. Se egen merknad til bestemmelsesområdet nullvekstområde.`,
+Helsekonsekvenser
+Det bør vurderes behov for en forenklet
+helsekonsekvensvurdering, tilpasset planens omfang
+og virkninger. Dette er særlig aktuelt i planer der støy,
+luftforurensning og svevestøv kan ha betydning for
+bokvalitet, nærmiljø eller sårbare brukergrupper. Det er også
+aktuelt i planer for utbygging, transformasjon, næring og
+massehåndtering der slike forhold kan være relevante.
+      `,
     },
   ],
 } as const;
