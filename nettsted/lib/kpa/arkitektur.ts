@@ -67,23 +67,23 @@ export const arkitekturKapitler: Record<string, ArkitekturKapittel> = {
   ansvarlig: {
     slug: "ansvarlig",
     tittel: "Ansvarlig",
-    ingress: "Omtanke for natur, blågrønne verdier, kvalitet og varige valg.",
+    ingress: "Kvalitet, varige valg og omtanke for blågrønne verdier.",
     tekst: "Se original PDF for full tekst og grafisk oppsett.",
     pdfFra: 20,
     pdfTil: 21,
-  },
-  "omtanke-for-natur-og-blagronne-verdier": {
-    slug: "omtanke-for-natur-og-blagronne-verdier",
-    tittel: "Omtanke for natur og blågrønne verdier",
-    ingress: "Asker bruker blågrønne kvaliteter og løsninger aktivt i arkitektur og stedsforming.",
-    tekst: "Se original PDF for full tekst og grafisk oppsett.",
-    pdfFra: 22,
-    pdfTil: 23,
   },
   "kvalitet-og-varige-valg": {
     slug: "kvalitet-og-varige-valg",
     tittel: "Kvalitet og varige valg",
     ingress: "Bygg og steder skal ha kvalitet, funksjonalitet og fleksibilitet som gir lang levetid.",
+    tekst: "Se original PDF for full tekst og grafisk oppsett.",
+    pdfFra: 22,
+    pdfTil: 23,
+  },
+  "omtanke-for-natur-og-blagronne-verdier": {
+    slug: "omtanke-for-natur-og-blagronne-verdier",
+    tittel: "Omtanke for blågrønne verdier",
+    ingress: "Asker bruker blågrønne kvaliteter og løsninger aktivt i arkitektur og stedsforming.",
     tekst: "Se original PDF for full tekst og grafisk oppsett.",
     pdfFra: 24,
     pdfTil: 25,
@@ -110,14 +110,14 @@ export const arkitekturKapitler: Record<string, ArkitekturKapittel> = {
     ingress: "Bygg, uterom og steder skal invitere til aktivitet, deltakelse og menneskemøter.",
     tekst: "Se original PDF for full tekst og grafisk oppsett.",
     pdfFra: 30,
-    pdfTil: 31,
+    pdfTil: 32,
   },
   "typiske-asker-omrader": {
     slug: "typiske-asker-omrader",
     tittel: "Typiske Asker-områder",
     ingress: "Fem ulike områdetyper krever ulike tilnærminger til arkitektur og stedsutvikling.",
     tekst: "Se original PDF for full tekst og grafisk oppsett.",
-    pdfFra: 32,
+    pdfFra: 33,
     pdfTil: 33,
   },
   "urbane-omrader": {
@@ -163,9 +163,17 @@ export const arkitekturKapitler: Record<string, ArkitekturKapittel> = {
   annet: {
     slug: "annet",
     tittel: "Annet",
-    ingress: "Supplerende begreper og felles forståelse.",
+    ingress: "Supplerende begreper, illustrasjoner og felles forståelse.",
     tekst: "Se original PDF for full tekst og grafisk oppsett.",
     pdfFra: 46,
+    pdfTil: 46,
+  },
+  "illustrasjon-av-utvalgte-prinsipper": {
+    slug: "illustrasjon-av-utvalgte-prinsipper",
+    tittel: "Illustrasjon av utvalgte prinsipper",
+    ingress: "Illustrasjon av utvalgte prinsipper i arkitekturstrategien.",
+    tekst: "Se original PDF for full tekst og grafisk oppsett.",
+    pdfFra: 47,
     pdfTil: 47,
   },
   skala: {
@@ -183,6 +191,14 @@ export const arkitekturKapitler: Record<string, ArkitekturKapittel> = {
     tekst: "Se original PDF for full tekst og grafisk oppsett.",
     pdfFra: 50,
     pdfTil: 53,
+  },
+  "bilder-og-kredittering": {
+    slug: "bilder-og-kredittering",
+    tittel: "Bilder og kredittering",
+    ingress: "Oversikt over bilder og kreditering i dokumentet.",
+    tekst: "Se original PDF for full tekst og grafisk oppsett.",
+    pdfFra: 54,
+    pdfTil: 54,
   },
 };
 
