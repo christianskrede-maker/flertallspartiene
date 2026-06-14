@@ -1,85 +1,226 @@
 export const kapittel17 = {
   deler: [
     {
-      nummer: "17.1",
-      tittel: "Fellesbestemmelser LNFR- områder",
-      bestemmelse: `Tiltak i LNFR-områder skal ikke medføre nedbygging av dyrket eller dyrkbar mark, inngrep i verdifull skog eller redusere allmennhetens tilgang til utmark.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å sikre jordbruk og naturverdier i LNF-områder. Naturrestaurerende og naturforbedrende tiltak er i utgangpunktet positivt. Dette gjelder også masseoppfylling av rene naturlige masser som forbedrer dyrking, miljø og landskapsmessige kvaliteter.
-
-LNFR-områder skal i hovedsak benyttes til landbruk, natur- og friluftsformål og skal i utgangspunktet være ubebygd, med unntak for tiltak knyttet til stedbunden næring og allment friluftsliv.
-
-Kårbolig kan tillates når det er nødvendig for landbruksdriften, det kun er én eksisterende bolig på eiendommen, og boligen plasseres som del av gårdstunet. Fradeling tillates ikke.
-
-Gjenoppbygging av bolig kan vurderes dersom plassering, volum og høyder i hovedsak opprettholdes, med mulighet for justering dersom dette gir bedre landskaps- eller strandsonetilpasning.
-
-Jordlovens bestemmelser om vern av dyrka og dyrkbar mark gjelder fram til reguleringsplan er vedtatt, og delvis fram til byggetillatelse er gitt.
-
-Snødeponi kan vurderes regulert innenfor LNFR der dette ikke kommer i konflikt med landbruk, vassdrag, natur- eller kulturmiljøverdier.`,
+      nummer: "17",
+      tittel: "Hensynssoner landskap, naturmiljø og kulturmiljø",
+      bestemmelse: ``,
+      spesialmerknad: ``,
     },
     {
       nummer: "17.1",
-      tittel: "Fellesbestemmelser LNFR- områder",
-      bestemmelse: `Offentlig eller privat vann- og avløpsanlegg kan etableres for å forsyne eksisterende hovedbruksenhet. Anlegget skal ikke berøre dyrka eller dyrkbar mark og eller verdifull skog, og skal ikke medføre vesentlige inngrep i LNFR-områder.
-
-Nett- og trafostasjoner kan kun tillates innenfor LNFR-området der plasseringen er teknisk nødvendig og annen plassering ikke er mulig.`,
+      tittel: "Hensynssone bevaring naturmiljø, H560",
+      bestemmelse: `
+Jf. pbl. §§ 11-8, bokstav c
+      `,
       spesialmerknad: ``,
     },
     {
       nummer: "17.1.1",
-      tittel: "Tiltak knyttet til eksisterende boligbebyggelse",
-      bestemmelse: `Innenfor boligbebyggelse i LNFR kan det på eksisterende eiendommer med boliger (inkl. garasjer og boder) gjennomføres tiltak som nevnt i pbl. § 20-1 (1) bokstav b, c, e, og f.
+      tittel: "Vassdrag",
+      bestemmelse: `
+Innenfor hensynssone H560_1 skal hensynet til vassdragets miljøtilstand, økologiske
+funksjon, kantvegetasjon, vannkvalitet, flomvei og landskapsmessige sammenheng tillegges
+særlig vekt ved regulering og behandling av tiltak etter plan- og bygningsloven.
 
-Samlet bruksareal (BRA) for hovedbruksenheten og tilhørende garasje skal ikke overstige 250 m2.
+Tiltak bør lokaliseres og utformes slik at de ikke forringer miljøtilstanden i sjø og vassdrag,
+reduserer vassdragets naturlige funksjon, svekker kantvegetasjon eller øker risikoen for
+erosjon, avrenning, forurensning eller flomskade.
 
-Garasje skal ikke overstige 50 m2 BYA og skal plasseres i tilknytning til tun. Garasje skal ikke berøre av dyrket eller dyrkbar mark, inngrep i verdifull skog eller redusere allmennhetens tilgang til utmark.
+Tiltak skal lokaliseres og utformes slik at naturlige flomveier opprettholdes, kantvegetasjon
+bevares, og risiko for erosjon, avrenning, forurensning og flomskade begrenses. Tiltak bør
+ikke redusere vassdragets økologiske funksjoner eller forringe vannmiljøet.
 
-Det kan tillates kårbolig der dette er godkjent av kommunens landbruksmyndighet. Kårbolig skal ikke overstige 125 m2 BYA.
+Ved vurdering av tiltak skal det legges vekt på om tiltaket
 
-For bebyggelse gjelder følgende høyder:
+a. opprettholder eller forbedrer miljøtilstanden i sjø og vassdrag
 
-Gesimshøyde skal ikke overstige 8,0 meter, og mønehøyde skal ikke overstige 9,0 meter, målt fra gjennomsnittlig planert terreng rundt bygningen.
+b. ivaretar kantvegetasjon og naturlige randsoner langs vassdrag
 
-For garasjer og lignende tiltak gjelder følgende høyder:
+c. ikke medfører økt avrenning, partikkeltransport, forurensning eller erosjon
 
-a.
-Gesimshøyde skal ikke overstige 3,0 meter og mønehøyde ikke overstige 4,0 meter. Høydene måles fra ferdig planert terrengs gjennomsnitts nivå rundt bygningen.
+d. ikke hindrer vassdragets funksjon som flomvei og økologisk korridor
 
-b.
-Tiltaket skal være underordnet og tilpasset hovedbruksenheten og/eller våningshuset i volum og utforming.`,
-      spesialmerknad: `Føringer for eksisterende boligbebyggelse innenfor LNFR er forholdsvis harmonisert mot LNFR-spredt, og gir rammer for utnyttelse innenfor eksisterende bebyggelse. I stor grad støtter planen seg på lovens krav.`,
+e. bygger på et tilstrekkelig kunnskapsgrunnlag om virkninger for vassdraget
+
+f. har nødvendige avbøtende eller restaurerende tiltak der påvirkning ikke kan unngås
+
+Der tiltak kan berøre miljøtilstanden eller vassdragets funksjon, bør behovet for fagkyndig
+vurdering avklares. Eventuelle avbøtende tiltak bør sikres gjennom reguleringsplan eller som
+vilkår i tillatelse der det er nødvendig og har hjemmel.
+      `,
+      spesialmerknad: `
+Hensikten med hensynssonen er å sikre god miljøtilstand
+i vassdrag, samt ivareta flomveier, sammenhengende
+grønnstruktur og biologisk mangfold. Sonen skal bidra til å
+opprettholde og styrke vassdragets økologiske funksjoner og
+landskapsmessige kvaliteter.
+
+Lukkede bekker bør vurderes åpnet ved planlegging og
+utbygging der dette kan gjennomføres uten uforholdsmessige
+konsekvenser, og der tiltaket bidrar til bedre vannmiljø,
+flomsikkerhet og blågrønn struktur.
+
+Hensynssonene er prinsipielt fastsatt i kommuneplanen
+og angir overordnede føringer. Reguleringsplan gir mer
+detaljerte avklaringer gjennom arealformål, byggegrenser og
+bestemmelser.
+
+Naturrestaurerende samt natur- og miljøforbedrende tiltak,
+herunder også dreneringstiltak, kan normalt tillates innenfor
+hensynssonen når
+
+• vassdragets hydrologi og kapasitet opprettholdes eller
+forbedres
+
+• erosjon og sedimenttransport håndteres på en
+tilfredsstillende måte
+
+• konsekvenser for naturmangfold og økologiske funksjoner er
+vurdert
+
+Ved ny regulering og tiltak skal hensynssonens formål
+legges til grunn for vurderingen og løsningen av tiltaket. Det
+skal dokumenteres hvordan tiltaket ivaretar eller forbedrer
+vassdragets miljøtilstand, flomfunksjon og økologiske
+sammenheng.
+      `,
+    },
+    {
+      nummer: "17.1.2",
+      tittel: "Naturverdier",
+      bestemmelse: `
+Innenfor hensynssone H560_2 skal hensynet til naturområder, naturtyper, arter, økologiske
+funksjonsområder, stedegen vegetasjon og sammenhengende grønnstruktur tillegges særlig
+vekt ved regulering og behandling av tiltak etter plan- og bygningsloven, skogbrukslova og
+andre lover som styrere arealbruk.
+
+Tiltak bør lokaliseres og utformes slik at naturverdier av høy verdi bevares, og slik at inngrep,
+fragmentering, terrengendringer, hogst og annen påvirkning på naturtyper og økologiske
+funksjoner begrenses.
+
+Ved vurdering av tiltak bør det legges vekt på om tiltaket
+
+a. ivaretar registrerte og antatt viktige naturverdier
+
+b. bevarer stedegen vegetasjon, store trær og naturpregede arealer
+
+c. unngår nedbygging, oppdeling eller forringelse av naturtyper og leveområder
+
+d. opprettholder økologiske sammenhenger og forbindelser til tilgrensende
+grønnstruktur
+
+e. bygger på et oppdatert og tilstrekkelig kunnskapsgrunnlag
+
+f. forebygger spredning av fremmede arter
+
+g. har nødvendige avbøtende, restaurerende eller skjøtselsmessige tiltak der påvirkning
+ikke kan unngås
+
+Der eksisterende kunnskapsgrunnlag ikke er tilstrekkelig, eller tiltaket kan berøre
+naturverdier av betydning, bør kommunen legge vekt på at naturverdiene vurderes av fagkyndig biolog. Eventuelle avbøtende tiltak bør sikres gjennom reguleringsplan eller som
+vilkår i tillatelse der det er nødvendig og har hjemmel.
+      `,
+      spesialmerknad: `
+Hensikten med hensynssonen er å sikre naturverdier, naturtyper
+og økologiske sammenhenger, og ivareta leveområder for arter
+og biologisk mangfold.
+
+Ved planlegging og tiltak innenfor hensynssonen skal det legges
+vekt på å
+
+• bevare og styrke eksisterende naturverdier
+
+• unngå nedbygging, fragmentering og forringelse av viktige
+naturtyper
+
+• ivareta sammenhengende grønnstruktur og økologiske
+korridorer
+
+• sikre stedegen vegetasjon og naturlig terreng
+
+Tiltak skal tilpasses naturgrunnlaget og utformes slik at inngrep
+begrenses. Der påvirkning ikke kan unngås, skal det vurderes
+avbøtende, restaurerende eller kompenserende tiltak.
+
+Ved manglende kunnskapsgrunnlag, eller der tiltak kan påvirke
+viktige naturverdier, skal behov for faglig vurdering avklares.
+      `,
     },
     {
       nummer: "17.2",
-      tittel: "LNFR-spredt bolig og fritidsbebyggelse",
-      bestemmelse: `Innenfor LNFR-områder for spredt bolig- og fritidsbebyggelse er oppføring av nye boliger og nye fritidsboliger ikke tillatt.
+      tittel: "Hensynssone bevaring kulturmiljø, H570",
+      bestemmelse: `
+Jf. Pbl. § 11-8, bokstav c
+      `,
+      spesialmerknad: `
+Hensikten med hensynssonen er å synliggjøre områder med
+kulturhistoriske verdier, kulturmiljøer, kulturminner, eldre
+bebyggelsesstrukturer og landskapstrekk som skal vektlegges
+ved planlegging og behandling av tiltak.
 
-På eksisterende boligeiendommer kan det tillates tiltak etter pbl. § 20-1 første ledd bokstav b, c, e og f, herunder tilbygg, påbygg, underbygg, garasje og uthus, dersom tiltaket er knyttet til eksisterende lovlig boligbebyggelse.
+Innenfor sonen skal nye tiltak tilpasses kulturmiljøets
+særpreg, skala, bebyggelsesstruktur, landskap og historiske
+sammenheng. Eksisterende kulturminner, verneverdig
+bebyggelse, gårdstun, veifar, terrengformer, vegetasjon og andre
+elementer som underbygger kulturmiljøets verdi bør ivaretas.
 
-For eksisterende boligeiendommer gjelder følgende:
+Hensynssonen innebærer ikke i seg selv fredning, men angir
+at kulturmiljøhensyn skal være et sentralt vurderingstema ved
+regulering, byggesak og øvrig arealforvaltning.
 
-a.
-sekundær boenhet kan tillates med bruksareal på maksimalt 60 m2 BRA
+Hensynssonen er under revisjon og vil bli oppdatert til neste
+høring, med utgangspunkt i oppdatert kunnskapsgrunnlag og
+vedlagt fagnotat for kulturminner og kulturmiljø. Fagnotatet
+skal legges til grunn for avgrensning av sonen og for vurdering
+av hvilke kulturhistoriske verdier, strukturer og sammenhenger
+som bør ivaretas. Arkitekturstrategien peker også på behovet
+for helhetlig forvaltning av kulturminner, kulturmiljøer og
+landskapsverdier.
+      `,
+    },
+    {
+      nummer: "17.2.1",
+      tittel: "Bevaring kulturmiljø H570_1",
+      bestemmelse: `
+I bevaring kulturmiljø H570_1 skal nye tiltak hensynta eksisterende kulturmiljø og landskap.
 
-b.
-garasje og uthus kan oppføres med samlet bruksareal på inntil 50 m2 BRA
+Verneverdig bebyggelse, spor etter tradisjonell landbruksdrift, og andre kulturminner skal
+søkes bevart. Trerekker og verdifulle skal bevares i størst mulig grad. I vurdering av søknad
+om nydyrking, massefylling og bakkeplanering skal det tas hensyn til om denne vil endre
+eller forringe landskapskvalitetene i området.
 
-c.
-garasje og uthus skal plasseres innenfor en avstand på maksimalt 20 meter fra eksisterende hovedbolig på samme eiendom.
+Ferdsel som kan skade kulturmiljøet eller kulturminnene som inngår i landskapet bør
+begrenses.
 
-d.
-samlet bruksareal for boligbebyggelse og tilhørende bygninger skal ikke overstige 200 m2 BRA
+Første ledd, første setning gjelder ikke for tiltak som omfatter jernbaneteknisk infrastruktur.
+      `,
+      spesialmerknad: ``,
+    },
+    {
+      nummer: "17.2.2",
+      tittel: "Bevaring kulturmiljø - Engene og Kongsdelene H570_3",
+      bestemmelse: `
+Innenfor området Bevaring kulturmiljø - Engene og Kongsdelene H570_3 skal planer og tiltak
+ta hensyn til følgende:
 
-e.
-gesimshøyde skal ikke overstige 8,0 meter og mønehøyde skal ikke overstige 9,0 meter
+a. stedets egenart og særpregede kulturmiljø, inkludert sprengstoff fabrikken, de
+verneverdige bolighusene og Kongsdelene kirke
 
-For eksisterende fritidsbebyggelse gjelder følgende:
+b. bevaring av alle bolighus med tilhørende uthus
 
-a.
-samlet bebygd areal skal ikke overstige 125 m² BYA
-
-b.
-gesimshøyde skal ikke overstige 4,0 meter og mønehøyde skal ikke overstige 6,0 meter. Høydene måles fra ferdig planert terrengs gjennomsnitts nivå rundt bygningen.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å gi bærekraftige rammer for eksisterende bebyggelse i LNFR områder som ligger tett opptil boligbebyggelse, som ikke inngår i gårdsdrift, og som ikke er i konflikt med jordbruk eller naturkvaliteter. Hovedforskjellen til LNFR er at LNFR-spredt åpner for sekundær boenhet.`,
+Ved søknad om tiltak skal det dokumenteres at det er tatt et helhetlig hensyn til kulturmiljøet.
+      `,
+      spesialmerknad: ``,
+    },
+    {
+      nummer: "17.2.3",
+      tittel: "Hensynssone historisk veifar H570_4",
+      bestemmelse: `
+Veifarene skal i størst mulig grad bevares. Ved skogsdrift og andre tiltak skal hensyn til
+veifarene sikres slik at skader unngås. Veifarene bør ryddes, holdes åpne, og være
+tilgjengelig for ferdsel.
+      `,
+      spesialmerknad: ``,
     },
   ],
 } as const;
