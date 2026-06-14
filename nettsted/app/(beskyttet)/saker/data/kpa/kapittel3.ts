@@ -142,5 +142,3 @@ For forbedringstiltak for kollektivfremkommelighet gjelder denne tabellen:
     },
   ],
 } as const;
-
-Test: Kontroller at `kapittel3.ts` inneholder plassholderen `[TABELL KOMMER – rekkefølgekrav / aktuelle tiltak]` og ikke inneholder bildefelt eller bilde-URL.
