@@ -1,6 +1,3 @@
-nettsted/app/(beskyttet)/saker/data/kpa/kapittel3.ts
-
-```ts
 export const kapittel3 = {
   deler: [
     {
@@ -145,6 +142,5 @@ For forbedringstiltak for kollektivfremkommelighet gjelder denne tabellen:
     },
   ],
 } as const;
-```
 
 Test: Kontroller at `kapittel3.ts` inneholder plassholderen `[TABELL KOMMER – rekkefølgekrav / aktuelle tiltak]` og ikke inneholder bildefelt eller bilde-URL.
