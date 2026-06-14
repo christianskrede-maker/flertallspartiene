@@ -1,22 +1,88 @@
 export const kapittel16 = {
   deler: [
     {
+      nummer: "16",
+      tittel: "Bestemmelser til bruk og vern av sjø og vassdrag, med tilhørende strandsone",
+      bestemmelse: `
+jf. pbl. § 11-7 nr. 6
+      `,
+      spesialmerknad: ``,
+    },
+    {
       nummer: "16.1",
-      tittel: "Grønnstruktur, friområder og blå/grønnstruktur",
-      bestemmelse: `Innenfor områder avsatt til grønnstruktur og blå/grønnstruktur skal eksisterende vegetasjon bevares.
+      tittel: "Småbåthavn",
+      bestemmelse: `
+jf. pbl. § 11-7 nr. 6
 
-Det tillates skånsom tilrettelegging for turstier med bruksbredde inntil 1,5 meter, samt etablering av naturlekeplasser og tiltak for friluftsliv.
+Småbåthavners land- og bryggeanlegg skal være åpne for allmennhetens ferdsel til fots.
 
-Dette gjelder tiltak som legger til rette for allmenn ferdsel og opphold, herunder turstier, enkle oppholdsarealer og mindre installasjoner for lek og friluftsliv.
+Etablering av småbåthavn er kun tillatt der dette følger av reguleringsplan vedtatt etter
+01.01.2010.
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er å sikre nødvendige
+småbåthavner. Ved regulering av småbåthavner bør det sikres
+gjesteplasser for båt (minimum 10 % i større havner). Det bør
+også tilrettelegges for båtslipp med allmenn tilgjengelighet der
+det er mulig. Landarealer og brygger skal være åpne for ferdsel,
+og det skal etableres løsninger for å redusere forurensning.
 
-Det tillates ikke tiltak som hindrer allmenn bruk eller endrer områdets karakter.
+Naturmangfold og kulturminner skal ivaretas, og brygger skal
+plasseres og utformes med hensyn til landskap, mudringsbehov
+og visuell eksponering.
 
-Det tillates skjøtsel av vegetasjon i form av rydding, beskjæring og fjerning av enkelttrær der dette er nødvendig av hensyn til vegetasjonens tilstand, fremkommelighet eller sikkerhet.
+I detaljregulering skal det redegjøres for behov for båtplasser,
+mulighet for sanering av enkeltbrygger, økt tilgjengelighet til
+strandsonen, og tilkobling til gang- og kollektivnett. Det skal også
+dokumenteres løsninger for teknisk infrastruktur, renovasjon,
+avløp og ladepunkter.
 
-Tiltakene skal være begrenset til enkeltinngrep og skal ikke endre områdets vegetasjonsstruktur, omfang eller karakter. Flatevis rydding eller sammenhengende fjerning av vegetasjon tillates ikke.
+For større tettstedsnære havner skal det i tillegg vurderes
+sambruk med sjøidretter, etablering av felles møteplasser, og
+hvordan parkering, trafikk, støy, vinteropplag og forholdet til
+naboer og allmenn ferdsel håndteres.
+      `,
+    },
+    {
+      nummer: "16.2",
+      tittel: "Farled (hoved- og biled)",
+      bestemmelse: `
+Jf. Pbl. § 11-7, nr. 6 jf. § 11-11, nr. 3 og 5
 
-Terrengendringer tillates ikke.`,
-      spesialmerknad: `Hensikten med bestemmelsene er å sikre grønne kvaliteter, naturverdier og landskap, samt gi god tilgang til berikende grønnstruktur, aktiviteter, nærmiljøanlegg eller lignende. Arealene tilrettelegger for naturopplevelser og friluftsliv.`,
+I farled er det ikke tillatt med tiltak eller inngrep som vanskeliggjør, eller kommer i konflikt
+med, bruken som farled.
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er å sikre nødvendig farled for
+sjøtransport
+      `,
+    },
+    {
+      nummer: "16.3",
+      tittel: "Friluftsområde i sjø",
+      bestemmelse: `
+jf. pbl. § 11-7 nr. 6
+
+Innenfor området avsatt til friluftsområde i sjø skal det kun etableres tiltak som tilrettelegger for
+allmenhetens bruk av området.
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er å sikre friluftsområder i sjø
+      `,
+    },
+    {
+      nummer: "16.4",
+      tittel: "Akvakulturområde",
+      bestemmelse: `
+Jf. pbl. § 11-11, nr. 7
+
+I områder avsatt til akvakulturformål skal det kun etableres tareanlegg med formål å forbedre
+miljøtilstanden i Oslofjorden. (beskrivelse, ulykker, hensyn til sjøliv)
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er å bidra til positivt miljøtiltak for
+Oslofjorden gjennom etablering av tareanlegg.
+      `,
     },
   ],
 } as const;
