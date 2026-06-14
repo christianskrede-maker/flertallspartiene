@@ -1,87 +1,87 @@
 export const kapittel12 = {
   deler: [
     {
+      nummer: "12",
+      tittel: "Bestemmelser til fritidsbebyggelse",
+      bestemmelse: `
+jf. pbl. § 11-7 nr. 1
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er å etablere helhetlige rammer
+for individuell utbygging av fritidsbebyggelse.
+Bruksendring fra fritidsbolig til bolig er spesielt aktuelt i KBF
+områdene (Brønnøya, Storsand, Holmsbu og Torgrimsåsen) hvor
+det allerede er boligbebyggelse. Der ny bruk vil være i strid med
+regulert arealformål kreves ny reguleringsplan eller endring av
+gjeldende plan.
+      `,
+    },
+    {
       nummer: "12.1",
-      tittel: "Boligområder med spesielle kvaliteter (bestemmelsesområde # SB)",
-      bestemmelse: ``,
-      spesialmerknad: `Hensikten med spesielle boligområder er å sikre at områdenes helhetlige karakter og særpreg videreføres ved tiltak og fortetting. Bestemmelsene overstyrer reguleringsplaner som ikke videreføres som uendret og skaper motstrid til eldre planer.
+      tittel: "Fritidsbebyggelse utenfor 100 metersbeltet langs sjø",
+      bestemmelse: `
+pbl § 11-9 nr. 3 og 6, og § 11-10 nr. 2
 
-Bestemmelsene skal bidra til at nye tiltak tilpasses eksisterende bebyggelsesstruktur, herunder gjennom ensartede og dominerende takformer, tidstypisk utforming, detaljer og helhetlig arkitektonisk uttrykk, gjennomgående etasje- og høyderelasjoner, samt lav utnyttelsesgrad med tydelig grønn karakter. Samlet skal dette ivareta sammenhengen mellom bebyggelse, grønnstruktur og landskap, og sikre at områdenes arkitektoniske og landskapsmessige kvaliteter opprettholdes over tid.
+I områder avsatt til fritidsbebyggelse eller kombinert bolig- og fritidsbebyggelse, felt KBF, kan
+det etableres én fritidsbolig på eksisterende ubebygget tomt. Eksisterende fritidsbolig kan
+utvides. Dette gjelder på følgende vilkår:
 
-SB-områdene omfatter eksisterende småhusområder med tydelig og gjennomgående karakter.`,
-    },
-    {
-      nummer: "12.1.1",
-      tittel: "Grad av utnyttelse",
-      bestemmelse: `I områder avsatt til frittliggende småhusbebyggelse med spesielle kvaliteter (SB) skal bebygd areal (BYA) ikke overstige 20% av tomtens nettoareal.`,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å gi et likt grunnlag for lik utnyttelsesgrad i boligområder med spesielle kvaliteter (SB). Bestemmelsen gir føringer på bruken av handlingsrommet i pbl. §29-1 og 29-2, som sammen med Arkitektur Asker forventes brukt aktivt i byggesaker.`,
-    },
-    {
-      nummer: "12.1.2",
-      tittel: "Høyder",
-      bestemmelse: `For boliger gjelder følgende høyder:
+a. fritidsboligen tilknyttes godkjent vann- og avløpsanlegg
 
-Gesimshøyde skal ikke overstige 6,0 meter, og mønehøyde skal ikke overstige 9,0 meter, målt fra ferdig planert terrengs gjennomsnittsnivå rundt bygningen. Gesimshøyden skal likevel ikke overstige 7,0 meter fra laveste punkt på ferdig planert terreng.
+b. utvidelse av eksisterende fritidsbolig medfører ikke opprettelse av ny boenhet på
+tomten
 
-For garasjer og lignende tiltak gjelder følgende høyder:
+c. grad av utnytting overstiger ikke %-BYA = 15 % av tomtens nettoareal, og samlet
+BYA overstiger ikke 125 m²
 
-Gesimshøyde skal ikke overstige 3,0 meter, og mønehøyde skal ikke overstige 4,0 meter. Høydene måles fra ferdig planert terrengs gjennomsnittsnivå rundt bygningen. Gesimshøyden skal likevel ikke overstige 4,0 meter fra laveste punkt på ferdig planert terreng.`,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å gi et grunnlag for lik maksimal høyde i SB-områder. Det vesentlige hensynet bak regelen er å sikre at området karakter videreføres, og særlig at hensynet til eksisterende kvaliteter som lys, gode uteoppholdsarealer, forholdet til eksisterende omgivelser mm. ivaretas i byggesaker. Bestemmelsen gir føringer på bruken av handlingsrommet i pbl. §29-1 og 29-2, som sammen med Arkitektur Asker forventes brukt aktivt i byggesaker.`,
-    },
-    {
-      nummer: "12.1.3",
-      tittel: "Boenheter",
-      bestemmelse: `I boligområde med spesielle kvaliteter skal det maksimalt etableres én frittliggende enebolig med én integrert sekundær boenhet per eiendom.
+d. gesimshøyde overstiger ikke 4,0 meter og mønehøyde overstiger ikke 6,0 meter, målt
+fra ferdig planert terrengs gjennomsnittsnivå rundt bygningen
 
-Sekundær boenhet skal maks være 60m2 BRA i størrelse, og være integrert i eneboligen og underordnet hovedbruksenheten. Sekundær boenhet kan likevel etableres som frittliggende bygg der dette følger av bestemmelse 8.2 om kulturminner.`,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å gi et grunnlag for et likt maksimalt antall boenheter i områder med frittliggende småhusbebyggelse. Det vesentlige hensynet bak regelen er å sikre at området karakter videreføres, og at området ikke fortettes på en måte som endrer områdets karakter. Hver tomt skal kun bebygges med 1 boenhet.
-
-Tidligere godkjente, eksisterende sekundære boenheter påvirkes ikke.`,
+e. gesimshøyden overstiger ikke på noe punkt 5,0 meter fra laveste punkt på ferdig
+planert terreng
+      `,
+      spesialmerknad: `
+Hensikten er å tilrettelegge for nye fritidsboliger på eksisterende
+ubebygde tomter, samt utvidelse av eksiterende innenfor gitte
+rammer.
+      `,
     },
     {
       nummer: "12.2",
-      tittel: "Boligområder innenfor 100-metersbeltet langs sjø (bestemmelseområde B100)",
-      bestemmelse: ``,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å følge opp statlige planretningslinjer for differensiert forvaltning av strandsonen langs sjøen, hensynta natur- og kulturmiljø, friluftsliv, landskap/fjernvirkning og allmenne interesser. Bestemmelsen overstyrer reguleringsplaner som ikke videreføres som uendret.`,
-    },
-    {
-      nummer: "12.2.1",
-      tittel: "Grad av utnyttelse",
-      bestemmelse: `I områder avsatt til bolig innenfor 100-metersbelet langs sjø (B100) skal bebygd areal (BYA) ikke overstige 15% av tomtens nettoareal.`,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å gi et likt grunnlag for lik utnyttelsesgrad i boligområder innenfor 100-metersbeltet langs sjø. Det vesentlige hensynet bak regelen er å sikre at områdenes karakter videreføres, og særlig at hensynet til eksisterende kvaliteter som natur, kulturmiljø og allmennhetens tilgang sikres og ivaretas i byggesaker. Bestemmelsen gir føringer på bruken av handlingsrommet i pbl. §29-1 og 29-2, som sammen med Arkitektur Asker forventes brukt aktivt i byggesaker.`,
-    },
-    {
-      nummer: "12.2.2",
-      tittel: "Høyder",
-      bestemmelse: `Gesimshøyde skal ikke overstige 4,5 meter, og mønehøyde skal ikke overstige 7.0 meter, målt fra gjennomsnittlig planert terreng rundt bygningen.`,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å gi et grunnlag for lik maksimal høyde i boligområder i 100-metersbeltet langs sjø. Det vesentlige hensynet bak regelen er å sikre at området karakter videreføres, og særlig at hensynet til eksisterende kvaliteter som lys, gode uteoppholdsarealer, forholdet til eksisterende omgivelser mm. ivaretas i byggesaker.
+      tittel: "Fritidsbebyggelse beliggende mellom 100-metersgrensen og byggegrensen mot sjø",
+      bestemmelse: `
+pbl § 11-9 nr. 3 og 6, og § 11-10 nr. 2
 
-Bestemmelsen gir føringer på bruken av handlingsrommet i pbl. §29-1 og 29-2, som sammen med Arkitektur Asker forventes brukt aktivt i byggesaker.`,
-    },
-    {
-      nummer: "12.2.3",
-      tittel: "Boenheter",
-      bestemmelse: `På hver eiendom tillates kun én frittliggende enebolig.
+Det er tillatt med ett tilbygg på inntil 8 m² til eksisterende fritidsbebyggelse i områder avsatt til
+kombinert bolig- og fritidsbebyggelse (KBF) og fritidsbebyggelse beliggende i 100-
+metersbeltet, utenfor byggegrense mot sjø, når følgende vilkår er oppfylt:
 
-Sekundær boenhet kan etableres dersom følgende vilkår er oppfylt:
+a. tilbygget er nødvendig for å sikre avkloakkering av eiendommen ved tilkobling til
+godkjent vann- og avløpsanlegg
 
-a)
-Eiendommen har et netto tomteareal på minimum 1200 m2.
+b. det kan dokumenteres at sanitæranlegg ikke kan integreres i eksisterende
+bebyggelse
 
-b)
-Sekundær boenhet skal være integrert i hovedbygningen og kan ikke etableres som selvstendig frittliggende bygning.
-
-c)
-Unntak fra bokstav b gjelder der etablering i frittliggende bygning uttrykkelig tillates etter bestemmelse 7.xx om kulturminner.`,
-      spesialmerknad: `Hensikten med denne bestemmelsen er å gi et grunnlag for et likt maksimalt antall boenheter i områder med frittliggende småhusbebyggelse. Det vesentlige hensynet bak regelen er å sikre at området karakter videreføres, og at området ikke fortettes på en måte som endrer områdets karakter. Bestemmelsen skal sikre at området forblir et område med frittliggende eneboliger.`,
-    },
-    {
-      nummer: "12.2.4",
-      tittel: "Innenfor bestemmelsesområder xx for Nesøya",
-      bestemmelse: `Skal bebygd areal (BYA) ikke overstige 20% av tomtens nettoareal.
-
-Bebyggelse skal tilpasses landskapets karakter, eksisterende vegetasjon og sikre siktlinjer til åsene.`,
-      spesialmerknad: `Hensikten med bestemmelsesområdet er å sikre stedskvaliteter.`,
+c. tilbygget plasseres i tilknytning til hovedbruksenheten, i retning bort fra sjø
+      `,
+      spesialmerknad: `
+Hensikten med bestemmelsen er ment som en snever
+unntaksbestemmelse for å kunne etablere nødvendige
+sanitæranlegg i eksisterende fritidsbebyggelse hvor dette ikke lar
+seg løse innenfor eksisterende bygningsmasse. Vurderingen av
+nødvendighet må foretas konkret i den enkelte sak.
+Det er søker/tiltakshaver som må fremme en begrunnet søknad
+og redegjøre for hvorfor det er nødvendig med den prosjekterte
+størrelsen på tilbygget. At bestemmelsen åpner for tilbygg på
+inntil 8 m² innebærer ikke at det automatisk anses nødvendig
+med et tilbygg av denne størrelsen. Tiltaket skal begrenses til det
+arealet som er nødvendig for å etablere sanitæranlegget på en
+funksjonell og forsvarlig måte.
+Tilbygget skal kun benyttes til sanitærfunksjoner knyttet til
+bad/wc. Det tillates ikke at arealet benyttes til gangareal,
+oppholdsrom, bod eller andre formål utover det som er
+nødvendig for sanitæranlegget.
+      `,
     },
   ],
 } as const;
