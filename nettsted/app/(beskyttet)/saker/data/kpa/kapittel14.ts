@@ -1,62 +1,64 @@
 export const kapittel14 = {
   deler: [
     {
+      nummer: "14",
+      tittel: "Bestemmelser til grønnstruktur",
+      bestemmelse: ``,
+      spesialmerknad: `
+Hensikten med bestemmelsene er å sikre og videreutvikle
+grønne kvaliteter, naturverdier og landskap, og legge til rette
+for sammenhengende og tilgjengelig grønnstruktur som gir
+grunnlag for naturopplevelser, friluftsliv og hverdagsaktivitet.
+
+Grønnstrukturen skal bidra til å styrke biologisk mangfold,
+økologiske sammenhenger og landskapets funksjon,
+samtidig som den gir rom for lek, opphold, aktivitet og
+sosiale møteplasser. Arealene skal i hovedsak fremstå som
+naturpregede og bidra til gode nærmiljøkvaliteter.
+
+Det kan legges til rette for friluftsliv og fellesskapsbruk, herunder
+stier, enkle oppholdsarealer og nærmiljøanlegg, uten at
+områdets naturpreg og funksjon vesentlig forringes.
+
+Ved tiltak i grønnstruktur skal det legges vekt på å bevare
+eksisterende vegetasjon, terreng og naturverdier. Tiltak som kan
+føre til fragmentering, nedbygging eller redusert kvalitet skal
+unngås.
+
+Eksisterende strukturer som brygger, badestrender,
+parkeringsplasser, mindre anlegg, paviljonger og kystledhytter
+mm inngår i grønnstrukturen og kan vedlikeholdes.
+
+Det skal også legges vekt på å forebygge og hindre spre
+dning av uønskede og fremmede arter, og å sikre at skjøtsel og
+tiltak bidrar til å opprettholde eller forbedre naturtilstanden.
+      `,
+    },
+    {
       nummer: "14.1",
-      tittel: "Næringsformål NA1",
-      bestemmelse: `Innenfor næringsbebyggelse NA1 skal arealformål begrenses til næring og detaljhandel.`,
-      spesialmerknad: `Hensikt med bestemmelsen er å etablere arbeidsintensive virksomheter med mange ansatte og besøkende, og tilrettelegge for blant annet detaljhandel og større kontorvirksomheter.
+      tittel: "Grønnstruktur, friområder og blå/grønnstruktur",
+      bestemmelse: `
+Jf. pbl. § 11-9 nr. 5 og 6 og 11-10
 
-Innenfor kategori A i abc-prinsippet.`,
-    },
-    {
-      nummer: "14.2",
-      tittel: "Næringsformål NA2",
-      bestemmelse: `Innenfor næringsbebyggelse NA2 skal arealformål begrenses til næring og offentlig eller privat tjenesteyting. Detaljhandel tillates ikke.`,
-      spesialmerknad: `Hensikt med bestemmelsen er å etablere arbeidsintensive virksomheter med mange ansatte og besøkende, blant annet større kontorvirksomheter, samt åpne opp for å etablere bebyggelse for offentlig eller privat tjenesteyting.
+Innenfor områder avsatt til grønnstruktur og blågrønnstruktur skal eksisterende vegetasjon
+bevares.
 
-Innenfor kategori A i abc-prinsippet.`,
-    },
-    {
-      nummer: "14.3",
-      tittel: "Næringsformål NB1",
-      bestemmelse: `Innenfor næringsbebyggelse NB1 skal arealformål begrenses til næring.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å etablere transportbedrifter, verksteder, lagerhaller, bygg- og anleggsvirksomheter, ikke-støyende industrivirksomheter samt plasskrevende varehandel.
+Skånsom tilrettelegging for turstier med bruksbredde inntil 1,5 meter, og etablering av
+naturlekeplasser og tiltak for friluftsliv er tillatt Dette gjelder tiltak som legger til rette for
+allmenn ferdsel og opphold, inkludert turstier, enkle oppholdsarealer og mindre installasjoner
+for lek og friluftsliv.
 
-Innenfor kategori B i abc-prinsippet.`,
-    },
-    {
-      nummer: "14.4",
-      tittel: "Næringsformål NB2",
-      bestemmelse: `Innenfor næringsbebyggelse NB2 skal arealformål begrenses til næring.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å etablere verksteder, transportbedrifter, lagerhaller og samleterminal, bygg- og anleggsvirksomheter, samt ikke-støyende industrivirksomheter.
+Tiltak som hindrer allmenn bruk eller områdets karakter er ikke tillatt.
 
-Innenfor kategori B i abc-prinsippet.`,
-    },
-    {
-      nummer: "14.4.1",
-      tittel: "Kystkultursenter",
-      bestemmelse: `Innenfor område avsatt som NB2.1 på Nærsnes skal det etableres kystkultursenter.`,
+Skjøtsel av vegetasjon i form av rydding og beskjæring, og fjerning av enkelttrær kan
+gjennomføres når dette er nødvendig av hensyn til sikkerhet, fremkommelighet eller
+vegetasjonens tilstand. Fjerning av invaderende og uønskede arter er tillatt. Tiltakene skal
+være begrenset til enkeltinngrep og skal ikke endre områdets vegetasjonsstruktur, omfang
+eller karakter. Flatevis rydding eller sammenhengende fjerning av vegetasjon er ikke tillat.
+
+Vesentlige terrengendringer er ikke tillatt.
+      `,
       spesialmerknad: ``,
-    },
-    {
-      nummer: "14.5",
-      tittel: "Næringsformål NC",
-      bestemmelse: `Innenfor næringsbebyggelse NC skal det kun etableres industrivirksomheter.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å etablere industrivirksomhet.
-
-Innenfor kategori C i abc-prinsippet.`,
-    },
-    {
-      nummer: "14.6",
-      tittel: "Næringsformål ND",
-      bestemmelse: `Innenfor næringsbebyggelse ND kan det etableres virksomheter som legger til rette for reiseliv, som hotell, servering og annen næringsvirksomhet.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å skape forutsigbarhet og stimulere til etablering av virksomheter som legger til rette for reiseliv, som hotell, servering og annen næringsvirksomhet.`,
-    },
-    {
-      nummer: "14.7",
-      tittel: "Næringsformål NE",
-      bestemmelse: `Innenfor næringsbebyggelse NE kan det etableres industrielle aktiviteter, aktiviteter for bevaring og formidling av områdets kulturelle og industrielle historie, kontorer og andre egnede næringsaktiviteter i sammenheng med dette.`,
-      spesialmerknad: `Hensikten med bestemmelsen er å tilrettelegge for og stimulere til etablering av industrielle aktiviteter, aktiviteter for bevaring og formidling av områdets kulturelle og industrielle historie, kontorer og andre egnede næringsaktiviteter i sammenheng med dette.`,
     },
   ],
 } as const;
