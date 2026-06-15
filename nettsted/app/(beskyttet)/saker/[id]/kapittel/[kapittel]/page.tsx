@@ -232,6 +232,14 @@ export default async function Kapittel({ params }: KapittelProps) {
                 (kommentar) => !kommentar.forelder_id
               );
 
+              const partierMedKommentarer = [
+                ...new Set(
+                  alleKommentarer
+                    .map((kommentar) => kommentar.parti)
+                    .filter((parti): parti is string => Boolean(parti))
+                ),
+              ];
+
               const markeringer = alleKommentarer
                 .map((kommentar) => ({
                   tekstutdrag: kommentar.tekstutdrag ?? "",
@@ -242,16 +250,42 @@ export default async function Kapittel({ params }: KapittelProps) {
               return (
                 <article
                   key={del.nummer}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
+                  className={`rounded-2xl border bg-white p-5 sm:p-6 ${
+                    alleKommentarer.length > 0
+                      ? "border-amber-300 shadow-sm"
+                      : "border-slate-200"
+                  }`}
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                       <p className="text-xs font-bold uppercase tracking-wide text-slate-500">
                         Delpunkt
                       </p>
-                      <h2 className="mt-2 text-2xl font-bold">
-                        {del.nummer} {del.tittel}
+
+                      <h2 className="mt-2 flex flex-wrap items-center gap-3 text-2xl font-bold">
+                        <span>
+                          {del.nummer} {del.tittel}
+                        </span>
+
+                        {alleKommentarer.length > 0 ? (
+                          <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-800">
+                            {alleKommentarer.length} kommentarer
+                          </span>
+                        ) : null}
                       </h2>
+
+                      {partierMedKommentarer.length > 0 ? (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {partierMedKommentarer.map((parti) => (
+                            <span
+                              key={parti}
+                              className="rounded-full border border-slate-300 bg-slate-50 px-2 py-1 text-xs font-bold text-slate-700"
+                            >
+                              {parti}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
 
                     <a
@@ -310,10 +344,21 @@ export default async function Kapittel({ params }: KapittelProps) {
                           </p>
                         </div>
 
-                        <form action={leggTilKommentar} className="rounded-xl border bg-slate-50 p-4">
+                        <form
+                          action={leggTilKommentar}
+                          className="rounded-xl border bg-slate-50 p-4"
+                        >
                           <input type="hidden" name="sak_id" value={id} />
-                          <input type="hidden" name="kapittel" value={kapittel} />
-                          <input type="hidden" name="delpunkt" value={del.nummer} />
+                          <input
+                            type="hidden"
+                            name="kapittel"
+                            value={kapittel}
+                          />
+                          <input
+                            type="hidden"
+                            name="delpunkt"
+                            value={del.nummer}
+                          />
                           <input type="hidden" name="tekstutdrag" value="" />
 
                           <label className="text-sm font-bold text-slate-700">
@@ -373,7 +418,9 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     </div>
 
                                     <div className="mt-3">
-                                      <Tekstutdrag tekst={kommentar.tekstutdrag} />
+                                      <Tekstutdrag
+                                        tekst={kommentar.tekstutdrag}
+                                      />
 
                                       <p className="whitespace-pre-wrap text-sm leading-6">
                                         {kommentar.kommentar}
@@ -386,7 +433,9 @@ export default async function Kapittel({ params }: KapittelProps) {
                                             kommentar={kommentar.kommentar}
                                           />
 
-                                          <SlettKommentar kommentarId={kommentar.id} />
+                                          <SlettKommentar
+                                            kommentarId={kommentar.id}
+                                          />
                                         </>
                                       ) : null}
                                     </div>
@@ -418,7 +467,11 @@ export default async function Kapittel({ params }: KapittelProps) {
                                           </div>
 
                                           <div className="mt-3">
-                                            <Tekstutdrag tekst={svarKommentar.tekstutdrag} />
+                                            <Tekstutdrag
+                                              tekst={
+                                                svarKommentar.tekstutdrag
+                                              }
+                                            />
 
                                             <p className="whitespace-pre-wrap text-sm leading-6">
                                               {svarKommentar.kommentar}
@@ -427,11 +480,19 @@ export default async function Kapittel({ params }: KapittelProps) {
                                             {svarKommentar.kanRedigere ? (
                                               <>
                                                 <RedigerKommentar
-                                                  kommentarId={svarKommentar.id}
-                                                  kommentar={svarKommentar.kommentar}
+                                                  kommentarId={
+                                                    svarKommentar.id
+                                                  }
+                                                  kommentar={
+                                                    svarKommentar.kommentar
+                                                  }
                                                 />
 
-                                                <SlettKommentar kommentarId={svarKommentar.id} />
+                                                <SlettKommentar
+                                                  kommentarId={
+                                                    svarKommentar.id
+                                                  }
+                                                />
                                               </>
                                             ) : null}
                                           </div>
@@ -444,15 +505,31 @@ export default async function Kapittel({ params }: KapittelProps) {
                                     action={leggTilKommentar}
                                     className="ml-4 rounded-xl border border-dashed border-slate-300 bg-white p-4"
                                   >
-                                    <input type="hidden" name="sak_id" value={id} />
-                                    <input type="hidden" name="kapittel" value={kapittel} />
-                                    <input type="hidden" name="delpunkt" value={del.nummer} />
+                                    <input
+                                      type="hidden"
+                                      name="sak_id"
+                                      value={id}
+                                    />
+                                    <input
+                                      type="hidden"
+                                      name="kapittel"
+                                      value={kapittel}
+                                    />
+                                    <input
+                                      type="hidden"
+                                      name="delpunkt"
+                                      value={del.nummer}
+                                    />
                                     <input
                                       type="hidden"
                                       name="tekstutdrag"
                                       value={kommentar.tekstutdrag ?? ""}
                                     />
-                                    <input type="hidden" name="forelder_id" value={kommentar.id} />
+                                    <input
+                                      type="hidden"
+                                      name="forelder_id"
+                                      value={kommentar.id}
+                                    />
 
                                     <label className="text-sm font-bold text-slate-700">
                                       Svar på kommentaren
@@ -475,7 +552,8 @@ export default async function Kapittel({ params }: KapittelProps) {
                             })
                           ) : (
                             <p className="rounded-xl border bg-slate-50 p-4 text-sm text-slate-500">
-                              Ingen kommentarer er lagret for dette delpunktet ennå.
+                              Ingen kommentarer er lagret for dette delpunktet
+                              ennå.
                             </p>
                           )}
                         </div>
@@ -491,9 +569,21 @@ export default async function Kapittel({ params }: KapittelProps) {
                     <div className="mt-4 grid gap-4 lg:grid-cols-2">
                       <form action={lagreOmforentInnspill}>
                         <input type="hidden" name="sak_id" value={id} />
-                        <input type="hidden" name="kapittel" value={kapittel} />
-                        <input type="hidden" name="delpunkt" value={del.nummer} />
-                        <input type="hidden" name="type" value="bestemmelse" />
+                        <input
+                          type="hidden"
+                          name="kapittel"
+                          value={kapittel}
+                        />
+                        <input
+                          type="hidden"
+                          name="delpunkt"
+                          value={del.nummer}
+                        />
+                        <input
+                          type="hidden"
+                          name="type"
+                          value="bestemmelse"
+                        />
 
                         <h3 className="text-base font-bold text-emerald-950">
                           Omforent forslag – bestemmelse
@@ -519,15 +609,29 @@ export default async function Kapittel({ params }: KapittelProps) {
                             Lagre bestemmelse
                           </button>
 
-                          <SistLagret sistEndret={omforentBestemmelse?.sist_endret} />
+                          <SistLagret
+                            sistEndret={omforentBestemmelse?.sist_endret}
+                          />
                         </div>
                       </form>
 
                       <form action={lagreOmforentInnspill}>
                         <input type="hidden" name="sak_id" value={id} />
-                        <input type="hidden" name="kapittel" value={kapittel} />
-                        <input type="hidden" name="delpunkt" value={del.nummer} />
-                        <input type="hidden" name="type" value="spesialmerknad" />
+                        <input
+                          type="hidden"
+                          name="kapittel"
+                          value={kapittel}
+                        />
+                        <input
+                          type="hidden"
+                          name="delpunkt"
+                          value={del.nummer}
+                        />
+                        <input
+                          type="hidden"
+                          name="type"
+                          value="spesialmerknad"
+                        />
 
                         <h3 className="text-base font-bold text-emerald-950">
                           Omforent forslag – spesialmerknad
@@ -553,7 +657,9 @@ export default async function Kapittel({ params }: KapittelProps) {
                             Lagre spesialmerknad
                           </button>
 
-                          <SistLagret sistEndret={omforentSpesialmerknad?.sist_endret} />
+                          <SistLagret
+                            sistEndret={omforentSpesialmerknad?.sist_endret}
+                          />
                         </div>
                       </form>
                     </div>
