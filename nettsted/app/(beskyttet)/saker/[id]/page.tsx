@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { arkitekturKapitler } from "@/lib/kpa/arkitektur";
+import { hentKommentarAntallForSak } from "@/app/actions/kommentarer";
 import { kpaKapitler } from "../data/kpaKapitler";
 
 const kartLenker = [
@@ -55,6 +56,16 @@ const innspillOmrader = [
   { navn: "Generelle innspill", slug: "generelle", antall: 31 },
 ];
 
+function KommentarTeller({ antall }: { antall: number }) {
+  if (antall <= 0) return null;
+
+  return (
+    <span className="ml-2 rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700">
+      ({antall})
+    </span>
+  );
+}
+
 type SakProps = {
   params: Promise<{
     id: string;
@@ -63,6 +74,23 @@ type SakProps = {
 
 export default async function Sak({ params }: SakProps) {
   const { id } = await params;
+
+  const kommentarAntall = await hentKommentarAntallForSak(id);
+
+  const bestemmelserAntall = Object.values(kommentarAntall.kapitler).reduce(
+    (sum, antall) => sum + antall,
+    0
+  );
+
+  const innspillAntall = Object.values(kommentarAntall.innspillOmrader).reduce(
+    (sum, antall) => sum + antall,
+    0
+  );
+
+  const arkitekturAntall = Object.values(kommentarAntall.arkitektur).reduce(
+    (sum, antall) => sum + antall,
+    0
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
@@ -128,11 +156,10 @@ export default async function Sak({ params }: SakProps) {
         </div>
       </section>
 
-      <details
-        className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6"
-      >
+      <details className="mt-10 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
         <summary className="cursor-pointer text-2xl font-bold">
           Bestemmelser og spesialmerknader
+          <KommentarTeller antall={bestemmelserAntall} />
         </summary>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
@@ -142,35 +169,44 @@ export default async function Sak({ params }: SakProps) {
         </p>
 
         <div className="mt-6 grid gap-3">
-          {kpaKapitler.map((kapittel) => (
-            <Link
-              key={kapittel.nummer}
-              href={`/saker/${id}/kapittel/${kapittel.nummer}`}
-              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-            >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h3 className="font-bold">
-                    {kapittel.nummer}. {kapittel.tittel}
-                  </h3>
+          {kpaKapitler.map((kapittel) => {
+            const antallKommentarer =
+              kommentarAntall.kapitler[kapittel.nummer] ?? 0;
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    Ny bestemmelse · Spesialmerknad · Gjeldende bestemmelse ·
-                    Politisk vurdering
-                  </p>
+            return (
+              <Link
+                key={kapittel.nummer}
+                href={`/saker/${id}/kapittel/${kapittel.nummer}`}
+                className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="font-bold">
+                      {kapittel.nummer}. {kapittel.tittel}
+                      <KommentarTeller antall={antallKommentarer} />
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      Ny bestemmelse · Spesialmerknad · Gjeldende bestemmelse ·
+                      Politisk vurdering
+                    </p>
+                  </div>
+
+                  <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                    Ikke behandlet
+                  </span>
                 </div>
-
-                <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-                  Ikke behandlet
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </details>
 
       <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
-        <summary className="cursor-pointer text-2xl font-bold">Innspill</summary>
+        <summary className="cursor-pointer text-2xl font-bold">
+          Innspill
+          <KommentarTeller antall={innspillAntall} />
+        </summary>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
           Innspillene behandles etter lokalområde. Velg lokalområde for å se og
@@ -178,33 +214,42 @@ export default async function Sak({ params }: SakProps) {
         </p>
 
         <div className="mt-6 grid gap-3">
-          {innspillOmrader.map((omrade) => (
-            <Link
-              key={omrade.slug}
-              href={`/saker/${id}/innspill/${omrade.slug}`}
-              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-            >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h3 className="font-bold">{omrade.navn}</h3>
+          {innspillOmrader.map((omrade) => {
+            const antallKommentarer =
+              kommentarAntall.innspillOmrader[omrade.slug] ?? 0;
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    {omrade.antall} innspill
-                  </p>
+            return (
+              <Link
+                key={omrade.slug}
+                href={`/saker/${id}/innspill/${omrade.slug}`}
+                className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="font-bold">
+                      {omrade.navn}
+                      <KommentarTeller antall={antallKommentarer} />
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      {omrade.antall} innspill
+                    </p>
+                  </div>
+
+                  <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                    Ikke behandlet
+                  </span>
                 </div>
-
-                <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-                  Ikke behandlet
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </details>
 
       <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
         <summary className="cursor-pointer text-2xl font-bold">
           Arkitektur Asker
+          <KommentarTeller antall={arkitekturAntall} />
         </summary>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
@@ -213,33 +258,42 @@ export default async function Sak({ params }: SakProps) {
         </p>
 
         <div className="mt-6 grid gap-3">
-          {Object.values(arkitekturKapitler).map((kapittel) => (
-            <Link
-              key={kapittel.slug}
-              href={`/saker/${id}/arkitektur/${kapittel.slug}`}
-              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-            >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h3 className="font-bold">{kapittel.tittel}</h3>
+          {Object.values(arkitekturKapitler).map((kapittel) => {
+            const antallKommentarer =
+              kommentarAntall.arkitektur[kapittel.slug] ?? 0;
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
-                    {kapittel.ingress}
-                  </p>
+            return (
+              <Link
+                key={kapittel.slug}
+                href={`/saker/${id}/arkitektur/${kapittel.slug}`}
+                className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h3 className="font-bold">
+                      {kapittel.tittel}
+                      <KommentarTeller antall={antallKommentarer} />
+                    </h3>
+
+                    <p className="mt-1 text-sm leading-6 text-slate-500">
+                      {kapittel.ingress}
+                    </p>
+                  </div>
+
+                  <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
+                    Ikke behandlet
+                  </span>
                 </div>
-
-                <span className="w-fit rounded-full bg-yellow-100 px-3 py-1 text-xs font-semibold text-yellow-800">
-                  Ikke behandlet
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </details>
 
       <details className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
         <summary className="cursor-pointer text-2xl font-bold">
           Kommunekart
+          <KommentarTeller antall={kommentarAntall.kommunekart} />
         </summary>
 
         <p className="mt-4 text-sm leading-6 text-slate-600">
@@ -253,7 +307,10 @@ export default async function Sak({ params }: SakProps) {
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h3 className="font-bold">Kartkommentarer</h3>
+                <h3 className="font-bold">
+                  Kartkommentarer
+                  <KommentarTeller antall={kommentarAntall.kommunekart} />
+                </h3>
 
                 <p className="mt-1 text-sm text-slate-500">
                   Samle kommentarer til arealkartet punkt for punkt
@@ -265,7 +322,6 @@ export default async function Sak({ params }: SakProps) {
               </span>
             </div>
           </Link>
-
         </div>
       </details>
 
