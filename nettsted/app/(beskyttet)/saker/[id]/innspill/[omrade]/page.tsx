@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { hentInnspillOmrade } from "@/lib/kpa/innspill";
+import { hentKommentarer } from "@/app/actions/kommentarer";
 
 type InnspillOmradeProps = {
   params: Promise<{
@@ -58,6 +59,32 @@ export default async function InnspillOmrade({
     );
   }
 
+  const kommentarKapittel = `innspill-${omrade}`;
+
+  const kommentarerPerInnspill = await Promise.all(
+    valgtOmrade.innspill.map(async (sak) => {
+      const kommentarer = await hentKommentarer(
+        id,
+        kommentarKapittel,
+        String(sak.nummer)
+      );
+
+      const partier = [
+        ...new Set(
+          kommentarer
+            .map((kommentar) => kommentar.parti)
+            .filter((parti): parti is string => Boolean(parti))
+        ),
+      ];
+
+      return {
+        nummer: sak.nummer,
+        kommentarer,
+        partier,
+      };
+    })
+  );
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
       <Link
@@ -101,36 +128,72 @@ export default async function InnspillOmrade({
         </div>
 
         <div className="mt-6 grid gap-3">
-          {valgtOmrade.innspill.map((sak) => (
-            <Link
-              key={sak.nummer}
-              href={`/saker/${id}/innspill/${omrade}/${sak.nummer}`}
-              className="block rounded-xl border border-slate-200 p-4 hover:bg-slate-50"
-            >
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm font-medium text-slate-500">
-                    Innspill {sak.nummer} · {sak.saksnummer}
-                  </p>
+          {valgtOmrade.innspill.map((sak) => {
+            const kommentarData = kommentarerPerInnspill.find(
+              (item) => item.nummer === sak.nummer
+            );
 
-                  <h3 className="mt-1 font-bold">{sak.tittel}</h3>
+            const antallKommentarer =
+              kommentarData?.kommentarer.length ?? 0;
 
-                  <p className="mt-1 text-sm text-slate-500">
-                    {sak.innsender}
-                    {sak.paVegneAv ? ` / ${sak.paVegneAv}` : ""}
-                  </p>
+            const partierMedKommentarer = kommentarData?.partier ?? [];
+
+            return (
+              <Link
+                key={sak.nummer}
+                href={`/saker/${id}/innspill/${omrade}/${sak.nummer}`}
+                className={`block rounded-xl border p-4 hover:bg-slate-50 ${
+                  antallKommentarer > 0
+                    ? "border-amber-300"
+                    : "border-slate-200"
+                }`}
+              >
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-slate-500">
+                      Innspill {sak.nummer} · {sak.saksnummer}
+                    </p>
+
+                    <div className="mt-1 flex flex-wrap items-center gap-3">
+                      <h3 className="font-bold">{sak.tittel}</h3>
+
+                      {antallKommentarer > 0 ? (
+                        <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800">
+                          {antallKommentarer} kommentarer
+                        </span>
+                      ) : null}
+                    </div>
+
+                    <p className="mt-1 text-sm text-slate-500">
+                      {sak.innsender}
+                      {sak.paVegneAv ? ` / ${sak.paVegneAv}` : ""}
+                    </p>
+
+                    {partierMedKommentarer.length > 0 ? (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {partierMedKommentarer.map((parti) => (
+                          <span
+                            key={parti}
+                            className="rounded-full border border-slate-300 bg-slate-50 px-2 py-1 text-xs font-bold text-slate-700"
+                          >
+                            {parti}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <span
+                    className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${statusKlasse(
+                      sak.status
+                    )}`}
+                  >
+                    {sak.status}
+                  </span>
                 </div>
-
-                <span
-                  className={`w-fit rounded-full px-3 py-1 text-xs font-semibold ${statusKlasse(
-                    sak.status,
-                  )}`}
-                >
-                  {sak.status}
-                </span>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
     </div>
