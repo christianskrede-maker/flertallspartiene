@@ -263,7 +263,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                   </div>
 
                   <div className="mt-6 grid gap-4 xl:grid-cols-[33fr_33fr_34fr]">
-                    <details open className="rounded-xl border border-slate-200 bg-white p-4">
+                    <details className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Ny bestemmelse
                       </summary>
@@ -278,7 +278,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                       />
                     </details>
 
-                    <details open className="rounded-xl border border-slate-200 bg-white p-4">
+                    <details className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Spesialmerknad
                       </summary>
@@ -293,7 +293,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                       />
                     </details>
 
-                    <details open className="rounded-xl border border-slate-200 bg-white p-4">
+                    <details className="rounded-xl border border-slate-200 bg-white p-4">
                       <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-slate-600">
                         Kommentarer og vurderinger
                       </summary>
@@ -483,7 +483,7 @@ export default async function Kapittel({ params }: KapittelProps) {
                     </details>
                   </div>
 
-                  <details open className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
+                  <details className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 p-4">
                     <summary className="cursor-pointer text-sm font-bold uppercase tracking-wide text-emerald-800">
                       Omforent forslag
                     </summary>
