@@ -46,6 +46,52 @@ function omforentPath(sak_id: string, type: string) {
   return `/saker/${sak_id}`;
 }
 
+export async function hentKommentarAntallForSak(sak_id: string) {
+  const { data: kommentarer, error } = await supabaseAdmin
+    .from("kommentarer")
+    .select("kapittel, delpunkt")
+    .eq("sak_id", sak_id);
+
+  if (error || !kommentarer) {
+    return {
+      kapitler: {} as Record<string, number>,
+      innspillOmrader: {} as Record<string, number>,
+      arkitektur: {} as Record<string, number>,
+      kommunekart: 0,
+      totalt: 0,
+    };
+  }
+
+  const kapitler: Record<string, number> = {};
+  const innspillOmrader: Record<string, number> = {};
+  const arkitektur: Record<string, number> = {};
+  let kommunekart = 0;
+
+  for (const kommentar of kommentarer) {
+    const kapittel = String(kommentar.kapittel ?? "");
+    const delpunkt = String(kommentar.delpunkt ?? "");
+
+    if (kapittel === "arkitektur") {
+      arkitektur[delpunkt] = (arkitektur[delpunkt] ?? 0) + 1;
+    } else if (kapittel.startsWith("innspill-")) {
+      const omrade = kapittel.replace("innspill-", "");
+      innspillOmrader[omrade] = (innspillOmrader[omrade] ?? 0) + 1;
+    } else if (kapittel === "kommunekart") {
+      kommunekart += 1;
+    } else if (kapittel) {
+      kapitler[kapittel] = (kapitler[kapittel] ?? 0) + 1;
+    }
+  }
+
+  return {
+    kapitler,
+    innspillOmrader,
+    arkitektur,
+    kommunekart,
+    totalt: kommentarer.length,
+  };
+}
+
 export async function leggTilKommentar(formData: FormData) {
   const cookieStore = await cookies();
   const telefon = cookieStore.get("telefon")?.value;
@@ -77,6 +123,7 @@ export async function leggTilKommentar(formData: FormData) {
   });
 
   revalidatePath(sidePath(sak_id, kapittel, delpunkt));
+  revalidatePath(`/saker/${sak_id}`);
 }
 
 export async function hentKommentarer(
@@ -160,6 +207,7 @@ export async function redigerKommentar(formData: FormData) {
   revalidatePath(
     sidePath(eksisterende.sak_id, eksisterende.kapittel, eksisterende.delpunkt)
   );
+  revalidatePath(`/saker/${eksisterende.sak_id}`);
 }
 
 export async function slettKommentar(formData: FormData) {
@@ -194,6 +242,7 @@ export async function slettKommentar(formData: FormData) {
   revalidatePath(
     sidePath(eksisterende.sak_id, eksisterende.kapittel, eksisterende.delpunkt)
   );
+  revalidatePath(`/saker/${eksisterende.sak_id}`);
 }
 
 export async function hentOmforentInnspill(
@@ -291,6 +340,7 @@ export async function lagreOmforentInnspill(formData: FormData) {
 
   revalidatePath(sidePath(sak_id, kapittel, delpunkt));
   revalidatePath(omforentPath(sak_id, type));
+  revalidatePath(`/saker/${sak_id}`);
 
   redirect(sidePath(sak_id, kapittel, delpunkt));
 }
